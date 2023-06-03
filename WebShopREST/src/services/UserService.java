@@ -19,13 +19,6 @@ public class UserService {
 	ServletContext ctx;
 	
 
-    public UserService(){}
-    @PostConstruct
-    public void init(){
-        if (ctx.getAttribute("userRepo") == null) {
-            ctx.setAttribute("userRepo", new UserDAO());
-        }
-    }
-    
+
 
 }
