@@ -7,10 +7,11 @@ public class Customer {
 	private int neededPoints;
 	
 	public Customer() {
-		
+		super();
 	}
 	
 	public Customer(int id, CustomerType type, int d, int p) {
+		super();
 		this.id = id;
 		this.type = type;
 		this.discount = d;
@@ -20,7 +21,6 @@ public class Customer {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
 	
 	public int getId() {
 		return id;
