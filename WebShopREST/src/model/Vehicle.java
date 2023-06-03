@@ -5,6 +5,7 @@ import enums.VehicleType;
 import enums.FuelType;
 import enums.VehicleKind;
 import enums.VehicleStatus;
+
 public class Vehicle {
 	private int id;
 	private String brand;
@@ -22,11 +23,12 @@ public class Vehicle {
 	
 	
 	public Vehicle() {
-		
+		super();
 	}
 	
 	public Vehicle(int id, String brand, String model, VehicleType vT, VehicleKind vK,
 					FuelType fuel, double c, int d, int p, String des, String image, VehicleStatus vS, RentACarObject object) {
+		super();
 		this.id = id;
 		this.brand = brand;
 		this.model = model;
@@ -144,9 +146,5 @@ public class Vehicle {
 	public RentACarObject getShop() {
 		return object;
 	}
-	
-	
-	
-	
 	
 }
