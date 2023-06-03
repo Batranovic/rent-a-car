@@ -18,7 +18,7 @@ public class Vehicle {
 	private String description;
 	private String image;
 	private VehicleStatus status;
-	private String shop;
+	private RentACarObject object;
 	
 	
 	public Vehicle() {
@@ -26,7 +26,7 @@ public class Vehicle {
 	}
 	
 	public Vehicle(int id, String brand, String model, VehicleType vT, VehicleKind vK,
-					FuelType fuel, double c, int d, int p, String des, String image, VehicleStatus vS, String shop) {
+					FuelType fuel, double c, int d, int p, String des, String image, VehicleStatus vS, RentACarObject object) {
 		this.id = id;
 		this.brand = brand;
 		this.model = model;
@@ -39,7 +39,7 @@ public class Vehicle {
 		this.description = des;
 		this.image = image;
 		this.status = vS;
-		this.shop = shop;
+		this.object = object;
 	}
 	
 	public void setid(int id) {
@@ -137,12 +137,12 @@ public class Vehicle {
 	public VehicleStatus getVehicleStatus() {
 		return status;
 	}
-	public void setShop(String shop) {
-		this.shop = shop;
+	public void setShop(RentACarObject object) {
+		this.object = object;
 	}
 	
-	public String getShop() {
-		return shop;
+	public RentACarObject getShop() {
+		return object;
 	}
 	
 	
