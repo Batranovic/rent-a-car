@@ -1,4 +1,3 @@
-/model/
+/.DS_Store
 /enums/
-/dao/
-/services/
+/model/

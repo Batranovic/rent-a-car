@@ -23,7 +23,7 @@ public class User {
 	private Basket basket;
 	private RentACarObject rentACarObject;
 	private int points;
-	private CustomerType customerType;
+	private Customer customerType;
 	
 	public User() {
 		super();
@@ -31,7 +31,7 @@ public class User {
 	
 	public User(int id, String username, String password, String name, String surname, Gender gender, Date dateTime,
 			Role role, ArrayList<Vehicle> allRentals, Basket basket, RentACarObject rentACarObject, int points,
-			CustomerType customerType) {
+			Customer customerType) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -144,11 +144,11 @@ public class User {
 		this.points = points;
 	}
 
-	public CustomerType getCustomerType() {
+	public Customer getCustomerType() {
 		return customerType;
 	}
 
-	public void setCustomerType(CustomerType customerType) {
+	public void setCustomerType(Customer customerType) {
 		this.customerType = customerType;
 	}
 }
