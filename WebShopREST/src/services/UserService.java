@@ -1,6 +1,7 @@
 package services;
 
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 
 import java.util.ArrayList;
@@ -45,9 +46,27 @@ public class UserService {
     @POST
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
 	public User create(User user) {
 		UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
 		return dao.create(user);
+	}
+    
+    @PUT
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+	public User updateUser(User user) {
+		UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+		return dao.updateUser(0, user);
+	}
+    
+    @GET
+	@Path("/searchById/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User searchById(@PathParam("id") int id) {
+    	UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+		return dao.searchById(id);
 	}
     
 }

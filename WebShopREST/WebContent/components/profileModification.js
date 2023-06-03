@@ -1,15 +1,8 @@
-Vue.component("signup", {
+Vue.component("profile-modification", {
 	data: function(){
 		return{
 			user: {id: null, name: null, surname: null, gender: null, birthday: null, username: null, password: null},
-			nameColor : '',
-			surnameColor: '',
-			genderColor: '',
-			birthdayColor: '',
-			usernameColor : '',
-			passwordColor : '',
-			errorMessage: '',
-			errorColor: '',
+			id: null
 		}
 	},
 	
@@ -44,7 +37,7 @@ Vue.component("signup", {
             	<td><label>Password: </label></td>
             	<td><input type="text" v-model="user.password" v-bind:style="passwordColor"></td>
             </tr>
-                <button v-on:click="signUp()">Sign up</button><br>
+                <button v-on:click="modify()">Modify</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
             </form>
         </div>
@@ -52,54 +45,17 @@ Vue.component("signup", {
 	`,
 	
 	mounted(){
-		
+		this.id = this.$route.params.id;
+		axios.get('rest/userPage/searchById/' + this.id)
+		.then(response => {
+			this.user = response.data 
+		})
 		
 	}, 
 	
 	methods: {
-		signUp: function(){
-			event.preventDefault();
-			if(!this.user.name){
-				this.nameColor='border-color: red';
-			}else{
-				this.nameColor='';
-			}
-			if(!this.user.surname){
-				this.surnameColor='border-color: red';
-			}else{
-				this.surnameColor='';
-			}
-			if(!this.user.gender){
-				this.genderColor='border-color: red';
-			}else{
-				this.genderColor='';
-			}
-			if(!this.user.birthday){
-				this.birthdayColor='border-color: red';
-			}else{
-				this.birthdayColor='';
-			}
-			if(!this.user.username){
-				this.usernameColor='border-color: red';
-			}else{
-				this.usernameColor='';
-			}
-			if(!this.user.password){
-				this.passwordColor='border-color: red';
-			}else{
-				this.passwordColor='';
-			}
-			
-			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.birthday || !this.user.username || !this.user.password){
-				this.errorMessage='All fields are neccessary!';
-				this.errorColor = "color:red";
-				return;
-			}
-			
-			if(this.errorMessage){
-				this.errorColor = "color:red";
-			}
-			axios.post('rest/users/', this.user)
+		modify: function(){
+			axios.put('rest/users/', this.user)
 			.then(response => {
 				router.push(`/userPage`);
 			})
