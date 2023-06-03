@@ -33,8 +33,8 @@ Vue.component("signup", {
                 </select><br>
             </tr>
              <tr>
-            	<td><label>Birthday: </label></td>
-            	<td><input type="text" v-model="user.birthday" v-bind:style="birthdayColor"></td>
+            	<td><label>Date of birth: </label></td>
+            	<td><input type="date" v-model="user.birthday" v-bind:style="birthdayColor"></td>
             </tr>
               <tr>
             	<td><label>Username: </label></td>
@@ -45,7 +45,7 @@ Vue.component("signup", {
             	<td><input type="text" v-model="user.password" v-bind:style="passwordColor"></td>
             </tr>
                 <button v-on:click="signUp()">Sign up</button><br>
-                <h5>{{errorMessage}}</h5>
+                <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
             </form>
         </div>
 	
@@ -60,38 +60,38 @@ Vue.component("signup", {
 		signUp: function(){
 			event.preventDefault();
 			if(!this.user.name){
-				this.nameColor='background-color: red';
+				this.nameColor='border-color: red';
 			}else{
 				this.nameColor='';
 			}
 			if(!this.user.surname){
-				this.surnameColor='background-color: red';
+				this.surnameColor='border-color: red';
 			}else{
 				this.surnameColor='';
 			}
 			if(!this.user.gender){
-				this.genderColor='background-color: red';
+				this.genderColor='border-color: red';
 			}else{
 				this.genderColor='';
 			}
 			if(!this.user.birthday){
-				this.birthdayColor='background-color: red';
+				this.birthdayColor='border-color: red';
 			}else{
 				this.birthdayColor='';
 			}
 			if(!this.user.username){
-				this.usernameColor='background-color: red';
+				this.usernameColor='border-color: red';
 			}else{
 				this.usernameColor='';
 			}
 			if(!this.user.password){
-				this.passwordColor='background-color: red';
+				this.passwordColor='border-color: red';
 			}else{
 				this.passwordColor='';
 			}
 			
 			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.birthday || !this.user.username || !this.user.password){
-				this.errorMessage='All fields are neccessery!';
+				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
 			}
