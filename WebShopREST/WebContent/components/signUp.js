@@ -2,7 +2,7 @@ Vue.component("signup", {
 	data: function(){
 		return{
 
-			user: {name: null, surname: null, gender: null, birthday: null, username: null, password: null},
+			user: {name: null, surname: null, gender: null, birthday: null, username: null, password: null },
 
 			nameColor : '',
 			surnameColor: '',
@@ -39,7 +39,7 @@ Vue.component("signup", {
             <br>
              <tr>
             	<td><label>Date of birth: </label></td>
-            	<td><input type="text" v-model="user.birthday" v-bind:style="birthdayColor"></td>
+            	<td><input type="date" v-model="user.birthday" v-bind:style="birthdayColor"></td>
             </tr>
             <br>
               <tr>
@@ -53,7 +53,7 @@ Vue.component("signup", {
             </tr>
             <br>
             <div class="form-row">
-                <button v-on:click="signUp()">Sign up</button><br>
+                <button v-on:click="signUp(user.username)">Sign up</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
              </div>
             </form>
@@ -67,7 +67,7 @@ Vue.component("signup", {
 	}, 
 	
 	methods: {
-		signUp: function(){
+		signUp: function(username){
 			event.preventDefault();
 			if(!this.user.name){
 				this.nameColor='border-color: red';
@@ -84,7 +84,7 @@ Vue.component("signup", {
 			}else{
 				this.genderColor='';
 			}
-			if(!this.user.dateTime){
+			if(!this.user.birthday){
 				this.birthdayColor='border-color: red';
 			}else{
 				this.birthdayColor='';
@@ -100,17 +100,17 @@ Vue.component("signup", {
 				this.passwordColor='';
 			}
 			
-			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.dateTime || !this.user.username || !this.user.password){
+			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.birthday || !this.user.username || !this.user.password){
 				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
 			}
 			
 			this.errorMessage = '';
-			
+		
 			axios.post('rest/users/', this.user)
 			    .then(response => {
-			        router.push(`/userPage` + username);
+			        router.push(`/userPage/` + username);
 			    });
 		}
 	}

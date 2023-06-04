@@ -37,7 +37,7 @@ Vue.component("profile-modification", {
             	<td><label>Password: </label></td>
             	<td><input type="text" v-model="user.password" v-bind:style="passwordColor"></td>
             </tr>
-                <button v-on:click="modify()">Modify</button><br>
+                <button v-on:click="modify(user.username)">Modify</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
             </form>
         </div>
@@ -45,20 +45,17 @@ Vue.component("profile-modification", {
 	`,
 	
 	mounted(){
-		this.id = this.$route.params.id;
-		axios.get('rest/userPage/searchById/' + this.id)
-		.then(response => {
-			this.user = response.data 
-		})
+		this.passedUsername = this.$route.params.username;
+         axios.get('rest/users/searchByUsername/' + this.passedUsername)
+              .then(response => {
+                this.user = response.data;
+              })
 		
 	}, 
 	
 	methods: {
-		modify: function(){
-			axios.put('rest/users/', this.user)
-			.then(response => {
-				router.push(`/userPage`);
-			})
+		modify: function(username){
+			router.push(`/editUserProfile/` + username);
 		}
 	}
 	

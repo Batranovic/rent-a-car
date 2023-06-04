@@ -39,7 +39,21 @@ public class UserDAO {
 	       return new ArrayList<>(users);
 	    }
 
-	
+	public User findUser(User user){
+        for(User u: users)
+        {
+            if(u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword())) return u;
+        }
+        return null;
+    }
+
+    public User getByUsername(String username){
+        for(User u: users)
+        {
+            if(u.getUsername().equals(username)) return u;
+        }
+        return null;
+    }
 
 	public User searchById(int id) {
 			 for(User u:users) {
@@ -49,14 +63,9 @@ public class UserDAO {
 			 }
 			 return null;
 		 }
-	public User findUser(User user) {
-        return users.stream()
-                .filter(u -> u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword()))
-                .findFirst()
-                .orElse(null);
-    }
-
+	
 	public User create(User user) {
+		System.out.println(user);
 		user.setId(nextId());
 		users.add(user);
 		return user;

@@ -17,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+
 import dao.UserDAO;
 import model.User;
 
@@ -28,7 +29,7 @@ public class UserService {
     public UserService() {
 
     }
-
+    @PostConstruct
     public void init(){
         if (ctx.getAttribute("userDao") == null) {
             String contextPath = ctx.getRealPath("");
@@ -49,17 +50,18 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public User create(User user) {
+    	System.out.println(user);
         UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
         return dao.create(user);
     }
 
     @PUT
-    @Path("/")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public User updateUser(User user) {
+    public User updateUser(@PathParam("id") int id, User user) {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
-        return dao.updateUser(0, user);
+        return dao.updateUser(id, user);
     }
 
     @GET
@@ -68,6 +70,22 @@ public class UserService {
     public User searchById(@PathParam("id") int id) {
         UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
         return dao.searchById(id);
+    }
+    
+    @GET
+    @Path("/searchByUsername/{username}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User getByUsername(@PathParam("username") String username) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+        return dao.getByUsername(username);
+    }
+    
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User findUser(User user) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+        return dao.findUser(user);
     }
 
 }

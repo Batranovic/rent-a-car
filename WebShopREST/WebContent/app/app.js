@@ -1,3 +1,4 @@
+const LogIn = {template: "<login></login>"}
 const SignUp = {template: "<signup></signup>"}
 const UserPage = {template: "<user-page></user-page>"}
 const ProfileModification = {template: "<profile-modification></profile-modification>"}
@@ -6,9 +7,10 @@ const ViewRentACarObject = {template: "<viewRentACarObject></viewRentACarObject>
 const router = new VueRouter({
     mode: 'hash',
     routes: [
-        { path: '/', component: SignUp},
-		{ path: '/userPage', component: SignUp},        
-        { path: '/userPage/profileModification', component: ProfileModification},
+        { path: '/', component: LogIn},
+        { path: '/signUp', component: SignUp},
+		{ path: '/userPage/:username', component: UserPage},         
+        { path: '/searchByUsername/:username', component: ProfileModification},
         { path: '/viewRentACarObject', component: ViewRentACarObject}
     ]
 });
