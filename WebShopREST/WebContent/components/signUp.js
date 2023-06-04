@@ -39,7 +39,7 @@ Vue.component("signup", {
             <br>
              <tr>
             	<td><label>Date of birth: </label></td>
-            	<td><input type="text" v-model="user.birthday" v-bind:style="birthdayColor"></td>
+            	<td><input type="date" v-model="user.birthday" v-bind:style="birthdayColor"></td>
             </tr>
             <br>
               <tr>
@@ -84,7 +84,7 @@ Vue.component("signup", {
 			}else{
 				this.genderColor='';
 			}
-			if(!this.user.dateTime){
+			if(!this.user.birthday){
 				this.birthdayColor='border-color: red';
 			}else{
 				this.birthdayColor='';
@@ -100,7 +100,7 @@ Vue.component("signup", {
 				this.passwordColor='';
 			}
 			
-			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.dateTime || !this.user.username || !this.user.password){
+			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.birthday || !this.user.username || !this.user.password){
 				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
