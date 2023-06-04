@@ -1,7 +1,9 @@
 Vue.component("signup", {
 	data: function(){
 		return{
-			user: {name: null, surname: null, gender: null, dateTime: null, username: null, password: null},
+
+			user: {name: null, surname: null, gender: null, birthday: null, username: null, password: null},
+
 			nameColor : '',
 			surnameColor: '',
 			genderColor: '',
@@ -37,7 +39,7 @@ Vue.component("signup", {
             <br>
              <tr>
             	<td><label>Date of birth: </label></td>
-            	<td><input type="text" v-model="user.dateTime" v-bind:style="birthdayColor"></td>
+            	<td><input type="text" v-model="user.birthday" v-bind:style="birthdayColor"></td>
             </tr>
             <br>
               <tr>
@@ -107,9 +109,9 @@ Vue.component("signup", {
 			this.errorMessage = '';
 			
 			axios.post('rest/users/', this.user)
-       			 .then(response => {
-          		router.push('/viewRentACarObject');
-        });
+			    .then(response => {
+			        router.push(`/userPage` + username);
+			    });
 		}
 	}
 	

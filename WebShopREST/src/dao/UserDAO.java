@@ -80,11 +80,10 @@ public class UserDAO {
 		foundUser.setUsername(user.getUsername());
 		foundUser.setPassword(user.getPassword());
 		foundUser.setGender(user.getGender());
-		foundUser.setDateTime(user.getDateTime());
+		foundUser.setBirthday(user.getBirthday());
 
 		return foundUser;
 	}
-	
 	
 	private boolean isUsernameUnique(User user) {
         return users.stream()
@@ -128,6 +127,5 @@ public class UserDAO {
     private void createFile() throws IOException{
         if(!file.exists()) file.createNewFile();
     }
-
 	
 }
