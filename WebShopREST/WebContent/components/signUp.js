@@ -99,10 +99,9 @@ Vue.component("signup", {
 				return;
 			}
 			
-			if(this.errorMessage){
-				this.errorColor = "color:red";
-			}
-			axios.post('rest/users/', this.user)
+			this.errorMessage='';
+			
+			axios.post('rest/users', this.user)
 				.then(response => {
 				router.push(`/userPage`);
 			})

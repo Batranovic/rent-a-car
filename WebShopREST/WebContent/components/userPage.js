@@ -41,7 +41,7 @@ Vue.component("user-page", {
     },
     methods: {
     	modify : function(id) {
-			router.push(`/userPage/profileModification/` + id)
+			router.push(`/userPage/profileModification` + id)
     	}
     }
 });

@@ -46,7 +46,7 @@ Vue.component("profile-modification", {
 	
 	mounted(){
 		this.id = this.$route.params.id;
-		axios.get('rest/userPage/searchById/' + this.id)
+		axios.get('rest/userPage/searchById' + this.id)
 		.then(response => {
 			this.user = response.data 
 		})
@@ -55,7 +55,7 @@ Vue.component("profile-modification", {
 	
 	methods: {
 		modify: function(){
-			axios.put('rest/users/', this.user)
+			axios.put('rest/users', this.user)
 			.then(response => {
 				router.push(`/userPage`);
 			})
