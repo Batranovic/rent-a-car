@@ -1,7 +1,7 @@
 Vue.component("signup", {
 	data: function(){
 		return{
-			user: {name: null, surname: null, gender: null, birthday: null, username: null, password: null},
+			user: {name: null, surname: null, gender: null, dateTime: null, username: null, password: null},
 			nameColor : '',
 			surnameColor: '',
 			genderColor: '',
@@ -14,17 +14,19 @@ Vue.component("signup", {
 	},
 	
 	template: `
-		<div>
+		<div class="container">
             <h2>Sign up page</h2>
-            <form>
+            <form class="form-table">
             <tr>
             	<td><label>Name: </label></td>
             	<td><input type="text" v-model="user.name" v-bind:style="nameColor"></td>
             </tr>
+            <br>
              <tr>
             	<td><label>Surname: </label></td>
             	<td><input type="text" v-model="user.surname" v-bind:style="surnameColor"></td>
             </tr>
+            <br>
               <tr>
             	<td><label>Gender: </label></td>
              <select v-model="user.gender" v-bind:style="genderColor">
@@ -32,20 +34,26 @@ Vue.component("signup", {
                     <option value="F">female</option>
                 </select><br>
             </tr>
+            <br>
              <tr>
             	<td><label>Date of birth: </label></td>
-            	<td><input type="date" v-model="user.birthday" v-bind:style="birthdayColor"></td>
+            	<td><input type="text" v-model="user.dateTime" v-bind:style="birthdayColor"></td>
             </tr>
+            <br>
               <tr>
             	<td><label>Username: </label></td>
             	<td><input type="text" v-model="user.username" v-bind:style="usernameColor"></td>
             </tr>
+            <br>
              <tr>
             	<td><label>Password: </label></td>
             	<td><input type="password" v-model="user.password" v-bind:style="passwordColor"></td>
             </tr>
+            <br>
+            <div class="form-row">
                 <button v-on:click="signUp()">Sign up</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
+             </div>
             </form>
         </div>
 	
@@ -74,7 +82,7 @@ Vue.component("signup", {
 			}else{
 				this.genderColor='';
 			}
-			if(!this.user.birthday){
+			if(!this.user.dateTime){
 				this.birthdayColor='border-color: red';
 			}else{
 				this.birthdayColor='';
@@ -90,7 +98,7 @@ Vue.component("signup", {
 				this.passwordColor='';
 			}
 			
-			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.birthday || !this.user.username || !this.user.password){
+			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.dateTime || !this.user.username || !this.user.password){
 				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
@@ -99,9 +107,9 @@ Vue.component("signup", {
 			this.errorMessage = '';
 			
 			axios.post('rest/users/', this.user)
-			    .then(response => {
-			        router.push(`/viewRentACarObject`);
-			    });
+       			 .then(response => {
+          		router.push('/viewRentACarObject');
+        });
 		}
 	}
 	

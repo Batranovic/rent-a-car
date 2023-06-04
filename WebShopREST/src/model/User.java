@@ -17,7 +17,7 @@ public class User {
 	private String surname;
 	private Gender gender;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy")
-	private Date dateTime;
+	private String dateTime;
 	private Role role;
 	private ArrayList<Vehicle> allRentals;
 	private Basket basket;
@@ -29,7 +29,7 @@ public class User {
 		super();
 	}
 	
-	public User(int id, String username, String password, String name, String surname, Gender gender, Date dateTime,
+	public User(int id, String username, String password, String name, String surname, Gender gender, String dateTime,
 			Role role, ArrayList<Vehicle> allRentals, Basket basket, RentACarObject rentACarObject, int points,
 			Customer customerType) {
 		super();
@@ -96,11 +96,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Date getDateTime() {
+	public String getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
 
