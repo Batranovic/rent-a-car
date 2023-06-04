@@ -1,33 +1,48 @@
 package dao;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.io.FileOutputStream;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import model.User;
+
 public class UserDAO {
 	private ArrayList<User> users;
+	private final ObjectMapper objectMapper;
+	private final File file;
 	
-	public UserDAO() {
-		users = new ArrayList<User>();
-	}
-	
-	private int newId() {
+    public UserDAO(String CtxPath){
+    	
+    	objectMapper = new ObjectMapper();
+        users = new ArrayList<User>();
+        String filePath = CtxPath + "..\\..\\src\\resources\\users.JSON";
+        file = new File(filePath);
+        
+        readFromFileJSON();
+    }
+    
+    private Integer nextId() {
 		int id = 0;
-		for(User user : users) {
-			if(user.getId() > id) {
-				id = user.getId();
+		for(User book : users) {
+			if(book.getId() > id) {
+				id = book.getId();
 			}
 		}
 		return id + 1;
 	}
-	
-	public ArrayList<User> getAllUsers(){
-		return new ArrayList<User>(users);
+
+	public ArrayList<User> getAllUsers() {
+	    readFromFileJSON();
+	    return new ArrayList<>(users);
 	}
-	
+
 	public User create(User user) {
-		user.setId(newId());
+		user.setId(nextId());
 		users.add(user);
 		return user;
 	}
-	
 	
 	public User updateUser(int id, User user) {
 		User foundUser = new User();
@@ -51,13 +66,54 @@ public class UserDAO {
 		return foundUser;
 	}
 	
-	public User searchById(int id) {
-		for(User u: users) {
-			if(u.getId() == id) {
-				return u;
-			}
-		}
-		return null;
-	}
+	private boolean isUsernameUnique(User user) {
+        return users.stream()
+                .noneMatch(u -> u.getUsername().equals(user.getUsername()));
+    }
 	
+	 public User save(User user) {
+	        if (!isUsernameUnique(user))
+	            return null;
+
+	        user.setId(nextId());
+	        users.add(user);
+	        writeToFileJSON();
+	        return user;
+	    }
+	 
+	 public User searchById(int id) {
+			for(User u: users) {
+				if(u.getId() == id) {
+					return u;
+				}
+			}
+			return null;
+		}
+
+    private void writeToFileJSON()
+    {
+
+        try {
+            createFile();
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(file), users);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void readFromFileJSON()
+    {
+        try{
+            JavaType type = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class,User.class);
+            users = objectMapper.readValue(file, type);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
+    private void createFile() throws IOException{
+        if(!file.exists()) file.createNewFile();
+    }
 }

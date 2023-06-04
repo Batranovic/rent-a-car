@@ -10,6 +10,7 @@ Vue.component("signup", {
 			passwordColor : '',
 			errorMessage: '',
 			errorColor: '',
+			errorName: ''
 		}
 	},
 	
@@ -20,6 +21,7 @@ Vue.component("signup", {
             <tr>
             	<td><label>Name: </label></td>
             	<td><input type="text" v-model="user.name" v-bind:style="nameColor"></td>
+            	{{errorName}}
             </tr>
              <tr>
             	<td><label>Surname: </label></td>
@@ -42,7 +44,8 @@ Vue.component("signup", {
             </tr>
              <tr>
             	<td><label>Password: </label></td>
-            	<td><input type="text" v-model="user.password" v-bind:style="passwordColor"></td>
+            	<td><input type="password" v-model="user.password" v-bind:style="passwordColor"></td>
+            <br>
             </tr>
                 <button v-on:click="signUp()">Sign up</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
@@ -61,7 +64,7 @@ Vue.component("signup", {
 			event.preventDefault();
 			if(!this.user.name){
 				this.nameColor='border-color: red';
-			}else{
+			}else {
 				this.nameColor='';
 			}
 			if(!this.user.surname){
@@ -100,7 +103,7 @@ Vue.component("signup", {
 				this.errorColor = "color:red";
 			}
 			axios.post('rest/users/', this.user)
-			.then(response => {
+				.then(response => {
 				router.push(`/userPage`);
 			})
 		}
