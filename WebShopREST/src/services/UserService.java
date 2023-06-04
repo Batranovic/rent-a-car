@@ -22,51 +22,52 @@ import model.User;
 
 @Path("/users")
 public class UserService {
-	@Context
-	ServletContext ctx;
-	
-	public UserService() {
-		
-	}
-	
+    @Context
+    ServletContext ctx;
+
+    public UserService() {
+
+    }
+
     public void init(){
         if (ctx.getAttribute("userDao") == null) {
-            ctx.setAttribute("userDao", new UserDAO());
+            String contextPath = ctx.getRealPath("");
+            ctx.setAttribute("userDao", new UserDAO(contextPath));
         }
     }
-    
+
     @GET
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
-	public ArrayList<User> getAllUsers(){
-    	UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
-		return dao.getAllUsers();
-	}
-    
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<User> getAllUsers(){
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+        return dao.getAllUsers();
+    }
+
     @POST
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-	public User create(User user) {
-		UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
-		return dao.create(user);
-	}
-    
+    public User create(User user) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+        return dao.create(user);
+    }
+
     @PUT
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-	public User updateUser(User user) {
-		UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
-		return dao.updateUser(0, user);
-	}
-    
+    public User updateUser(User user) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+        return dao.updateUser(0, user);
+    }
+
     @GET
-	@Path("/searchById/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public User searchById(@PathParam("id") int id) {
-    	UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
-		return dao.searchById(id);
-	}
-    
+    @Path("/searchById/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public User searchById(@PathParam("id") int id) {
+        UserDAO dao = (UserDAO) ctx.getAttribute("userDao");
+        return dao.searchById(id);
+    }
+
 }
