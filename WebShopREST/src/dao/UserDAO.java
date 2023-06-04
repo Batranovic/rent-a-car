@@ -32,21 +32,23 @@ public class UserDAO {
 		}
 		return id + 1;
 	}
-	
-	 public User getByUsername(String username) {
-	        return users.stream()
-	                .filter(u -> u.getUsername().equals(username))
-	                .findFirst()
-	                .orElse(null);
-	    }
 
-	    public ArrayList<User> getAll() {
-	        readFromFileJSON();
-	        return new ArrayList<>(users);
+    
+	public ArrayList<User> getAllUsers() {
+	       readFromFileJSON();
+	       return new ArrayList<>(users);
 	    }
 
 	
-	
+
+	public User searchById(int id) {
+			 for(User u:users) {
+				 if(u.getId() == id) {
+					 return u;
+				 }
+			 }
+			 return null;
+		 }
 	public User findUser(User user) {
         return users.stream()
                 .filter(u -> u.getUsername().equals(user.getUsername()) && u.getPassword().equals(user.getPassword()))
