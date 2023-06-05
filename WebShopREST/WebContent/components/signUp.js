@@ -17,7 +17,7 @@ Vue.component("signup", {
 	
 	template: `
 		<div class="container">
-            <h2>Sign up page</h2>
+            <h1>Sign up page</h1>
             <form class="form-table">
             <tr>
             	<td><label>Name: </label></td>
