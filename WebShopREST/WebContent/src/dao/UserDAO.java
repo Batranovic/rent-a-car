@@ -12,7 +12,7 @@ public class UserDAO {
 	private final ObjectMapper objectMapper;
 	private final File file;
 	
-    public UserDAO(String CtxPath){
+    public UserDAO(){
     	
     	objectMapper = new ObjectMapper();
         users = new ArrayList<User>();
@@ -110,6 +110,7 @@ public class UserDAO {
 	        return user;
 	    }
 
+	
     private void writeToFileJSON()
     {
 

@@ -1,0 +1,64 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  background-color: #D4EAD6; /* Pastel green color */
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.form-table {
+  border: 1px solid black; /* Black border */
+  background-color: #B2D8B4; /* Slightly darker pastel green color */
+  padding: 20px;
+  margin-top: 60px;
+}
+
+.error-message {
+  text-align: center;
+}
+
+.form-table table {
+  width: 100%;
+}
+
+.form-table label {
+  display: block;
+}
+
+.form-table input,
+.form-table select {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid #000;
+  border-radius: 3px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.form-row button {
+  margin-left: 10px;
+  padding: 8px 16px; /* Adjust the padding to make the button thinner */
+  border-radius: 3px;
+  background-color: #B2D8B4;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.form-row button:hover {
+  background-color: #8FC590; /* Darker shade of pastel green on hover */
+}

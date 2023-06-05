@@ -91,11 +91,13 @@ Vue.component("signup", {
 			}
 			if(!this.user.username){
 				this.usernameColor='border-color: red';
+
 			}else{
 				this.usernameColor='';
 			}
 			if(!this.user.password){
 				this.passwordColor='border-color: red';
+				return;
 			}else{
 				this.passwordColor='';
 			}
@@ -108,7 +110,7 @@ Vue.component("signup", {
 			
 			this.errorMessage = '';
 		
-			axios.post('rest/users/', this.user)
+			axios.post('rest/users/createUser', this.user)
 			    .then(response => {
 			        router.push(`/userPage/` + username);
 			    });

@@ -27,7 +27,7 @@ Vue.component("login", {
 				<h5 v-bind:style="errorColor">{{errorMessage}}</h5>
 				
 				 <p>
-                    Don’t have an account yet? <a href="/registration">Sign up</a>
+                    Don’t have an account yet? <a href="#" v-on:click="registration()">Sign up</a>
                  </p>
 			</form>
 		</div>
@@ -39,7 +39,9 @@ Vue.component("login", {
 	}, 
 	
 	methods: {
-		
+		registration:function() {
+			router.push(`/signUp`)
+		}
 		
 	}
 	
