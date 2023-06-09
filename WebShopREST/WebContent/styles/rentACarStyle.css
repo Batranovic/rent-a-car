@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  background-color: #D4EAD6; /* Pastel green color */
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.rentacar-table {
+  border: 1px solid black; /* Black border */
+  background-color: #B2D8B4; /* Slightly darker pastel green color */
+  padding: 40px; /* Increase the padding for the table */
+  margin-top: 60px;
+  width: 50%; /* Set the table width to 100% */
+  height: 40%; /* Let the table height adjust based on content */
+}
+
+.rentacar-table th,
+.rentacar-table td {
+  padding: 2px; /* Increase the padding for table cells */
+  text-align: center;
+  font-size: 18px; /* Increase the font size */
+}
+
+.rentacar-table th {
+  background-color: lightgrey; /* Header background color */
+}

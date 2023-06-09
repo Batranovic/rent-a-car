@@ -42,7 +42,7 @@ public class UserService {
     }
 
     @POST
-    @Path("/")
+    @Path("/createUser")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public User createUser(User user) {
@@ -66,4 +66,7 @@ public class UserService {
         UserDao dao = (UserDao) ctx.getAttribute("userDao");
         return dao.searchUserByUsername(username);
     }
+    
+ 
+
 }

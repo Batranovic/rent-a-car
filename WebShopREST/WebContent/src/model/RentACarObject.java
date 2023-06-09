@@ -1,22 +1,22 @@
 package model;
 
 public class RentACarObject {
-	private int id;
+	private String id;
 	private String name;
 	//vozila koja su u ponudi
 	private String from;
 	private String to;
 	private boolean isOpen;
-	private Location location;
+	private String location;
 	private String image;
-	private int grade;
+	private String grade;
 	
 	public RentACarObject() {
 		super();
 	}
 	
-	public RentACarObject(int id, String name, String from, String to, boolean isOpen, Location location, String image,
-			int grade) {
+	public RentACarObject(String id, String name, String from, String to, boolean isOpen, String location, String image,
+			String grade) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -28,11 +28,11 @@ public class RentACarObject {
 		this.grade = grade;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -68,11 +68,11 @@ public class RentACarObject {
 		this.isOpen = isOpen;
 	}
 
-	public Location getLocation() {
+	public String getLocation() {
 		return location;
 	}
 
-	public void setLocation(Location location) {
+	public void setLocation(String location) {
 		this.location = location;
 	}
 
@@ -84,11 +84,11 @@ public class RentACarObject {
 		this.image = image;
 	}
 
-	public int getGrade() {
+	public String getGrade() {
 		return grade;
 	}
 
-	public void setGrade(int grade) {
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 }
