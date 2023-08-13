@@ -12,7 +12,7 @@ public class UserDAO {
 	private final ObjectMapper objectMapper;
 	private final File file;
 	
-    public UserDAO(){
+    public UserDAO(String CtxPath){
     	
     	objectMapper = new ObjectMapper();
         users = new ArrayList<User>();
@@ -34,7 +34,7 @@ public class UserDAO {
 	}
 
     
-	public ArrayList<User> getAllUsers() {
+	public ArrayList<User> getAll() {
 	       readFromFileJSON();
 	       return new ArrayList<>(users);
 	    }
@@ -72,7 +72,7 @@ public class UserDAO {
 	}
 	
 	
-	public User updateUser(int id, User user) {
+	public User update(int id, User user) {
 		User foundUser = new User();
 		for(User u : users) {
 			if(u.getId() == id) {

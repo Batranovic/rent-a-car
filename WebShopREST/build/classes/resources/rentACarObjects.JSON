@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "name": "Rent-A-Car Express",
+    "from": "08:00",
+    "to": "18:00",
+    "isOpen": true,
+    "location": "New York",
+    "image": "https://cdn.pixabay.com/photo/2015/01/19/13/51/car-604019_1280.jpg",
+    "grade": "9"
+  },
+  {
+    "id": "2",
+    "name": "City Wheels Rent-A-Car",
+    "from": "09:00",
+    "to": "19:00",
+    "isOpen": true,
+    "location": "Los Angeles",
+    "image": "https://cdn.pixabay.com/photo/2017/12/28/23/41/car-3046424_1280.jpg",
+    "grade": "8"
+  },
+  {
+    "id": "3",
+    "name": "Sunshine Rent-A-Car",
+    "from": "10:00",
+    "to": "20:00",
+    "isOpen": true,
+    "location": "Miami",
+    "image": "https://cdn.pixabay.com/photo/2018/01/18/20/56/auto-3091234_1280.jpg",
+    "grade": "7"
+  }
+]

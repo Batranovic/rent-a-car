@@ -14,7 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import dao.UserDao;
+import dao.UserDAO;
 import model.User;
 
 @Path("/users")
@@ -28,8 +28,9 @@ public class UserService {
 
     @PostConstruct
     public void init() {
-        if(ctx.getAttribute("userDao") == null) {
-            ctx.setAttribute("userDao", new UserDao());
+        if(ctx.getAttribute("UserDAO") == null) {
+        	String contextPath = ctx.getRealPath("");
+            ctx.setAttribute("UserDAO", new UserDAO(contextPath));
         }
     }
 
@@ -37,7 +38,7 @@ public class UserService {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<User> getAll(){
-        UserDao dao = (UserDao) ctx.getAttribute("userDao");
+    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
         return dao.getAll();
     }
 
@@ -46,25 +47,25 @@ public class UserService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public User createUser(User user) {
-        UserDao dao = (UserDao) ctx.getAttribute("userDao");
+    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
         return dao.create(user);
     }
 
 
     @PUT
-    @Path("/")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User updateBook(User user) {
-        UserDao dao = (UserDao) ctx.getAttribute("userDao");
-        return dao.updateUser(user);
+    public User updateUser(@PathParam("id") int id, User user) {
+    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+        return dao.update(id, user);
     }
 
     @GET
     @Path("/searchByUsername/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User searchBook(@PathParam("username") String username) {
-        UserDao dao = (UserDao) ctx.getAttribute("userDao");
-        return dao.searchUserByUsername(username);
+    public User searchByUsername(@PathParam("username") String username) {
+    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
+        return dao.getByUsername(username);
     }
     
  
