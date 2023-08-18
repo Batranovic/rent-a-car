@@ -29,6 +29,26 @@ public class User {
 		super();
 	}
 	
+	List <User> userList = new ArrayList<>();
+	
+	User admin = new User();
+	admin.setUsername("admin");
+	admin.setPassword("111");
+	admin.setRole("administrator");
+	userList.add(admin);
+	
+	User manager = new User();
+	menager.setUsername("manager");
+	menager.setPassword("222");
+	menager.setRole("manager");
+	userList.add(manager);
+	
+	User buyer = new User();
+	buyer.setUsername("buyer");
+	buyer.setPassword("333");
+	buyer.setRole("buyer");
+	userList.add(buyer);
+	a
 
 	public User(int id, String username, String password, String name, String surname, Gender gender, String birthday,
 			Role role, ArrayList<Vehicle> allRentals, Basket basket, RentACarObject rentACarObject, int points,
