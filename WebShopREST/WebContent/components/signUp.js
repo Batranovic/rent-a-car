@@ -31,7 +31,8 @@ Vue.component("signup", {
             <br>
               <tr>
             	<td><label>Gender: </label></td>
-             <select v-model="user.gender" v-bind:style="genderColor">
+             <select name="genderSelect" v-model="user.gender" v-bind:style="genderColor" style="width: 150px;">
+             		<option selected disabled hidden>Select gender</option>
                     <option value="M">male</option>
                     <option value="F">female</option>
                 </select><br>
@@ -112,7 +113,8 @@ Vue.component("signup", {
 		
 			axios.post('rest/users/createUser', this.user)
 			    .then(response => {
-			        router.push(`/userPage/` + username);
+					const a = response.data;
+			        router.push(`/`);
 			    });
 		}
 	}

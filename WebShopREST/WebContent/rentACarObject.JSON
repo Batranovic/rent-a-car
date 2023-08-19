@@ -1,0 +1,19 @@
+[ {
+  "id" : "1",
+  "name" : "Avis",
+  "from" : "08:00'",
+  "to" : "20:00",
+  "open" : true,
+  "location" : {"id":1},
+  "logo" : "Avis",
+  "grade" : "9.8"
+}, {
+  "id" : "2",
+  "name" : "Hertz",
+  "from" : "08:30",
+  "to" : "19:00",
+  "open" : false,
+  "location" : {"id":2},
+  "logo" : "Hertz",
+  "grade" : "10"
+}]
