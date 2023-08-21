@@ -43,7 +43,7 @@ public class RentACarObjectService {
     @GET
     @Path("/searchRentACarObject/{name}/{location}/{type}/{grade}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RentACarObject searchRentACarObject(@PathParam("name") String name, @PathParam("location") String location, @PathParam("type") String type, @PathParam("grade") double grade ) {
+    public RentACarObject searchRentACarObject(@PathParam("name") String name, @PathParam("location") String location, @PathParam("type") String type, @PathParam("grade") double grade) {
     	RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("rentACarObjectDAO");
         return dao.searchRentACarObject(name, location, type, grade);
     }
@@ -52,13 +52,13 @@ public class RentACarObjectService {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public RegisterUserDTO createUser(ObjectCreationDTO objectDTO) {
+    public ObjectCreationDTO createUser(ObjectCreationDTO objectDTO) {
     	RentACarObject rentACarObject = RentACarObjectDAO.getInstance().create(objectDTO);
     	if(rentACarObject == null) {
     		return null;
     	}
     	
-        return RegisterUserDTO.convertToDTO(user);
+        return ObjectCreationDTO.convertToDTO(rentACarObject);
     }
 
 }

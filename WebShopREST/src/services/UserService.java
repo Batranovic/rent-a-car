@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -63,12 +64,12 @@ public class UserService {
     @Path("/loginUser")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public RegisterUserDTO loginUser(LoginDTO dto) {
+    public RegisterUserDTO loginUser(LoginDTO dto, @Context HttpServletRequest request) {
     	User user = UserDAO.getInstance().login(dto);
     	if(user == null) {
     		return null;
     	}
-    	
+    	request.getSession().setAttribute("user", user);
         return RegisterUserDTO.convertToDTO(user);
     }
 

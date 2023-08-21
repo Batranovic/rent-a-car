@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dto.VehicleCreationDTO;
+import enums.Role;
 import enums.VehicleKind;
 import enums.VehicleType;
 import model.User;
@@ -62,8 +64,19 @@ public class VehicleDAO {
 		return null;
 	}
 
-	public Vehicle create(Vehicle vehicle) {
+	public Vehicle create(VehicleCreationDTO dto, User loggedManager) {
+		Vehicle vehicle = dto.ConvertToVehicle();
 		vehicle.setId(nextId());
+		
+		if(loggedManager.getRole() != Role.Manager) {
+			return null;
+		}
+		if(loggedManager.getRentACarObject() == null) {
+			return null;
+		}
+		
+		vehicle.setObject(loggedManager.getRentACarObject());
+		
 		vehicles.add(vehicle);
 		writeToFileJSON();
 		return vehicle;

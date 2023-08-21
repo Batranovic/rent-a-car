@@ -53,6 +53,21 @@ public class VehicleCreationDTO {
 		vehicle.setDescription(description);
 		return vehicle;
 	}
+	
+	public static VehicleCreationDTO convertToDTO(Vehicle vehicle) {
+		VehicleCreationDTO dto = new VehicleCreationDTO();
+		dto.brand = vehicle.getBrand();
+		dto.model = vehicle.getModel();
+		dto.type = vehicle.getVehicleKind();
+		dto.category = vehicle.getVehicleType();
+		dto.fuelType = vehicle.getFuel();
+		dto.consumption = vehicle.getConsumption();
+		dto.doorNumber = vehicle.getNumberOfDoors();
+		dto.peopleNumber = vehicle.getNumberOfPeople();
+		dto.picture = vehicle.getImage();
+		dto.description = vehicle.getDescription();
+		return dto;
+	}
 
 	public String getBrand() {
 		return brand;

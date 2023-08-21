@@ -39,6 +39,14 @@ public class ObjectCreationDTO {
 		return rentACarObject;
 	}
 	
+	public static ObjectCreationDTO convertToDTO(RentACarObject rentACarObject) {
+		ObjectCreationDTO dto = new ObjectCreationDTO();
+		dto.name = rentACarObject.getName();
+		dto.from = rentACarObject.getFrom();
+		dto.to = rentACarObject.getTo();
+		dto.logo = rentACarObject.getLogo();
+		return dto;
+	}
 
 	public String getName() {
 		return name;
