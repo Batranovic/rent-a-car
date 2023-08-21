@@ -63,7 +63,7 @@ Vue.component("createObject", {
 	}, 
 	
 	methods: {
-		signUp: function(username){
+		create: function(){
 			event.preventDefault();
 			if(!this.object.name){
 				this.nameColor='border-color: red';
