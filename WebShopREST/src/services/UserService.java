@@ -14,7 +14,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dao.ProjectDAO;
 import dao.UserDAO;
+import dto.LoginDTO;
+import dto.RegisterUserDTO;
+import dto.SimpleUserDTO;
 import model.User;
 
 @Path("/users")
@@ -30,7 +34,8 @@ public class UserService {
     public void init() {
         if(ctx.getAttribute("UserDAO") == null) {
         	String contextPath = ctx.getRealPath("");
-            ctx.setAttribute("UserDAO", new UserDAO(contextPath));
+            ProjectDAO.ctxPath = contextPath;
+            ProjectDAO.startProject();
         }
     }
 
@@ -38,17 +43,33 @@ public class UserService {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<User> getAll(){
-    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-        return dao.getAll();
+    	return UserDAO.getInstance().getAll();
     }
 
     @POST
     @Path("/createUser")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public User createUser(User user) {
-    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-        return dao.create(user);
+    public RegisterUserDTO createUser(RegisterUserDTO userDTO) {
+    	User user = UserDAO.getInstance().createCustomer(userDTO);
+    	if(user == null) {
+    		return null;
+    	}
+    	
+        return RegisterUserDTO.convertToDTO(user);
+    }
+
+    @POST
+    @Path("/loginUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public RegisterUserDTO loginUser(LoginDTO dto) {
+    	User user = UserDAO.getInstance().login(dto);
+    	if(user == null) {
+    		return null;
+    	}
+    	
+        return RegisterUserDTO.convertToDTO(user);
     }
 
 
@@ -67,6 +88,18 @@ public class UserService {
     	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
         return dao.getByUsername(username);
     }
+    @GET
+    @Path("/getFreeManagers")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<SimpleUserDTO> getFreeManagers(){
+    	ArrayList<User> freeManagers = UserDAO.getInstance().getAllFreeManagers();
+    	ArrayList<SimpleUserDTO> dtos = new ArrayList<SimpleUserDTO>();
+    	for(User user : freeManagers) {
+    		dtos.add(SimpleUserDTO.ConvertSimpleUserDTO(user));
+    	}
+    	return dtos;
+    }
+
     
  
 

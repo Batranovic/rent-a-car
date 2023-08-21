@@ -1,38 +1,37 @@
 package model;
 
 public class RentACarObject {
-	private String id;
+	private int id;
 	private String name;
-	//vozila koja su u ponudi
 	private String from;
 	private String to;
-	private boolean isOpen;
-	private String location;
-	private String image;
-	private String grade;
+	private boolean open;
+	private Location location;
+	private String logo;
+	private double grade;
 	
 	public RentACarObject() {
 		super();
 	}
 	
-	public RentACarObject(String id, String name, String from, String to, boolean isOpen, String location, String image,
-			String grade) {
+	public RentACarObject(int id, String name, String from, String to, boolean open, Location location, String logo,
+			double grade) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.from = from;
 		this.to = to;
-		this.isOpen = isOpen;
+		this.open = open;
 		this.location = location;
-		this.image = image;
+		this.logo = logo;
 		this.grade = grade;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -61,34 +60,35 @@ public class RentACarObject {
 	}
 
 	public boolean isOpen() {
-		return isOpen;
+		return open;
 	}
 
-	public void setOpen(boolean isOpen) {
-		this.isOpen = isOpen;
+	public void setOpen(boolean open) {
+		this.open = open;
 	}
 
-	public String getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
-	public void setLocation(String location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 
-	public String getImage() {
-		return image;
+	public String getLogo() {
+		return logo;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 
-	public String getGrade() {
+	public double getGrade() {
 		return grade;
 	}
 
-	public void setGrade(String grade) {
+	public void setGrade(double grade) {
 		this.grade = grade;
 	}
+
 }

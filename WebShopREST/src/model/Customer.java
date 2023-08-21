@@ -17,36 +17,37 @@ public class Customer {
 		this.discount = d;
 		this.neededPoints = p;
 	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
-	public void setCustomertype(CustomerType type) {
-		this.type = type;
+
+	public void setId(int id) {
+		this.id = id;
 	}
-	
-	public CustomerType getCustomerType() {
+
+	public CustomerType getType() {
 		return type;
 	}
-	
-	public void setDiscount(int d) {
-		this.discount = d;
+
+	public void setType(CustomerType type) {
+		this.type = type;
 	}
-	
+
 	public int getDiscount() {
 		return discount;
 	}
-	
-	public void setNeededPoints(int p) {
-		this.neededPoints = p;
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
 	}
-	
+
 	public int getNeededPoints() {
 		return neededPoints;
 	}
+
+	public void setNeededPoints(int neededPoints) {
+		this.neededPoints = neededPoints;
+	}
+	
 }

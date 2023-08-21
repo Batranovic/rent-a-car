@@ -43,108 +43,109 @@ public class Vehicle {
 		this.status = vS;
 		this.object = object;
 	}
-	
-	public void setid(int id) {
-		this.id = id;
-	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
-	public void setBrand(String brand) {
-		this.brand = brand;
+
+	public void setId(int id) {
+		this.id = id;
 	}
-	
+
 	public String getBrand() {
 		return brand;
 	}
-	public void setModel(String model) {
-		this.model = model;
+
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
-	
+
 	public String getModel() {
 		return model;
 	}
-	
-	public void setVehicleType(VehicleType type) {
-		this.vehicleType = type;
+
+	public void setModel(String model) {
+		this.model = model;
 	}
-	
+
 	public VehicleType getVehicleType() {
 		return vehicleType;
 	}
-	
-	public void setVehicleKind(VehicleKind kind) {
-		this.vehicleKind = kind;
+
+	public void setVehicleType(VehicleType vehicleType) {
+		this.vehicleType = vehicleType;
 	}
-	
+
 	public VehicleKind getVehicleKind() {
 		return vehicleKind;
 	}
-	
-	public void setFuelType(FuelType type) {
-		this.fuel = type;
+
+	public void setVehicleKind(VehicleKind vehicleKind) {
+		this.vehicleKind = vehicleKind;
 	}
-	
-	public FuelType getFuelType() {
+
+	public FuelType getFuel() {
 		return fuel;
 	}
-	
-	public void setConsumption(double c) {
-		this.consumption = c;
+
+	public void setFuel(FuelType fuel) {
+		this.fuel = fuel;
 	}
-	
+
 	public double getConsumption() {
 		return consumption;
 	}
-	
-	public void setNumberOfDoors(int d) {
-		this.numberOfDoors = d;
+
+	public void setConsumption(double consumption) {
+		this.consumption = consumption;
 	}
-	
+
 	public int getNumberOfDoors() {
 		return numberOfDoors;
 	}
-	
-	public void setNumberOfPeople(int p) {
-		this.numberOfPeople = p;
+
+	public void setNumberOfDoors(int numberOfDoors) {
+		this.numberOfDoors = numberOfDoors;
 	}
-	
+
 	public int getNumberOfPeople() {
 		return numberOfPeople;
 	}
-	
-	public void setDescription(String d) {
-		this.description = d;
+
+	public void setNumberOfPeople(int numberOfPeople) {
+		this.numberOfPeople = numberOfPeople;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
-	public void setImage(String i) {
-		this.image = i;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	
+
 	public String getImage() {
 		return image;
 	}
-	
-	
-	public void setVehicleStatus(VehicleStatus status) {
-		this.status = status;
+
+	public void setImage(String image) {
+		this.image = image;
 	}
-	
-	public VehicleStatus getVehicleStatus() {
+
+	public VehicleStatus getStatus() {
 		return status;
 	}
-	public void setShop(RentACarObject object) {
-		this.object = object;
+
+	public void setStatus(VehicleStatus status) {
+		this.status = status;
 	}
-	
-	public RentACarObject getShop() {
+
+	public RentACarObject getObject() {
 		return object;
+	}
+
+	public void setObject(RentACarObject object) {
+		this.object = object;
 	}
 	
 }

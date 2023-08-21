@@ -2,27 +2,20 @@ package model;
 
 public class Location {
 	private int id;
-	private String longitude;
-	private String latitude;
-	private String street;
-	private String number;
-	private String city;
-	private String zipCode;
+	private double longitude;
+	private double latitude;
+	private String address;
 	
 	public Location() {
 		super();
 	}
-	
-	public Location(int id, String longitude, String latitude, String street, String number, String city,
-			String zipCode) {
+
+	public Location(int id, double longitude, double latitude, String address) {
 		super();
 		this.id = id;
 		this.longitude = longitude;
 		this.latitude = latitude;
-		this.street = street;
-		this.number = number;
-		this.city = city;
-		this.zipCode = zipCode;
+		this.address = address;
 	}
 
 	public int getId() {
@@ -33,53 +26,28 @@ public class Location {
 		this.id = id;
 	}
 
-	public String getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
-	public String getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getStreet() {
-		return street;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setStreet(String street) {
-		this.street = street;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getNumber() {
-		return number;
-	}
-
-	public void setNumber(String number) {
-		this.number = number;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getZipCode() {
-		return zipCode;
-	}
-
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
-	
-	
 }

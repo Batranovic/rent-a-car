@@ -18,23 +18,15 @@ public class Basket {
 		this.user = u;
 		this.price = p;
 	}
-	
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
-	public void setUser(User user) {
-		this.user = user;
+
+	public void setId(int id) {
+		this.id = id;
 	}
-	
-	public User getUser() {
-		return user;
-	}
+
 	public ArrayList<Vehicle> getVehicles() {
 		return vehicles;
 	}
@@ -42,11 +34,21 @@ public class Basket {
 	public void setVehicles(ArrayList<Vehicle> vehicles) {
 		this.vehicles = vehicles;
 	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
 	public void setPrice(int price) {
 		this.price = price;
 	}
 	
-	public int getPrice() {
-		return price;
-	}
 }
