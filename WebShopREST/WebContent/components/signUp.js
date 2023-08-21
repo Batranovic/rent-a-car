@@ -32,7 +32,6 @@ Vue.component("signup", {
               <tr>
             	<td><label>Gender: </label></td>
              <select name="genderSelect" v-model="user.gender" v-bind:style="genderColor" style="width: 150px;">
-             		<option selected>Select gender</option>
                     <option value="M">male</option>
                     <option value="F">female</option>
                 </select><br>

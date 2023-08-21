@@ -28,9 +28,13 @@ Vue.component("createObject", {
             </tr>
             <br>
               <tr>
-            	<td><label>Work time: </label></td>
-            	<td><input type="time" v-model="object.workTime" v-bind:style="workTimeColor"></td>
-            </tr>
+			    <td><label>From: </label></td>
+			    <td><input type="time" v-model="object.workStartTime" v-bind:style="workTimeColor"></td>
+			</tr>
+			<tr>
+			    <td><label>To: </label></td>
+			    <td><input type="time" v-model="object.workEndTime" v-bind:style="workTimeColor"></td>
+			</tr>
             <br>
              <tr>
             	<td><label>Logo: </label></td>
@@ -45,6 +49,10 @@ Vue.component("createObject", {
                 </select><br>
             </tr>
             <br>
+            <div class="form-row">
+                <button v-on:click="create()">Create</button><br>
+                <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
+             </div>
             </form>
         </div>
 	
@@ -85,8 +93,13 @@ Vue.component("createObject", {
 			}else{
 				this.logoColor='';
 			}
+			if(!this.object.manager){
+				this.managerColor='border-color: red';
+			}else{
+				this.managerColor='';
+			}
 			
-			if(!this.object.name || !this.object.location || !this.object.workTime || !this.object.logo){
+			if(!this.object.name || !this.object.location || !this.object.workTime || !this.object.logo || !this.object.manager){
 				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
@@ -94,7 +107,7 @@ Vue.component("createObject", {
 			
 			this.errorMessage = '';
 		
-			axios.post('rest/users/createUser', this.user)
+			axios.post('rest/users/createObject', this.object)
 			    .then(response => {
 					const a = response.data;
 			        router.push(`/`);

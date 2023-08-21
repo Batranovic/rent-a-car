@@ -33,7 +33,6 @@ public class VehicleService {
         	ProjectDAO.startProject();
         }
     }
-
     
     @POST
     @Path("/")
