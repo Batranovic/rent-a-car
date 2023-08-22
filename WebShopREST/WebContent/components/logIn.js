@@ -47,21 +47,17 @@ Vue.component("login", {
 	},
 
     logIn: function() {
-      axios
-        .get("rest/users")
+      axios.post("rest/users/loginUser", this.user)
         .then(response => {
-          const users = response.data;
-          const user = users.find(user => user.username === this.user.username);
-
-          if (!user) {
-            this.errorMessage = "There is no user with the entered username";
+          const result = response.data;
+          
+          if (!result) {
+            this.errorMessage = "Invalid credentials";
             this.user.username = "";
             this.user.password = "";
-          } else if (user.password !== this.user.password) {
-            this.errorMessage = "Invalid password";
-            this.user.password = "";
+          
           } else {
-            router.push(`/userPage/${user.username}`);
+            router.push(`/userPage/${result.username}`);
           }
         })
         .catch(error => {

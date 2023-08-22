@@ -5,7 +5,7 @@
   justify-content: flex-start;
   min-height: 150vh;
   background-color: #D4EAD6; /* Pastel green color */
-  padding: 20px;
+  padding: 10px;
   position: relative; /* Add position relative to the container */
 }
 

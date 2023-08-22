@@ -12,11 +12,11 @@ import javax.ws.rs.core.MediaType;
 
 import dao.ProjectDAO;
 import dao.VehicleDAO;
-import dto.RegisterUserDTO;
 import dto.VehicleCreationDTO;
 import model.User;
 import model.Vehicle;
 
+@Path("/vehicles")
 public class VehicleService {
 	@Context
     ServletContext ctx;
@@ -27,11 +27,10 @@ public class VehicleService {
 
     @PostConstruct
     public void init() {
-        if(ctx.getAttribute("VehicleDAO") == null) {
         	String contextPath = ctx.getRealPath("");
         	ProjectDAO.ctxPath = contextPath;
         	ProjectDAO.startProject();
-        }
+        
     }
     
     @POST

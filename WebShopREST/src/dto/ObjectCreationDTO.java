@@ -5,9 +5,9 @@ import model.RentACarObject;
 
 public class ObjectCreationDTO {
 	private String name;
+	private String address;
 	private double longitude;
 	private double latitude;
-	private String address;
 	private String from;
 	private String to;
 	private String logo;
@@ -36,12 +36,16 @@ public class ObjectCreationDTO {
 		rentACarObject.setFrom(from);
 		rentACarObject.setTo(to);
 		rentACarObject.setLogo(logo);
+		rentACarObject.setId(managerId);
 		return rentACarObject;
 	}
 	
 	public static ObjectCreationDTO convertToDTO(RentACarObject rentACarObject) {
 		ObjectCreationDTO dto = new ObjectCreationDTO();
 		dto.name = rentACarObject.getName();
+		dto.longitude = rentACarObject.getLocation().getLongitude();
+		dto.latitude = rentACarObject.getLocation().getLatitude();
+		dto.address = rentACarObject.getLocation().getAddress();
 		dto.from = rentACarObject.getFrom();
 		dto.to = rentACarObject.getTo();
 		dto.logo = rentACarObject.getLogo();

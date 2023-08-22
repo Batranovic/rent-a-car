@@ -16,7 +16,9 @@ Vue.component("createVehicle", {
 			doorNumberColor: '',
 			peopleNumberColor: '',
 			pictureColor: '',
-			descriptionColor: ''
+			descriptionColor: '',
+			errorColor: '',
+			errorMessage: ''
 		}
 	},
 	
@@ -59,7 +61,7 @@ Vue.component("createVehicle", {
               <tr>
             	<td><label>Fuel type *: </label></td>
             	<select name="fuelTypeSelect" v-model="vehicle.fuelType" v-bind:style="fuelTypeColor">
-                    <option value="diesel">diesel</option>
+                    <option value="dizel">diesel</option>
                     <option value="petrol">petrol</option>
                     <option value="hybrid">hybrid</option>
                     <option value="electric">electric</option>
@@ -68,7 +70,7 @@ Vue.component("createVehicle", {
             <br>
             <tr>
             	<td><label>Consumption *: </label></td>
-            	<td><input type="text" v-model="vehicle.fuelType" v-bind:style="fuelTypeColor"></td>
+            	<td><input type="text" v-model="vehicle.consumption" v-bind:style="fuelTypeColor"></td>
             </tr>
             <br>
             <tr>
@@ -83,7 +85,7 @@ Vue.component("createVehicle", {
             <br>
              <tr>
             	<td><label>Picture *: </label></td>
-            	<td><input type="image" v-model="vehicle.picture" v-bind:style="pictureColor"></td>
+            	<td><input type="file" v-model="vehicle.picture" v-bind:style="pictureColor"></td>
             </tr>
             </br>
              <br>
@@ -177,7 +179,7 @@ Vue.component("createVehicle", {
 			
 			this.errorMessage = '';
 		
-			axios.post('rest/users/createVehicle', this.vehicle)
+			axios.post('rest/vehicles/', this.vehicle)
 			    .then(response => {
 					const a = response.data;
 			        router.push(`/`);

@@ -9,8 +9,8 @@ public class VehicleCreationDTO {
 	private String brand;
 	private String model;
 	private double price;
-	private VehicleKind type;
-	private VehicleType category;
+	private VehicleType type;
+	private VehicleKind category;
 	private FuelType fuelType;
 	private double consumption;
 	private int doorNumber;
@@ -22,7 +22,7 @@ public class VehicleCreationDTO {
 		super();
 	}
 
-	public VehicleCreationDTO(String brand, String model, double price, VehicleKind type, VehicleType category,
+	public VehicleCreationDTO(String brand, String model, double price, VehicleType type, VehicleKind category,
 			FuelType fuelType, double consumption, int doorNumber, int peopleNumber, String picture,
 			String description) {
 		super();
@@ -43,8 +43,8 @@ public class VehicleCreationDTO {
 		Vehicle vehicle = new Vehicle();
 		vehicle.setBrand(brand);
 		vehicle.setModel(model);
-		vehicle.setVehicleKind(type);
-		vehicle.setVehicleType(category);
+		vehicle.setVehicleType(type);
+		vehicle.setVehicleKind(category);
 		vehicle.setFuel(fuelType);
 		vehicle.setConsumption(consumption);
 		vehicle.setNumberOfDoors(doorNumber);
@@ -58,8 +58,8 @@ public class VehicleCreationDTO {
 		VehicleCreationDTO dto = new VehicleCreationDTO();
 		dto.brand = vehicle.getBrand();
 		dto.model = vehicle.getModel();
-		dto.type = vehicle.getVehicleKind();
-		dto.category = vehicle.getVehicleType();
+		dto.type = vehicle.getVehicleType();
+		dto.category = vehicle.getVehicleKind();
 		dto.fuelType = vehicle.getFuel();
 		dto.consumption = vehicle.getConsumption();
 		dto.doorNumber = vehicle.getNumberOfDoors();
@@ -93,19 +93,19 @@ public class VehicleCreationDTO {
 		this.price = price;
 	}
 
-	public VehicleKind getType() {
+	public VehicleType getType() {
 		return type;
 	}
 
-	public void setType(VehicleKind type) {
+	public void setType(VehicleType type) {
 		this.type = type;
 	}
 
-	public VehicleType getCategory() {
+	public VehicleKind getCategory() {
 		return category;
 	}
 
-	public void setCategory(VehicleType category) {
+	public void setCategory(VehicleKind category) {
 		this.category = category;
 	}
 

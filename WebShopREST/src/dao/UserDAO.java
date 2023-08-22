@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dto.LoginDTO;
+import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
 import enums.Role;
 import model.User;
@@ -155,6 +156,15 @@ public class UserDAO {
 		if(!isUsernameUnique(user.getUsername())) {
 			return null;
 		}
+		user.setId(nextId());
+		users.add(user);
+		writeToFileJSON();
+		return user;
+	}
+	
+	public User createManager(ManagerCreationForObjectDTO userDTO) {
+		User user = userDTO.ConvertToUser();
+
 		user.setId(nextId());
 		users.add(user);
 		writeToFileJSON();
