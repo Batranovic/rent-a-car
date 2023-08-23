@@ -1,22 +1,28 @@
 Vue.component("viewRentACarObject", {
-  data: function () {
-    return {
-      searchCriteria: {
-        name: null,
-        vehicleType: null,
-        location: null,
-        grade: null
-      },
-      objects: [], // Array to store all objects from .txt file
-      searchResults: [] // Array to store search results
-    };
-  },
-  template: `
+	data: function() {
+		return {
+			searchCriteria: {
+				name: '',
+				vehicleType: '',
+				location: '',
+				grade: null
+			},
+			filterCriteria: {
+				vehicleType: '',
+				fuelType: '',
+				isOpen: '',
+			},
+			searchResultsBackUp : [],
+			searchResults: [], // Array to store search results
+			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
+			sortDirection: 'asc',
+		};
+	},
+	template: `
     <div class="container">
       <center>
         <h1>All available rent a car objects</h1>
       </center>
-          <form>
         <table>
           <tr>
             <td><label>Name:</label></td>
@@ -31,77 +37,124 @@ Vue.component("viewRentACarObject", {
             <td><label>Grade:</label></td>
             <td><input type="text" v-model="searchCriteria.grade"></td>
             
-            <td><button type="button" v-on:click="search">Search</button></td>
+            <td><button type="button" v-on:click="search()">Search</button></td>
           </tr>
+          
+          <br>
+          
+          <tr>
+            <td><label>Vehicle type:</label></td>
+             <select v-model="filterCriteria.vehicleType" id="vehicleType">
+		      <option value="car">Car</option>
+		      <option value="truck">Truck</option>
+		      <option value="motorcycle">Motorcycle</option>
+		    </select>
+            
+            <td><label>Fuel type:</label></td>
+             <select v-model="filterCriteria.fuelType" id="fuelType">
+		      <option value="diesel">Diesel</option>
+		      <option value="petrol">Petrol</option>
+		      <option value="electric">Electric</option>
+		      <option value="hybrid">Hybrid</option>
+		    </select>
+		    
+            
+            <td><label>Is open:</label></td>
+			  <label>
+			    <input type="radio" v-model="filterCriteria.isOpen" value="yes">
+			    Yes
+			  </label>
+			  <label>
+			    <input type="radio" v-model="filterCriteria.isOpen" value="no">
+			    No
+			  </label>
+
+            <td><button type="button" v-on:click="filter()">Filter</button></td>
+          </tr>
+
         </table>
-      </form>
       <table class="rentacar-table" border="1">
-        <tr bgcolor="lightgrey">
-          <th>Name</th>
-          <th>Location</th>
-          <th>Grade</th>
-          <th>Logo</th>
-        </tr>
-        <tr v-for="result in searchResults" :key="result.id">
-          <td>{{ result.name }}</td>
-          <td>{{ result.location }}</td>
-          <td>{{ result.grade }}</td>
-          <td><img :src="result.image" alt="Car Image" width="100"></td>
-        </tr>
-      </table>
+	  <tr bgcolor="lightgrey">
+	    <th @click="sort('name')">Name 
+	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'name' && sortDirection === 'asc' }"></i>
+	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'name' && sortDirection === 'desc' }"></i>
+	    </th>
+	    <th @click="sort('address')">Location 
+	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'location' && sortDirection === 'asc' }"></i>
+	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'location' && sortDirection === 'desc' }"></i>
+	    </th>
+	    <th @click="sort('averageGrade')">Grade 
+	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'asc' }"></i>
+	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'desc' }"></i>
+	    </th>
+	    <th>Logo</th>
+	  </tr>
+	  
+	  <tr v-for="result in searchResults" :key="result.id">
+	    <td>{{ result.name }}</td>
+	    <td>{{ result.address }}</td>
+	    <td>{{ result.averageGrade }}</td>
+	    <td><img :src="result.logo" alt="Car Image" width="100"></td>
+	  </tr>
+	  
+	</table>
+
     </div>
   `,
-  computed: {
-    displayResults: function () {
-      // If search criteria are empty, display all objects
-      if (!this.searchCriteria.name && !this.searchCriteria.vehicleType && !this.searchCriteria.location && !this.searchCriteria.grade) {
-        return this.objects;
-      }
-      // Filter objects based on search criteria
-      return this.objects.filter(obj => {
-        // Implement your filter logic here
-        // You can use obj.name, obj.vehicleType, obj.location, obj.grade
-        return (
-          obj.name.includes(this.searchCriteria.name || '') &&
-          obj.vehicleType.includes(this.searchCriteria.vehicleType || '') &&
-          obj.location.includes(this.searchCriteria.location || '') &&
-          obj.grade.includes(this.searchCriteria.grade || '')
-        );
-      });
-    }
-  },
-  methods: {
-    search: function () {
-      const { name, vehicleType, location, grade } = this.searchCriteria;
-      axios
-        .get(`/rentACarObjects/searchRentACarObject/${name}/${location}/${vehicleType}/${grade}`)
-        .then(response => {
-          this.searchResults = response.data;
-        })
-        .catch(error => {
-          console.error("Error searching data:", error);
-        });
-    }
-  },
-  mounted() {
-    axios
-      .get('rentACarObject.txt')
-      .then(response => {
-        const data = response.data.split("\n");
-        const objects = data.map(line => {
-          const [id, name, location, grade, image] = line.split(";");
-          return {
-            id: id.trim(),
-            name: name.trim(),
-            location: location.trim(),
-            grade: grade.trim(),
-            image: image.trim()
-          };
-        });
-        this.objects = objects;
-      })
-      .catch(error => {
-        console.error("Error fetching data:", error);
-      });
-  }
+	methods: {
+		sort: function(column) {
+			if (this.sortBy === column) {
+				this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+			} else {
+				this.sortBy = column;
+				this.sortDirection = 'asc';
+			}
+			this.sortSearchResults();
+		},
+		sortSearchResults: function() {
+			const sortFactor = this.sortDirection === 'asc' ? 1 : -1;
+			this.searchResults.sort((a, b) => {
+				const aValue = a[this.sortBy];
+				const bValue = b[this.sortBy];
+
+
+				if (this.sortBy === 'averageGrade') {
+					return (aValue - bValue) * sortFactor;
+				}
+
+				if (this.sortBy === 'location') {
+					const aCity = aValue.address;
+					const bCity = bValue.address;
+
+					return aCity.localeCompare(bCity) * sortFactor;
+				}
+
+				// For other columns, use localeCompare
+				return aValue.localeCompare(bValue) * sortFactor;
+			});
+		},
+
+		search: function() {
+			if (this.searchCriteria.grade === null) {
+				this.searchCriteria.grade = -1;
+			}
+
+			axios.post('rest/rentACarObjects/search', this.searchCriteria)
+				.then(response => {
+					this.searchResults = response.data;
+					this.searchResultsBackUp = response.data;
+				});
+
+		},
+		filter: function() {
+			this.searchResults = searchResultsBackUp.filter((obj) => obj.open === true);//uslov
+		},
+	},
+	mounted() {
+		axios.get('rest/rentACarObjects/')
+			.then(response => {
+				this.searchResults = response.data;
+				this.searchResultsBackUp = response.data;
+			});
+	}
 });

@@ -32,3 +32,21 @@
 .rentacar-table th {
   background-color: lightgrey; /* Header background color */
 }
+
+.arrow-icon {
+  /* Define common styles for arrow icons */
+}
+
+.arrow-up::before {
+  content: "▲"; /* Unicode arrow character pointing upwards */
+  /* Define styles for arrow pointing upwards */
+}
+
+.arrow-down::before {
+  content: "▼"; /* Unicode arrow character pointing downwards */
+  /* Define styles for arrow pointing downwards */
+}
+
+.visible {
+  display: inline; /* Show the arrow icon */
+}

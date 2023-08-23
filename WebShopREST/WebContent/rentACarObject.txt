@@ -1,4 +1,0 @@
-1; carObject1; Novi Sad; 4.3; https://cdn.pixabay.com/photo/2019/07/07/14/03/fiat-500-4322521_1280.jpg
-2; naziv1; Beograd; 9; https://cdn.pixabay.com/photo/2018/01/18/20/56/auto-3091234_1280.jpg
-3; Prodavnica; Kragujevac; 7.8; https://cdn.pixabay.com/photo/2017/12/28/23/41/car-3046424_1280.jpg
-4; Prodavnica2; Lazarevac; 7.5; https://cdn.pixabay.com/photo/2015/01/19/13/51/car-604019_1280.jpg

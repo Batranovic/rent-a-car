@@ -1,5 +1,4 @@
-/resources/
+/dto/
+/services/
 /dao/
 /model/
-/services/
-/dto/
