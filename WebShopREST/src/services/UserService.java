@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import dao.ProjectDAO;
 import dao.UserDAO;
 import dto.LoginDTO;
+import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
 import dto.SimpleUserDTO;
 import model.User;
@@ -58,17 +60,30 @@ public class UserService {
     	
         return RegisterUserDTO.convertToDTO(user);
     }
+    
+    @POST
+    @Path("/createManager")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ManagerCreationForObjectDTO createManager(ManagerCreationForObjectDTO managerDTO) {
+    	User user = UserDAO.getInstance().createManager(managerDTO);
+    	if(user == null) {
+    		return null;
+    	}
+    	
+        return ManagerCreationForObjectDTO.ConvertToDTO(user);
+    }
 
     @POST
     @Path("/loginUser")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public RegisterUserDTO loginUser(LoginDTO dto) {
+    public RegisterUserDTO loginUser(LoginDTO dto, @Context HttpServletRequest request) {
     	User user = UserDAO.getInstance().login(dto);
     	if(user == null) {
     		return null;
     	}
-    	
+    	request.getSession().setAttribute("user", user);
         return RegisterUserDTO.convertToDTO(user);
     }
 

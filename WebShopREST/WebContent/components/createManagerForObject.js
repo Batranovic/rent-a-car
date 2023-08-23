@@ -1,8 +1,8 @@
-Vue.component("signup", {
+Vue.component("managerForObject", {
 	data: function(){
 		return{
 
-			user: {name: null, surname: null, gender: null, birthday: null, username: null, password: null },
+			manager: {name: null, surname: null, gender: null, birthday: null, username: null, password: null },
 
 			nameColor : '',
 			surnameColor: '',
@@ -21,17 +21,17 @@ Vue.component("signup", {
             <form class="form-table">
             <tr>
             	<td><label>Name: </label></td>
-            	<td><input type="text" v-model="user.name" v-bind:style="nameColor"></td>
+            	<td><input type="text" v-model="manager.name" v-bind:style="nameColor"></td>
             </tr>
             <br>
              <tr>
             	<td><label>Surname: </label></td>
-            	<td><input type="text" v-model="user.surname" v-bind:style="surnameColor"></td>
+            	<td><input type="text" v-model="manager.surname" v-bind:style="surnameColor"></td>
             </tr>
             <br>
               <tr>
             	<td><label>Gender: </label></td>
-             <select name="genderSelect" v-model="user.gender" v-bind:style="genderColor" style="width: 150px;">
+             <select name="genderSelect" v-model="manager.gender" v-bind:style="genderColor" style="width: 150px;">
                     <option value="M">male</option>
                     <option value="F">female</option>
                 </select><br>
@@ -39,21 +39,21 @@ Vue.component("signup", {
             <br>
              <tr>
             	<td><label>Date of birth: </label></td>
-            	<td><input type="date" v-model="user.birthday" v-bind:style="birthdayColor"></td>
+            	<td><input type="date" v-model="manager.birthday" v-bind:style="birthdayColor"></td>
             </tr>
             <br>
               <tr>
             	<td><label>Username: </label></td>
-            	<td><input type="text" v-model="user.username" v-bind:style="usernameColor"></td>
+            	<td><input type="text" v-model="manager.username" v-bind:style="usernameColor"></td>
             </tr>
             <br>
              <tr>
             	<td><label>Password: </label></td>
-            	<td><input type="password" v-model="user.password" v-bind:style="passwordColor"></td>
+            	<td><input type="password" v-model="manager.password" v-bind:style="passwordColor"></td>
             </tr>
             <br>
             <div class="form-row">
-                <button v-on:click="signUp(user.username)">Sign up</button><br>
+                <button v-on:click="signUp(manager.username)">Sign up</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
              </div>
             </form>
@@ -67,42 +67,42 @@ Vue.component("signup", {
 	}, 
 	
 	methods: {
-		signUp: function(username){
+		manager: function(username){
 			event.preventDefault();
-			if(!this.user.name){
+			if(!this.manager.name){
 				this.nameColor='border-color: red';
 			}else{
 				this.nameColor='';
 			}
-			if(!this.user.surname){
+			if(!this.manager.surname){
 				this.surnameColor='border-color: red';
 			}else{
 				this.surnameColor='';
 			}
-			if(!this.user.gender){
+			if(!this.manager.gender){
 				this.genderColor='border-color: red';
 			}else{
 				this.genderColor='';
 			}
-			if(!this.user.birthday){
+			if(!this.manager.birthday){
 				this.birthdayColor='border-color: red';
 			}else{
 				this.birthdayColor='';
 			}
-			if(!this.user.username){
+			if(!this.manager.username){
 				this.usernameColor='border-color: red';
 
 			}else{
 				this.usernameColor='';
 			}
-			if(!this.user.password){
+			if(!this.manager.password){
 				this.passwordColor='border-color: red';
 				return;
 			}else{
 				this.passwordColor='';
 			}
 			
-			if(!this.user.name || !this.user.surname || !this.user.gender || !this.user.birthday || !this.user.username || !this.user.password){
+			if(!this.manager.name || !this.manager.surname || !this.manager.gender || !this.manager.birthday || !this.manager.username || !this.manager.password){
 				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
@@ -110,7 +110,7 @@ Vue.component("signup", {
 			
 			this.errorMessage = '';
 		
-			axios.post('rest/users/createUser', this.user)
+			axios.post('rest/users/createManager', this.manager)
 			    .then(response => {
 					const a = response.data;
 			        router.push(`/`);

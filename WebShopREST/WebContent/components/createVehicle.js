@@ -1,4 +1,4 @@
-Vue.component("createObject", {
+Vue.component("createVehicle", {
 	data: function(){
 		return{
 
@@ -16,7 +16,9 @@ Vue.component("createObject", {
 			doorNumberColor: '',
 			peopleNumberColor: '',
 			pictureColor: '',
-			descriptionColor: ''
+			descriptionColor: '',
+			errorColor: '',
+			errorMessage: ''
 		}
 	},
 	
@@ -25,24 +27,23 @@ Vue.component("createObject", {
             <h1>Create new vehicle</h1>
             <form class="form-table">
             <tr>
-            	<td><label>Brand: </label></td>
+            	<td><label>Brand *: </label></td>
             	<td><input type="text" v-model="vehicle.brand" v-bind:style="brandColor"></td>
             </tr>
             <br>
              <tr>
-            	<td><label>Model: </label></td>
+            	<td><label>Model *: </label></td>
             	<td><input type="text" v-model="vehicle.model" v-bind:style="modelColor"></td>
             </tr>
             <br>
               <tr>
-            	<td><label>Price: </label></td>
+            	<td><label>Price *: </label></td>
             	<td><input type="text" v-model="vehicle.price" v-bind:style="priceColor"></td>
             </tr>
             <br>
             <tr>
-            	<td><label>Type: </label></td>
-            	<select name="typeSelect" v-model="vehicle.type" v-bind:style="typeColor" style="width: 150px;>
-            	<option selected>Select type</option>
+            	<td><label>Type *: </label></td>
+            	<select name="typeSelect" v-model="vehicle.type" v-bind:style="typeColor">
                     <option value="car">car</option>
                     <option value="van">van</option>
                     <option value="mobilehome">mobilehome</option>
@@ -50,19 +51,17 @@ Vue.component("createObject", {
             </tr>
             <br>
              <tr>
-            	<td><label>Category: </label></td>
-            	<select name="categorySelect" v-model="vehicle.category" v-bind:style="categoryColor" style="width: 150px;>
-            	<option selected>Select category</option>
+            	<td><label>Category *: </label></td>
+            	<select name="categorySelect" v-model="vehicle.category" v-bind:style="categoryColor">
                     <option value="manual">manual</option>
                     <option value="automatic">automatic</option>
                 </select><br>
             </tr>
             <br>
               <tr>
-            	<td><label>Fuel type: </label></td>
-            	<select name="fuelTypeSelect" v-model="vehicle.fuelType" v-bind:style="fuelTypeColor" style="width: 150px;>
-            	<option selected>Select fuel type</option>
-                    <option value="diesel">diesel</option>
+            	<td><label>Fuel type *: </label></td>
+            	<select name="fuelTypeSelect" v-model="vehicle.fuelType" v-bind:style="fuelTypeColor">
+                    <option value="dizel">diesel</option>
                     <option value="petrol">petrol</option>
                     <option value="hybrid">hybrid</option>
                     <option value="electric">electric</option>
@@ -70,23 +69,23 @@ Vue.component("createObject", {
             </tr>
             <br>
             <tr>
-            	<td><label>Consumption: </label></td>
-            	<td><input type="text" v-model="vehicle.fuelType" v-bind:style="fuelTypeColor"></td>
+            	<td><label>Consumption *: </label></td>
+            	<td><input type="text" v-model="vehicle.consumption" v-bind:style="fuelTypeColor"></td>
             </tr>
             <br>
             <tr>
-            	<td><label>Number of doors: </label></td>
+            	<td><label>Number of doors *: </label></td>
             	<td><input type="text" v-model="vehicle.doorNumber" v-bind:style="doorNumberColor"></td>
             </tr>
             <br>
             <tr>
-            	<td><label>Number of people: </label></td>
+            	<td><label>Number of people *: </label></td>
             	<td><input type="text" v-model="vehicle.peopleNumber" v-bind:style="peopleNumberColor"></td>
             </tr>
             <br>
              <tr>
-            	<td><label>Picture: </label></td>
-            	<td><input type="image" v-model="vehicle.picture" v-bind:style="pictureColor"></td>
+            	<td><label>Picture *: </label></td>
+            	<td><input type="file" v-model="vehicle.picture" v-bind:style="pictureColor"></td>
             </tr>
             </br>
              <br>
@@ -95,6 +94,10 @@ Vue.component("createObject", {
                 <td><input type="optional" v-model="vehicle.description" v-bind:style="descriptionColor"></td>
             </tr>
             <br>
+            <div class="form-row">
+                <button v-on:click="create()">Create</button><br>
+                <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
+             </div>
             </form>
         </div>
 	
@@ -176,7 +179,7 @@ Vue.component("createObject", {
 			
 			this.errorMessage = '';
 		
-			axios.post('rest/users/createObject', this.object)
+			axios.post('rest/vehicles/', this.vehicle)
 			    .then(response => {
 					const a = response.data;
 			        router.push(`/`);

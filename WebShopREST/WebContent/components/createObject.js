@@ -2,14 +2,19 @@ Vue.component("createObject", {
 	data: function(){
 		return{
 
-			object: {name: null, location: null, workTime: null, logo: null, manager: null},
+			object: {name: null, address: null, longitude: null, latitude: null, from: null, to: null, logo: null, managerId: null},
 			freeManagers: [],
 
 			nameColor : '',
-			locationColor: '',
-			workTimeColor: '',
+			addressColor: '',
+			longitudeColor: '',
+			latitudeColor: '',
+			fromColor: '',
+			toColor: '',
 			logoColor: '',
-			managerColor: ''
+			managerColor: '',
+			errorMessage: '',
+			errorMessages: ''
 		}
 	},
 	
@@ -19,32 +24,57 @@ Vue.component("createObject", {
             <form class="form-table">
             <tr>
             	<td><label>Name: </label></td>
-            	<td><input type="text" v-model="object.name" v-bind:style="nameColor"></td>
+            	<td>
+            		<input type="text" v-model="object.name" v-bind:style="nameColor">
+            		<p v-if="showErrorMessages" style="color: red; font-size: 13px;">Field cannot contain numbers</p>
+            	</td>
             </tr>
             <br>
              <tr>
-            	<td><label>Location: </label></td>
-            	<td><input type="text" v-model="object.location" v-bind:style="locationColor"></td>
+            	<td><label>Address: </label></td>
+            	<td><input type="text" v-model="object.address" v-bind:style="addressColor"></td>
+            </tr>
+            <br>
+            <tr>
+            	<td><label>Longitude: </label></td>
+            	<td><input type="text" v-model="object.longitude" v-bind:style="longitudeColor">
+            	<p v-if="showErrorMessages" style="color: red; font-size: 13px;">Field cannot contain letters</p>
+            	</td>
+            </tr>
+            <br>
+            <tr>
+            	<td><label>Latitude: </label></td>
+            	<td><input type="text" v-model="object.latitude" v-bind:style="latitudeColor">
+            	<p v-if="showErrorMessages" style="color: red; font-size: 13px;">Field cannot contain letters</p>
+            	</td>
             </tr>
             <br>
               <tr>
-            	<td><label>Work time: </label></td>
-            	<td><input type="time" v-model="object.workTime" v-bind:style="workTimeColor"></td>
-            </tr>
+			    <td><label>From: </label></td>
+			    <td><input type="time" v-model="object.from" v-bind:style="fromColor"></td>
+			</tr>
+			<tr>
+			    <td><label>To: </label></td>
+			    <td><input type="time" v-model="object.to" v-bind:style="toColor"></td>
+			</tr>
             <br>
              <tr>
             	<td><label>Logo: </label></td>
-            	<td><input type="image" v-model="object.logo" v-bind:style="logoColor"></td>
+            	<td><input type="file" v-model="object.logo" v-bind:style="logoColor"></td>
             </tr>
             </br>
              <br>
               <tr>
             	<td><label>Manager: </label></td>
-             <select name="managerSelect" v-model="object.manager" v-bind:style="managerColor" style="width: 150px;">
+             <select name="managerSelect" v-model="object.managerId" v-bind:style="managerColor" style="width: 150px;">
                     <option v-for="manager in freeManagers" v-bind:value="manager.id">{{manager.name}} {{manager.surname}}</option>
                 </select><br>
             </tr>
             <br>
+            <div class="form-row">
+                <button v-on:click="create()">Create</button><br>
+                <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
+             </div>
             </form>
         </div>
 	
@@ -67,26 +97,61 @@ Vue.component("createObject", {
 			event.preventDefault();
 			if(!this.object.name){
 				this.nameColor='border-color: red';
+				this.showErrorMessages = false;
+			}else if (/\d/.test(this.object.name)) {
+		        this.nameColor = 'border-color: red';
+		        this.showErrorMessages = true;
 			}else{
 				this.nameColor='';
+				this.showErrorMessages = false;
 			}
-			if(!this.object.location){
-				this.locationColor='border-color: red';
+			if(!this.object.address){
+				this.addressColor='border-color: red';
 			}else{
-				this.locationColor='';
+				this.addressColor='';
 			}
-			if(!this.object.workTime){
-				this.workTimeColor='border-color: red';
+			if(!this.object.longitude){
+				this.longitudeColor='border-color: red';
+				this.showErrorMessages = false;
+			}else if (/[a-zA-Z]/.test(this.object.longitude)) {
+		        this.longitudeColor = 'border-color: red';
+		        this.showErrorMessages = true;
 			}else{
-				this.workTimeColor='';
+				this.longitudeColor='';
+				this.showErrorMessages = false;
+			}
+			if(!this.object.latitude){
+				this.latitudeColor='border-color: red';
+				this.showErrorMessages = false;
+			}else if (/[a-zA-Z]/.test(this.object.latitude)) {
+		        this.latitudeColor = 'border-color: red';
+		        this.showErrorMessages = true;
+			}else{
+				this.latitudeColor='';
+				this.showErrorMessages = false;
+			}
+			if(!this.object.from){
+				this.fromColor='border-color: red';
+			}else{
+				this.fromColor='';
+			}
+			if(!this.object.to){
+				this.toColor='border-color: red';
+			}else{
+				this.toColor='';
 			}
 			if(!this.object.logo){
 				this.logoColor='border-color: red';
 			}else{
 				this.logoColor='';
 			}
+			if(!this.object.managerId){
+				this.managerColor='border-color: red';
+			}else{
+				this.managerColor='';
+			}
 			
-			if(!this.object.name || !this.object.location || !this.object.workTime || !this.object.logo){
+			if(!this.object.name || !this.object.address || !this.object.longitude || !this.object.latitude || !this.object.from || !this.object.to || !this.object.logo || !this.object.managerId){
 				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
@@ -94,7 +159,7 @@ Vue.component("createObject", {
 			
 			this.errorMessage = '';
 		
-			axios.post('rest/users/createUser', this.user)
+			axios.post('rest/rentACarObjects/', this.object)
 			    .then(response => {
 					const a = response.data;
 			        router.push(`/`);

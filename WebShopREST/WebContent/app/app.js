@@ -5,6 +5,7 @@ const ProfileModification = {template: "<profile-modification></profile-modifica
 const ViewRentACarObject = {template: "<viewRentACarObject></viewRentACarObject>"}
 const CreateObject = {template: "<createObject></createObject>"}
 const CreateVehicle = {template: "<createVehicle></createVehicle>"}
+const CreateManagerForObject = {template: "<managerForObject></managerForObject>"}
 
 const router = new VueRouter({
     mode: 'hash',
@@ -15,7 +16,8 @@ const router = new VueRouter({
         { path: '/searchByUsername/:username', component: ProfileModification},
         { path: '/viewRentACarObject', component: ViewRentACarObject},
         { path: '/createObject', component: CreateObject},
-        { path: '/createVehicle', component: CreateVehicle}
+        { path: '/createVehicle', component: CreateVehicle},
+        { path: '/managerForObject', component: CreateManagerForObject}
     ]
 });
 

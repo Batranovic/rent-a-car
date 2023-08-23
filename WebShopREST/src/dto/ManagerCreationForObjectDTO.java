@@ -1,29 +1,22 @@
 package dto;
 
-import java.util.ArrayList;
-
 import enums.Gender;
 import enums.Role;
-import model.Basket;
-import model.Customer;
-import model.RentACarObject;
 import model.User;
-import model.Vehicle;
 
-public class RegisterUserDTO {
+public class ManagerCreationForObjectDTO {
 	private String name;
 	private String surname;
 	private Gender gender;
 	private String birthday;
 	private String username;
 	private String password;
-
-	public RegisterUserDTO() {
+	
+	public ManagerCreationForObjectDTO() {
 		super();
 	}
-
-	public RegisterUserDTO(String name, String surname, Gender gender, String birthday, String username,
-			String password) {
+	
+	public ManagerCreationForObjectDTO(String name, String surname, Gender gender, String birthday, String username, String password) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -33,23 +26,19 @@ public class RegisterUserDTO {
 		this.password = password;
 	}
 	
-	public User convertToUser() {
+	public User ConvertToUser() {
 		User user = new User();
-		user.setId(0);
-		user.setUsername(username);
-		user.setPassword(password);
 		user.setName(name);
 		user.setSurname(surname);
 		user.setGender(gender);
-		user.setBirthday(birthday);
-		user.setRole(Role.Customer);
-		user.setAllRentals(new ArrayList<Vehicle>());
-		user.setPoints(0);
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setRole(Role.Manager);
 		return user;
 	}
 	
-	public static RegisterUserDTO convertToDTO(User user) {
-		RegisterUserDTO dto = new RegisterUserDTO();
+	public static ManagerCreationForObjectDTO ConvertToDTO(User user) {
+		ManagerCreationForObjectDTO dto = new ManagerCreationForObjectDTO();
 		dto.name = user.getName();
 		dto.surname = user.getSurname();
 		dto.gender = user.getGender();
