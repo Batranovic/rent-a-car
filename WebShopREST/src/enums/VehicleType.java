@@ -1,5 +1,5 @@
 package enums;
 
 public enum VehicleType {
-	car, van, mobilehome
+	car, van, mobilehome, truck
 }

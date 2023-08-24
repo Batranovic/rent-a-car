@@ -48,7 +48,6 @@ public class RentACarObjectDAO {
 	}
 
 	public ArrayList<RentACarObject> getAll() {
-		readFromFileJSON();
 		return new ArrayList<>(rentACarObjects);
 	}
 
@@ -148,6 +147,21 @@ public class RentACarObjectDAO {
 			rentACarObjects = objectMapper.readValue(file, type);
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void bindLocation() {
+		for(RentACarObject rentACar : rentACarObjects) {
+			if(rentACar.getLocation() == null) {
+				continue;
+			}
+			int locationId = rentACar.getLocation().getId();
+			Location location = LocationDAO.getInstance().getById(locationId);
+			if(location == null) {
+				System.out.println("RentACarObject/Location bind error");
+				continue;
+			}
+			rentACar.setLocation(location);
 		}
 	}
 

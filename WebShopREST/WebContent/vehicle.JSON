@@ -2,7 +2,7 @@
   "id" : "1",
   "brand" : "Merdeses",
   "model" : "S63 Coupe",
-  "vehicleType" : "car",
+  "vehicleType" : "truck",
   "vehicleKind" : "automatic",
   "fuel" : "dizel",
   "consumption" : "20",
@@ -11,7 +11,7 @@
   "description" : "bla",
   "image": "abc",
   "status" : "available",
-  "object" : {"id":2}
+  "object" : {"id":1}
 }, {
   "id" : "2",
   "brand" : "Smart",
@@ -25,5 +25,20 @@
   "description" : "blabla",
   "image": "abc",
   "status" : "rented",
-  "object" : {"id":1}
+  "object" : {"id":2}
+},
+ {
+  "id" : "3",
+  "brand" : "Smart",
+  "model" : "aaa",
+  "vehicleType" : "car",
+  "vehicleKind" : "manual",
+  "fuel" : "dizel",
+  "consumption" : "30",
+  "numberOfDoors" : "2",
+  "numberOfPeople": "2",
+  "description" : "blabla",
+  "image": "abc",
+  "status" : "rented",
+  "object" : {"id":3}
 }]

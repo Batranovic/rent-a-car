@@ -9,7 +9,7 @@ Vue.component("viewRentACarObject", {
 			},
 			filterCriteria: {
 				vehicleType: '',
-				fuelType: '',
+				fuel: '',
 				isOpen: '',
 			},
 			searchResultsBackUp : [],
@@ -51,8 +51,8 @@ Vue.component("viewRentACarObject", {
 		    </select>
             
             <td><label>Fuel type:</label></td>
-             <select v-model="filterCriteria.fuelType" id="fuelType">
-		      <option value="diesel">Diesel</option>
+             <select v-model="filterCriteria.fuel" id="fuel">
+		      <option value="dizel">Dizel</option>
 		      <option value="petrol">Petrol</option>
 		      <option value="electric">Electric</option>
 		      <option value="hybrid">Hybrid</option>
@@ -88,6 +88,7 @@ Vue.component("viewRentACarObject", {
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'desc' }"></i>
 	    </th>
 	    <th>Logo</th>
+	    <th>Open</th>
 	  </tr>
 	  
 	  <tr v-for="result in searchResults" :key="result.id">
@@ -95,6 +96,7 @@ Vue.component("viewRentACarObject", {
 	    <td>{{ result.address }}</td>
 	    <td>{{ result.averageGrade }}</td>
 	    <td><img :src="result.logo" alt="Car Image" width="100"></td>
+	    <td>{{ result.open }}</td>
 	  </tr>
 	  
 	</table>
@@ -147,8 +149,27 @@ Vue.component("viewRentACarObject", {
 
 		},
 		filter: function() {
-			this.searchResults = searchResultsBackUp.filter((obj) => obj.open === true);//uslov
-		},
+		    this.searchResults = this.searchResultsBackUp.filter(obj => {
+		        if (this.filterCriteria.vehicleType !== ''  && !obj.vehicleType.includes(this.filterCriteria.vehicleType)) {
+		            return false;
+		        }
+		
+		       if (this.filterCriteria.fuel !== ''  && !obj.fuelType.includes(this.filterCriteria.fuel)) {
+		            return false;
+		        }
+		
+		        if (this.filterCriteria.isOpen !== '') {
+		            if ((this.filterCriteria.isOpen === 'yes' && !obj.open) ||
+		                (this.filterCriteria.isOpen === 'no' && obj.open)) {
+		                return false;
+		            }
+		        }
+		
+		        return true;
+				    });
+		}
+
+
 	},
 	mounted() {
 		axios.get('rest/rentACarObjects/')

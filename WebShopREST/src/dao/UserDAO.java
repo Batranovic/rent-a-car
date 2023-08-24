@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.File;
+import model.Basket;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.io.FileOutputStream;
@@ -11,8 +12,10 @@ import dto.LoginDTO;
 import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
 import enums.Role;
+import model.RentACarObject;
 import model.User;
-
+import model.Vehicle;
+import model.Customer;
 public class UserDAO {
 	private static UserDAO instance = null;
 
@@ -189,4 +192,53 @@ public class UserDAO {
 		}
 		return freeManagers;
 	}
+	
+	public void bindCustomer() {
+		for(User user : users) {
+			if(user.getCustomerType() == null) {
+				continue;
+			}
+			int customerId = user.getCustomerType().getId();
+			Customer customer = CustomerDAO.getInstance().getById(customerId);
+			if(customer == null) {
+				System.out.println("User/Customer bind error");
+				continue;
+			}
+			user.setCustomerType(customer);
+			
+		}
+	}
+	
+	public void bindRentACarObject() {
+		for(User user : users) {
+			if(user.getRentACarObject() == null) {
+				continue;
+			}
+			int objectId = user.getRentACarObject().getId();
+			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
+			if(rentACarObject == null) {
+				System.out.println("User/RentACarObject bind error");
+				continue;
+			}
+			user.setRentACarObject(rentACarObject);
+			
+		}
+	}
+	
+	public void bindBasket() {
+		for(User user : users) {
+			if(user.getBasket() == null) {
+				continue;
+			}
+			int basketId = user.getBasket().getId();
+			Basket basket = BasketDAO.getInstance().getById(basketId);
+			if(basket == null) {
+				System.out.println("User/Basket bind error");
+				continue;
+			}
+			user.setBasket(basket);
+			
+		}
+	}
+	
 }

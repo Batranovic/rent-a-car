@@ -11,5 +11,12 @@ public class ProjectDAO {
 		CustomerDAO.getInstance();
 		LocationDAO.getInstance();
 		VehicleDAO.getInstance();
+		
+		UserDAO.getInstance().bindBasket();
+		UserDAO.getInstance().bindCustomer();
+		UserDAO.getInstance().bindRentACarObject();
+		RentACarObjectDAO.getInstance().bindLocation();	
+		VehicleDAO.getInstance().bindRentACarObject();
+		
 	}
 }
