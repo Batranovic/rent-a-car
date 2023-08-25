@@ -7,17 +7,17 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import dao.ProjectDAO;
 import dao.RentACarObjectDAO;
-import dao.UserDAO;
+import dto.DetailedRentACarDTO;
 import dto.RentACarDTO;
 import dto.SearchDTO;
 import model.RentACarObject;
-import model.User;
 
 @Path("/rentACarObjects")
 public class RentACarObjectService {
@@ -51,6 +51,20 @@ public class RentACarObjectService {
         return dtos;
     	
     }
+    
+    @GET
+    @Path("/getOneDetailed/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DetailedRentACarDTO getOneDetailed(@PathParam("id") int id){
+    	RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(id);
+    	DetailedRentACarDTO dto = DetailedRentACarDTO.toObject(rentACarObject);
+    	
+        return dto;
+    	
+    }
+    
+   
+    	
     
     @POST
     @Path("/search")

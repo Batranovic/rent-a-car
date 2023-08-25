@@ -9,7 +9,7 @@
   "numberOfDoors" : "4",
   "numberOfPeople": "5",
   "description" : "bla",
-  "image": "abc",
+  "image": "https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg",
   "status" : "available",
   "object" : {"id":1}
 }, {
@@ -23,14 +23,14 @@
   "numberOfDoors" : "2",
   "numberOfPeople": "2",
   "description" : "blabla",
-  "image": "abc",
+  "image": "https://img.freepik.com/premium-psd/city-car-transparent-background-3d-rendering-illustration_494250-34780.jpg",
   "status" : "rented",
   "object" : {"id":2}
 },
  {
   "id" : "3",
-  "brand" : "Smart",
-  "model" : "aaa",
+  "brand" : "Audi",
+  "model" : "a",
   "vehicleType" : "car",
   "vehicleKind" : "manual",
   "fuel" : "dizel",
@@ -38,7 +38,22 @@
   "numberOfDoors" : "2",
   "numberOfPeople": "2",
   "description" : "blabla",
-  "image": "abc",
+  "image": "https://www.topgear.com/sites/default/files/2022/07/6_0.jpg",
   "status" : "rented",
   "object" : {"id":3}
+},
+{
+  "id" : "4",
+  "brand" : "Audi",
+  "model" : "b",
+  "vehicleType" : "car",
+  "vehicleKind" : "automatic",
+  "fuel" : "dizel",
+  "consumption" : "20",
+  "numberOfDoors" : "4",
+  "numberOfPeople": "5",
+  "description" : "bla",
+  "image": "https://cdn.motor1.com/images/mgl/G33JZA/s3/bentley-mulliner-batur.jpg",
+  "status" : "available",
+  "object" : {"id":1}
 }]

@@ -91,7 +91,7 @@ Vue.component("viewRentACarObject", {
 	    <th>Open</th>
 	  </tr>
 	  
-	  <tr v-for="result in searchResults" :key="result.id">
+	  <tr v-for="result in searchResults" :key="result.id"  @click="goToDetailed(result.id)">
 	    <td>{{ result.name }}</td>
 	    <td>{{ result.address }}</td>
 	    <td>{{ result.averageGrade }}</td>
@@ -167,7 +167,11 @@ Vue.component("viewRentACarObject", {
 		
 		        return true;
 				    });
-		}
+		},
+		 goToDetailed(id) {
+        // Navigate to the detailed view and pass the shop ID as a parameter
+        this.$router.push({ name: 'detailed', params: { id } });
+    }
 
 
 	},
