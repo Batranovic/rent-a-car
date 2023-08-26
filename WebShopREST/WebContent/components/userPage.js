@@ -1,7 +1,9 @@
 Vue.component("user-page", { 
 	data: function () {
-	    users: null
-	    passedUsername: null
+		return{
+		    users: null,
+		    passedUsername: null
+	}
 	},
 	    template: 
 	    `

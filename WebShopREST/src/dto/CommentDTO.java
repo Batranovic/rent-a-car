@@ -11,21 +11,30 @@ public class CommentDTO {
 	private SimpleUserDTO user;
 	private String text;
 	private int grade;
+	private String status;
 	
 	public CommentDTO() {
 		super();
 	}
 
-	public CommentDTO(int id, SimpleUserDTO user, String text, int grade) {
+	public CommentDTO(int id, SimpleUserDTO user, String text, int grade, String status) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.text = text;
 		this.grade = grade;
-		
+		this.status = status;
 	}
 
 
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public static CommentDTO toObject(Comment comment) {
 		CommentDTO dto = new CommentDTO();
@@ -33,7 +42,7 @@ public class CommentDTO {
 		dto.setGrade(comment.getGrade());
 		dto.setText(comment.getText());
 		dto.setUser(SimpleUserDTO.ConvertSimpleUserDTO(comment.getUser()));
-
+		dto.setStatus(comment.getStatus().toString());
 		return dto;
 
 	}

@@ -1,4 +1,5 @@
 package model;
+import enums.CommentStatus;
 
 public class Comment {
 	private int id;
@@ -6,20 +7,30 @@ public class Comment {
 	private RentACarObject rentACarObject;
 	private String text;
 	private int grade; //ocena od 1 do 5
+	private CommentStatus status;
 	
 	public Comment() {
 		super();
 	}
 
-	public Comment(int id,User user, RentACarObject rentACarObject, String text, int grade) {
+	public Comment(int id,User user, RentACarObject rentACarObject, String text, int grade, CommentStatus status) {
 		super();
 		this.id = id;
 		this.user = user;
 		this.rentACarObject = rentACarObject;
 		this.text = text;
 		this.grade = grade;
+		this.status = status;
 	}
 	
+	public CommentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(CommentStatus status) {
+		this.status = status;
+	}
+
 	public int getId() {
 		return id;
 	}

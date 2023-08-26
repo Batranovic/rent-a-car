@@ -1,5 +1,6 @@
 package dao;
 import java.io.File;
+import dto.CommentCreationDTO;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,8 +8,12 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import model.Basket;
+
+import enums.Role;
 import model.Comment;
+import model.RentACarObject;
+import model.User;
+
 public class CommentDAO {
 
 	private static CommentDAO instance = null;
@@ -44,7 +49,24 @@ public class CommentDAO {
 		}
 		return id + 1;
 	}
-	
+	public Comment createComment(CommentCreationDTO dto) {
+		Comment comment = dto.ConvertToComment();
+		comment.setId(nextId());
+		User user = UserDAO.getInstance().getById(dto.getUserId());
+		if(user == null) {
+			return null;
+		}
+		RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(dto.getRentACArObjectId());
+		if(rentACarObject == null) {
+			return null;
+		}
+		comment.setUser(user);
+		comment.setRentACarObject(rentACarObject);
+		
+		comments.add(comment);
+		writeToFileJSON();
+		return comment;
+	} 
 	
 	public Comment create(Comment comment) {
 		comment.setId(nextId());
