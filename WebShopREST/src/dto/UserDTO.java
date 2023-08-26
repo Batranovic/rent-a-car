@@ -7,20 +7,30 @@ public class UserDTO {
 	private int points;
 	private String role;
 	private String customerType;
+	private String gender;
+	private String birthday;
+	private String password;
 	
 	public UserDTO() {
 		super();
 	}
-	public UserDTO(String name, String surname, String username, int points, String role, String type) {
+	
+	
+	public UserDTO(String name, String surname, String username, int points, String role, String customerType,
+			String gender, String birthday, String password) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
 		this.points = points;
 		this.role = role;
-		this.customerType = type;
+		this.customerType = customerType;
+		this.gender = gender;
+		this.birthday = birthday;
+		this.password = password;
 	}
-	
+
+
 	public static UserDTO toObject(User user) {
 		UserDTO dto = new UserDTO();
 		dto.setName(user.getName());
@@ -29,8 +39,41 @@ public class UserDTO {
 		dto.setPoints(user.getPoints());
 		dto.setRole(user.getRole().toString());
 		dto.setCustomerType(user.getCustomerType().toString());
+		dto.setBirthday(user.getBirthday());
+		dto.setGender(user.getGender().toString());
+		dto.setPassword(user.getPassword());
 		return dto;
 	}
+	public String getGender() {
+		return gender;
+	}
+
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+
+	public String getPassword() {
+		return password;
+	}
+
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
 	public String getName() {
 		return name;
 	}
