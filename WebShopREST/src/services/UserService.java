@@ -30,6 +30,7 @@ import dto.SimpleUserDTO;
 import model.RentACarObject;
 import model.User;
 import dto.SearchUserDTO;
+
 @Path("/users")
 public class UserService {
     @Context
@@ -63,6 +64,7 @@ public class UserService {
         return dtos;
     	
     }
+    
     @POST
     @Path("/createUser")
     @Produces(MediaType.APPLICATION_JSON)
