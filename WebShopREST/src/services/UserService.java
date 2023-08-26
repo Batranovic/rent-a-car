@@ -14,15 +14,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
+import dto.UserDTO;
 import dao.ProjectDAO;
+import dao.RentACarObjectDAO;
 import dao.UserDAO;
 import dto.LoginDTO;
 import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
+import dto.RentACarDTO;
+import dto.SearchDTO;
 import dto.SimpleUserDTO;
+import model.RentACarObject;
 import model.User;
-
+import dto.SearchUserDTO;
 @Path("/users")
 public class UserService {
     @Context
@@ -41,13 +45,21 @@ public class UserService {
         }
     }
 
+   
+    
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<User> getAll(){
-    	return UserDAO.getInstance().getAll();
+    public ArrayList<UserDTO> getAllUsers(){
+    	ArrayList<User> users = UserDAO.getInstance().getAll();
+    	ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
+    	for(User user : users) {
+    		dtos.add(UserDTO.toObject(user));
+    	}
+    	
+        return dtos;
+    	
     }
-
     @POST
     @Path("/createUser")
     @Produces(MediaType.APPLICATION_JSON)
@@ -113,6 +125,20 @@ public class UserService {
     		dtos.add(SimpleUserDTO.ConvertSimpleUserDTO(user));
     	}
     	return dtos;
+    }
+    
+    
+    @POST
+    @Path("/searchUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<UserDTO> searchUser(SearchUserDTO searchDTO) {
+    	ArrayList<User> users = UserDAO.getInstance().searchUser(searchDTO);
+    	ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
+    	for(User user : users) {
+    		dtos.add(UserDTO.toObject(user));
+    	}
+    	
+        return dtos;
     }
 
     

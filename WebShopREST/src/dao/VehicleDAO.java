@@ -69,7 +69,7 @@ public class VehicleDAO {
 		Vehicle vehicle = dto.ConvertToVehicle();
 		vehicle.setId(nextId());
 		
-		if(loggedManager.getRole() != Role.Manager) {
+		if(loggedManager.getRole() != Role.manager) {
 			return null;
 		}
 		if(loggedManager.getRentACarObject() == null) {

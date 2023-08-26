@@ -29,7 +29,7 @@ Vue.component("user-page", {
 	    `,
     mounted () {
 		this.passedUsername = this.$route.params.username;
-        axios.get('rest/users/searchByUsername/')
+        axios.get(`rest/users/searchByUsername/`+ this.passedUsername)
 		.then(response => {
 			this.users = response.data
 		});

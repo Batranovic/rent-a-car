@@ -1,6 +1,7 @@
 package dao;
 
 import java.io.File;
+import dto.SearchUserDTO;
 import model.Basket;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.LoginDTO;
 import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
+import dto.SearchDTO;
 import enums.Role;
 import model.RentACarObject;
 import model.User;
@@ -51,7 +53,6 @@ public class UserDAO {
 	}
 
 	public ArrayList<User> getAll() {
-		readFromFileJSON();
 		return new ArrayList<>(users);
 	}
 
@@ -122,7 +123,7 @@ public class UserDAO {
 
 		try {
 			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(file), users);
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, users);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -186,28 +187,15 @@ public class UserDAO {
 	public ArrayList<User> getAllFreeManagers(){
 		ArrayList<User> freeManagers = new ArrayList<User>();
 		for(User user: users) {
-			if(user.getRole() == Role.Manager && user.getRentACarObject() == null) {
+			if(user.getRole() == Role.manager && user.getRentACarObject() == null) {
 				freeManagers.add(user);
 			}
 		}
 		return freeManagers;
 	}
 	
-	public void bindCustomer() {
-		for(User user : users) {
-			if(user.getCustomerType() == null) {
-				continue;
-			}
-			int customerId = user.getCustomerType().getId();
-			Customer customer = CustomerDAO.getInstance().getById(customerId);
-			if(customer == null) {
-				System.out.println("User/Customer bind error");
-				continue;
-			}
-			user.setCustomerType(customer);
-			
-		}
-	}
+	
+	
 	
 	public void bindRentACarObject() {
 		for(User user : users) {
@@ -239,6 +227,43 @@ public class UserDAO {
 			user.setBasket(basket);
 			
 		}
+	}
+	
+	private boolean searchCondition(User user, SearchUserDTO searchDTO) {
+		if (!user.getName().contains(searchDTO.getName())) {
+			return false;
+		}
+		if (!user.getSurname().contains(searchDTO.getSurname())) {
+			return false;
+		}
+		
+		if (!user.getUsername().contains(searchDTO.getUsername())) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	public ArrayList<User> searchUser(SearchUserDTO searchDTO) {
+		if (searchDTO.getName() == null) {
+			searchDTO.setName("");
+		}
+
+		if (searchDTO.getSurname() == null) {
+			searchDTO.setSurname("");
+		}
+		if(searchDTO.getUsername() == null) {
+			searchDTO.setUsername("");
+		}
+
+
+		ArrayList<User> searchedUsers = new ArrayList<User>();
+		for (User u : users) {
+			if (searchCondition(u, searchDTO)) {
+				searchedUsers.add(u);				
+			}
+		}
+		return searchedUsers;
 	}
 	
 }
