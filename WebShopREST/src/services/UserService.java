@@ -147,8 +147,8 @@ public class UserService {
     @Path("/update/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public UserDTO updateUser(@PathParam("id") int id, User updatedUser) {
-    	User user = UserDAO.getInstance().update(id, updatedUser);
+    public UserDTO updateUser(@PathParam("id") int id, UserDTO updatedUserDTO) {
+    	User user = UserDAO.getInstance().update(id, updatedUserDTO);
     	UserDTO dto = UserDTO.toObject(user);
     	return dto;
     }

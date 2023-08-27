@@ -1,7 +1,9 @@
 package dao;
 
 import java.io.File;
+import enums.Gender;
 import dto.SearchUserDTO;
+import dto.UserDTO;
 import model.Basket;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -88,6 +90,23 @@ public class UserDAO {
 		return user;
 	}
 
+	public User update(int id, UserDTO userDTO) {
+		User foundUser = getById(id);
+
+		if (foundUser == null) {
+			return null;
+		}
+
+		foundUser.setName(userDTO.getName());
+		foundUser.setSurname(userDTO.getSurname());
+		foundUser.setUsername(userDTO.getUsername());
+		foundUser.setPassword(userDTO.getPassword());
+		foundUser.setGender(Gender.valueOf(userDTO.getGender()));
+		foundUser.setBirthday(userDTO.getBirthday());
+		writeToFileJSON();
+		return foundUser;
+	}
+	
 	public User update(int id, User user) {
 		User foundUser = getById(id);
 
@@ -104,7 +123,6 @@ public class UserDAO {
 		writeToFileJSON();
 		return foundUser;
 	}
-
 	private boolean isUsernameUnique(User user) {
 		return users.stream().noneMatch(u -> u.getUsername().equals(user.getUsername()));
 	}

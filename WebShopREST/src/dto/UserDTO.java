@@ -1,6 +1,7 @@
 package dto;
 import model.User;
 public class UserDTO {
+	private int id;
 	private String name;
 	private String surname;
 	private String username;
@@ -16,9 +17,10 @@ public class UserDTO {
 	}
 	
 	
-	public UserDTO(String name, String surname, String username, int points, String role, String customerType,
+	public UserDTO(int id, String name, String surname, String username, int points, String role, String customerType,
 			String gender, String birthday, String password) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
@@ -33,6 +35,7 @@ public class UserDTO {
 
 	public static UserDTO toObject(User user) {
 		UserDTO dto = new UserDTO();
+		dto.setId(user.getId());
 		dto.setName(user.getName());
 		dto.setSurname(user.getSurname());
 		dto.setUsername(user.getUsername());
@@ -44,6 +47,18 @@ public class UserDTO {
 		dto.setPassword(user.getPassword());
 		return dto;
 	}
+	
+	
+	public int getId() {
+		return id;
+	}
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
 	public String getGender() {
 		return gender;
 	}

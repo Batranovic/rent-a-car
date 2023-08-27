@@ -68,7 +68,7 @@ Vue.component("user-page", {
     },
     methods: {
 	   modify: function () {
-	    axios.put(`/rest/users/update/${this.users.id}`) 
+	    axios.put(`rest/users/update/${this.users.id}`, this.users) 
 	      .then(response => {
 	        console.log('Modified:', response.data);
 	      })
