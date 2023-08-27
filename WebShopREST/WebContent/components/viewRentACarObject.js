@@ -100,10 +100,14 @@ Vue.component("viewRentACarObject", {
 	  </tr>
 	  
 	</table>
+	 <button  class="car-objects-button" v-on:click="logIn">Log in</button><br>
 
     </div>
   `,
 	methods: {
+		 logIn: function(){
+		router.push("/logIn");
+	},
 		sort: function(column) {
 			if (this.sortBy === column) {
 				this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
