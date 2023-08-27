@@ -17,7 +17,7 @@ Vue.component("managerForObject", {
 	
 	template: `
 		<div class="container">
-            <h1>Sign up page</h1>
+            <h1>Register manager</h1>
             <form class="form-table">
             <tr>
             	<td><label>Name: </label></td>
@@ -53,7 +53,7 @@ Vue.component("managerForObject", {
             </tr>
             <br>
             <div class="form-row">
-                <button v-on:click="signUp(manager.username)">Sign up</button><br>
+                <button  type='button' v-on:click="createManager()">Register</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
              </div>
             </form>
@@ -67,7 +67,7 @@ Vue.component("managerForObject", {
 	}, 
 	
 	methods: {
-		manager: function(username){
+		createManager: function(){
 			event.preventDefault();
 			if(!this.manager.name){
 				this.nameColor='border-color: red';
@@ -112,8 +112,14 @@ Vue.component("managerForObject", {
 		
 			axios.post('rest/users/createManager', this.manager)
 			    .then(response => {
-					const a = response.data;
-			        router.push(`/`);
+					const registeredManager = response.data;
+			        const createdObject = JSON.parse(localStorage.getItem("createdRentACarObject"));
+			        createdObject.managerId = registeredManager.id;
+			        axios.post('rest/rentACarObjects/', createdObject)
+				    .then(response => {
+						const a = response.data;
+				        router.push(`/`);
+				    });	
 			    });
 		}
 	}

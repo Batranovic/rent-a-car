@@ -4,6 +4,7 @@ Vue.component("createObject", {
 
 			object: {name: null, address: null, longitude: null, latitude: null, from: null, to: null, logo: null, managerId: null},
 			freeManagers: [],
+			hasManagers: true,
 
 			nameColor : '',
 			addressColor: '',
@@ -68,7 +69,9 @@ Vue.component("createObject", {
             	<td><label>Manager: </label></td>
              <select name="managerSelect" v-model="object.managerId" v-bind:style="managerColor" style="width: 150px;">
                     <option v-for="manager in freeManagers" v-bind:value="manager.id">{{manager.name}} {{manager.surname}}</option>
-                </select><br>
+             </select><br>
+             <label v-if="!hasManagers" style="color:red"> No free managers, </br>register manager on next page</label>
+             
             </tr>
             <br>
             <div class="form-row">
@@ -84,7 +87,8 @@ Vue.component("createObject", {
 		axios.get('rest/users/getFreeManagers')
       		.then(response => {
         	this.freeManagers = response.data;
-       
+        	this.hasManagers = this.freeManagers.length !== 0;
+        	
       })
       .catch(error => {
         console.error("Error fetching data:", error);
@@ -145,25 +149,29 @@ Vue.component("createObject", {
 			}else{
 				this.logoColor='';
 			}
-			if(!this.object.managerId){
+			if(this.hasManagers && !this.object.managerId){
 				this.managerColor='border-color: red';
 			}else{
 				this.managerColor='';
 			}
 			
-			if(!this.object.name || !this.object.address || !this.object.longitude || !this.object.latitude || !this.object.from || !this.object.to || !this.object.logo || !this.object.managerId){
+			if(!this.object.name || !this.object.address || !this.object.longitude || !this.object.latitude || !this.object.from || !this.object.to || !this.object.logo || (this.hasManagers && !this.object.managerId)){
 				this.errorMessage='All fields are neccessary!';
 				this.errorColor = "color:red";
 				return;
 			}
 			
 			this.errorMessage = '';
-		
-			axios.post('rest/rentACarObjects/', this.object)
-			    .then(response => {
-					const a = response.data;
-			        router.push(`/`);
-			    });
+			if(this.hasManagers){
+				axios.post('rest/rentACarObjects/', this.object)
+				    .then(response => {
+						const a = response.data;
+				        router.push(`/`);
+				    });				
+			}else{
+				localStorage.setItem("createdRentACarObject", JSON.stringify(this.object));
+				router.push(`/managerForObject`);
+			}
 		}
 	}
 	
