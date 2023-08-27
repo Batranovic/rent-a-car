@@ -1,15 +1,22 @@
 package dao;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import enums.OrderStatus;
 import model.Customer;
 import model.Location;
+import model.Order;
+import model.RentACarObject;
 import model.User;
 
 public class LocationDAO {
@@ -22,7 +29,7 @@ private static LocationDAO instance = null;
 	private LocationDAO() {
 		objectMapper = new ObjectMapper();
 		locations = new ArrayList<Location>();
-		String filePath = ProjectDAO.ctxPath + "location.JSON";
+		String filePath = ProjectDAO.ctxPath + "location.txt";
 		file = new File(filePath);
 		
 		readFromFileJSON();
@@ -87,20 +94,44 @@ private static LocationDAO instance = null;
 	}
 	
 	private void writeToFileJSON() {
+		 try {
+		      FileWriter fileWriter = new FileWriter(file);
+		      BufferedWriter output = new BufferedWriter(fileWriter);
 
-		try {
-			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(file), locations);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		      for(Location location : locations) {
+		    	  output.write(location.toStringForFile());
+		      }
 
+		      
+		      output.close();
+		    }
+
+		    catch (Exception e) {
+		      e.getStackTrace();
+		    }
+		
+		
 	}
-
 	private void readFromFileJSON() {
-		try {
-			JavaType type = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Location.class);
-			locations = objectMapper.readValue(file, type);
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+			String strCurrentLine;
+
+			while ((strCurrentLine = br.readLine()) != null) {
+				if(strCurrentLine.isEmpty()) {
+					continue;
+				}
+				String parts[] = strCurrentLine.split("\\|");
+				int id = Integer.parseInt(parts[0]);
+				double longitude = Double.parseDouble(parts[1]);
+				double latitude = Double.parseDouble(parts[2]);
+				String address = parts[3];
+				
+				Location location = new Location(id, longitude, latitude, address);
+				locations.add(location);
+				
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

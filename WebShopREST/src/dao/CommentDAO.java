@@ -1,16 +1,22 @@
 package dao;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import dto.CommentCreationDTO;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+import enums.CommentStatus;
+import enums.OrderStatus;
 import enums.Role;
 import model.Comment;
+import model.Order;
 import model.RentACarObject;
 import model.User;
 
@@ -24,7 +30,7 @@ public class CommentDAO {
 	private CommentDAO() {
 		objectMapper = new ObjectMapper();
 		comments = new ArrayList<Comment>();
-		String filePath = ProjectDAO.ctxPath + "comments.JSON";
+		String filePath = ProjectDAO.ctxPath + "comments.txt";
 		file = new File(filePath);
 		
 		readFromFileJSON();
@@ -98,20 +104,48 @@ public class CommentDAO {
 	}
 	
 	private void writeToFileJSON() {
-		
-		try {
-			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(file), comments);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		 try {
+		      FileWriter fileWriter = new FileWriter(file);
+		      BufferedWriter output = new BufferedWriter(fileWriter);
+
+		      for(Comment comment : comments) {
+		    	  output.write(comment.toStringForFile());
+		      }
+
+		      
+		      output.close();
+		    }
+
+		    catch (Exception e) {
+		      e.getStackTrace();
+		    }
 		
 	}
 	
 	private void readFromFileJSON() {
-		try {
-			JavaType type = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Comment.class);
-			comments = objectMapper.readValue(file, type);
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+			String strCurrentLine;
+
+			while ((strCurrentLine = br.readLine()) != null) {
+				if(strCurrentLine.isEmpty()) {
+					continue;
+				}
+				String parts[] = strCurrentLine.split("\\|");
+				int id = Integer.parseInt(parts[0]);
+				int userId = Integer.parseInt(parts[1]);
+				int rentACarObjectId = Integer.parseInt(parts[2]);
+				String text = parts[3];
+				int grade = Integer.parseInt(parts[4]);
+				CommentStatus status = CommentStatus.valueOf(parts[5]);
+				RentACarObject rentACarObject = new RentACarObject(rentACarObjectId);
+				User user = new User(userId);
+				
+				Comment comment = new Comment(id, user, rentACarObject, text, grade, status);
+				comments.add(comment);
+				
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

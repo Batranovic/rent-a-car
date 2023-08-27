@@ -47,7 +47,36 @@ public class User {
 		this.points = points;
 		this.customerType = customerType;
 	}
+	
+	public User(int id, String username, String password, String name, String surname, Gender gender, String birthday,
+			Role role, Basket basket, RentACarObject rentACarObject, int points,
+			CustomerType customerType) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.gender = gender;
+		this.birthday = birthday;
+		this.role = role;
+		this.allRentals = new ArrayList<Vehicle>();
+		this.basket = basket;
+		this.rentACarObject = rentACarObject;
+		this.points = points;
+		this.customerType = customerType;
+	}
 
+
+	public User(int userId) {
+		this.id = userId;
+	}
+
+
+	public String toStringForFile() {
+		return id + "|" + username + "|" + password + "|" + name + "|" + surname + "|"
+				+ gender + "|" + birthday + "|" + role + "|" + basket.getId() + "|" + rentACarObject.getId() + "|" + points + "|" + customerType;
+	}
 
 	public int getId() {
 		return id;

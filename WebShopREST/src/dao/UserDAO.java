@@ -1,13 +1,21 @@
 package dao;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+
+import enums.CustomerType;
 import enums.Gender;
+import enums.OrderStatus;
 import dto.SearchUserDTO;
 import dto.UserDTO;
 import model.Basket;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,6 +28,7 @@ import model.RentACarObject;
 import model.User;
 import model.Vehicle;
 import model.Customer;
+import model.Order;
 public class UserDAO {
 	private static UserDAO instance = null;
 
@@ -31,7 +40,7 @@ public class UserDAO {
 
 		objectMapper = new ObjectMapper();
 		users = new ArrayList<User>();
-		String filePath = ProjectDAO.ctxPath + "users.JSON";
+		String filePath = ProjectDAO.ctxPath + "users.txt";
 		file = new File(filePath);
 
 		readFromFileJSON();
@@ -138,24 +147,59 @@ public class UserDAO {
 	}
 
 	private void writeToFileJSON() {
+		 try {
+		      FileWriter fileWriter = new FileWriter(file);
+		      BufferedWriter output = new BufferedWriter(fileWriter);
 
-		try {
-			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, users);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		      for(User user : users) {
+		    	  output.write(user.toStringForFile());
+		      }
 
+		      
+		      output.close();
+		    }
+
+		    catch (Exception e) {
+		      e.getStackTrace();
+		    }
+		
+		
 	}
 
 	private void readFromFileJSON() {
-		try {
-			JavaType type = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, User.class);
-			users = objectMapper.readValue(file, type);
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+			String strCurrentLine;
+
+			while ((strCurrentLine = br.readLine()) != null) {
+				if(strCurrentLine.isEmpty()) {
+					continue;
+				}
+				String parts[] = strCurrentLine.split("\\|");
+				int id = Integer.parseInt(parts[0]);
+				String username = parts[1];
+				String password = parts[2];
+				String name = parts[3];
+				String surname = parts[4];
+				Gender gender = Gender.valueOf(parts[5]);
+				String birthday = parts[6];
+				Role role = Role.valueOf(parts[7]);
+				int basketId = Integer.parseInt(parts[8]);
+				int rentACarObjectId = Integer.parseInt(parts[9]);
+				int points = Integer.parseInt(parts[10]);
+				CustomerType type = CustomerType.valueOf(parts[11]);
+				Basket basket = new Basket(basketId);
+				RentACarObject rentACarObject = new RentACarObject(rentACarObjectId);
+
+				User user = new User(id, username, password, name, surname, gender,
+						birthday, role, basket, rentACarObject, points, type);
+				users.add(user);
+				
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void createFile() throws IOException {

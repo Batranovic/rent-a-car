@@ -1,14 +1,22 @@
 package dao;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import enums.CustomerType;
+import enums.OrderStatus;
 import model.Customer;
+import model.Order;
+import model.RentACarObject;
 import model.User;
 
 public class CustomerDAO {
@@ -21,7 +29,7 @@ public class CustomerDAO {
 	private CustomerDAO() {
 		objectMapper = new ObjectMapper();
 		customers = new ArrayList<Customer>();
-		String filePath = ProjectDAO.ctxPath + "customer.JSON";
+		String filePath = ProjectDAO.ctxPath + "customer.txt";
 		file = new File(filePath);
 		
 		readFromFileJSON();
@@ -85,20 +93,45 @@ public class CustomerDAO {
 	}
 	
 	private void writeToFileJSON() {
+		 try {
+		      FileWriter fileWriter = new FileWriter(file);
+		      BufferedWriter output = new BufferedWriter(fileWriter);
 
-		try {
-			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, customers);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		      for(Customer customer : customers) {
+		    	  output.write(customer.toStringForFile());
+		      }
 
+		      
+		      output.close();
+		    }
+
+		    catch (Exception e) {
+		      e.getStackTrace();
+		    }
+		
+		
 	}
 
 	private void readFromFileJSON() {
-		try {
-			JavaType type = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Customer.class);
-			customers = objectMapper.readValue(file, type);
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+			String strCurrentLine;
+
+			while ((strCurrentLine = br.readLine()) != null) {
+				if(strCurrentLine.isEmpty()) {
+					continue;
+				}
+				String parts[] = strCurrentLine.split("\\|");
+				int id = Integer.parseInt(parts[0]);
+				CustomerType type = CustomerType.valueOf(parts[1]);
+				int discount = Integer.parseInt(parts[2]);
+				int neededPoints = Integer.parseInt(parts[3]);
+				
+				Customer customer = new Customer(id, type, discount, neededPoints);
+				customers.add(customer);
+				
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

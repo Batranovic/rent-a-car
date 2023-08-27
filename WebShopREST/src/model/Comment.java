@@ -23,6 +23,11 @@ public class Comment {
 		this.status = status;
 	}
 	
+
+	public String toStringForFile() {
+		return id + "|" + user.getId() + "|" + rentACarObject.getId() + "|" + text + "|" + grade + "|"
+				+ status;
+	}
 	public CommentStatus getStatus() {
 		return status;
 	}
