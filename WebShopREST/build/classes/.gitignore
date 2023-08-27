@@ -1,6 +1,5 @@
-/resources/
-/dao/
-/model/
-/services/
 /dto/
 /enums/
+/model/
+/services/
+/dao/

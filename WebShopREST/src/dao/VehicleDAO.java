@@ -12,6 +12,7 @@ import dto.VehicleCreationDTO;
 import enums.Role;
 import enums.VehicleKind;
 import enums.VehicleType;
+import model.RentACarObject;
 import model.User;
 import model.Vehicle;
 
@@ -68,7 +69,7 @@ public class VehicleDAO {
 		Vehicle vehicle = dto.ConvertToVehicle();
 		vehicle.setId(nextId());
 		
-		if(loggedManager.getRole() != Role.Manager) {
+		if(loggedManager.getRole() != Role.manager) {
 			return null;
 		}
 		if(loggedManager.getRentACarObject() == null) {
@@ -118,6 +119,23 @@ public class VehicleDAO {
 			e.printStackTrace();
 		}
 
+	}
+	public void bindRentACarObject() {
+		for(Vehicle vehicle : vehicles) {
+			if(vehicle.getObject() == null) {
+				continue;
+			}
+			int objectId = vehicle.getObject().getId();
+			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
+			if(rentACarObject == null) {
+				System.out.println("Vehicle/RentACarObject bind error");
+				continue;
+			}
+			vehicle.setObject(rentACarObject);
+			rentACarObject.getVehicles().add(vehicle);
+			int a = 0;
+			int b = a + 1;
+		}
 	}
 
 	private void readFromFileJSON() {

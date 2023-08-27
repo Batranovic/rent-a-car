@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -16,11 +14,10 @@ import javax.ws.rs.core.MediaType;
 
 import dao.ProjectDAO;
 import dao.RentACarObjectDAO;
-import dao.UserDAO;
-import dto.ObjectCreationDTO;
-import dto.RegisterUserDTO;
+import dto.DetailedRentACarDTO;
+import dto.RentACarDTO;
+import dto.SearchDTO;
 import model.RentACarObject;
-import model.User;
 
 @Path("/rentACarObjects")
 public class RentACarObjectService {
@@ -40,25 +37,48 @@ public class RentACarObjectService {
         }
     }
 
-    @GET
-    @Path("/searchRentACarObject/{name}/{location}/{type}/{grade}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public RentACarObject searchRentACarObject(@PathParam("name") String name, @PathParam("location") String location, @PathParam("type") String type, @PathParam("grade") double grade) {
-    	RentACarObjectDAO dao = (RentACarObjectDAO) ctx.getAttribute("rentACarObjectDAO");
-        return dao.searchRentACarObject(name, location, type, grade);
-    }
     
-    @POST
+    @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public ObjectCreationDTO createUser(ObjectCreationDTO objectDTO) {
-    	RentACarObject rentACarObject = RentACarObjectDAO.getInstance().create(objectDTO);
-    	if(rentACarObject == null) {
-    		return null;
+    public ArrayList<RentACarDTO> getAll(){
+    	ArrayList<RentACarObject> rentACarObjects = RentACarObjectDAO.getInstance().getAll();
+    	ArrayList<RentACarDTO> dtos = new ArrayList<RentACarDTO>();
+    	for(RentACarObject rentACarObject : rentACarObjects) {
+    		dtos.add(RentACarDTO.toObject(rentACarObject) );
     	}
     	
-        return ObjectCreationDTO.convertToDTO(rentACarObject);
+        return dtos;
+    	
     }
+    
+    @GET
+    @Path("/getOneDetailed/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DetailedRentACarDTO getOneDetailed(@PathParam("id") int id){
+    	RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(id);
+    	DetailedRentACarDTO dto = DetailedRentACarDTO.toObject(rentACarObject);
+    	
+        return dto;
+    	
+    }
+    
+   
+    	
+    
+    @POST
+    @Path("/search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<RentACarDTO> searchRentACarObject(SearchDTO searchDTO) {
+    	ArrayList<RentACarObject> rentACarObjects = RentACarObjectDAO.getInstance().searchRentACarObject(searchDTO);
+    	ArrayList<RentACarDTO> dtos = new ArrayList<RentACarDTO>();
+    	for(RentACarObject rentACarObject : rentACarObjects) {
+    		dtos.add(RentACarDTO.toObject(rentACarObject) );
+    	}
+    	
+        return dtos;
+    }
+    
+
 
 }

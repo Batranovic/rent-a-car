@@ -42,7 +42,7 @@ public class RegisterUserDTO {
 		user.setSurname(surname);
 		user.setGender(gender);
 		user.setBirthday(birthday);
-		user.setRole(Role.Customer);
+		user.setRole(Role.customer);
 		user.setAllRentals(new ArrayList<Vehicle>());
 		user.setPoints(0);
 		return user;

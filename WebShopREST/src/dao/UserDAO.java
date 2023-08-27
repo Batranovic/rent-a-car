@@ -1,6 +1,10 @@
 package dao;
 
 import java.io.File;
+import enums.Gender;
+import dto.SearchUserDTO;
+import dto.UserDTO;
+import model.Basket;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.io.FileOutputStream;
@@ -10,9 +14,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dto.LoginDTO;
 import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
+import dto.SearchDTO;
 import enums.Role;
+import model.RentACarObject;
 import model.User;
-
+import model.Vehicle;
+import model.Customer;
 public class UserDAO {
 	private static UserDAO instance = null;
 
@@ -48,7 +55,6 @@ public class UserDAO {
 	}
 
 	public ArrayList<User> getAll() {
-		readFromFileJSON();
 		return new ArrayList<>(users);
 	}
 
@@ -84,6 +90,23 @@ public class UserDAO {
 		return user;
 	}
 
+	public User update(int id, UserDTO userDTO) {
+		User foundUser = getById(id);
+
+		if (foundUser == null) {
+			return null;
+		}
+
+		foundUser.setName(userDTO.getName());
+		foundUser.setSurname(userDTO.getSurname());
+		foundUser.setUsername(userDTO.getUsername());
+		foundUser.setPassword(userDTO.getPassword());
+		foundUser.setGender(Gender.valueOf(userDTO.getGender()));
+		foundUser.setBirthday(userDTO.getBirthday());
+		writeToFileJSON();
+		return foundUser;
+	}
+	
 	public User update(int id, User user) {
 		User foundUser = getById(id);
 
@@ -100,7 +123,6 @@ public class UserDAO {
 		writeToFileJSON();
 		return foundUser;
 	}
-
 	private boolean isUsernameUnique(User user) {
 		return users.stream().noneMatch(u -> u.getUsername().equals(user.getUsername()));
 	}
@@ -119,7 +141,7 @@ public class UserDAO {
 
 		try {
 			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(file), users);
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, users);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -183,10 +205,83 @@ public class UserDAO {
 	public ArrayList<User> getAllFreeManagers(){
 		ArrayList<User> freeManagers = new ArrayList<User>();
 		for(User user: users) {
-			if(user.getRole() == Role.Manager && user.getRentACarObject() == null) {
+			if(user.getRole() == Role.manager && user.getRentACarObject() == null) {
 				freeManagers.add(user);
 			}
 		}
 		return freeManagers;
 	}
+	
+	
+	
+	
+	public void bindRentACarObject() {
+		for(User user : users) {
+			if(user.getRentACarObject() == null) {
+				continue;
+			}
+			int objectId = user.getRentACarObject().getId();
+			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
+			if(rentACarObject == null) {
+				System.out.println("User/RentACarObject bind error");
+				continue;
+			}
+			user.setRentACarObject(rentACarObject);
+			
+		}
+	}
+	
+	public void bindBasket() {
+		for(User user : users) {
+			if(user.getBasket() == null) {
+				continue;
+			}
+			int basketId = user.getBasket().getId();
+			Basket basket = BasketDAO.getInstance().getById(basketId);
+			if(basket == null) {
+				System.out.println("User/Basket bind error");
+				continue;
+			}
+			user.setBasket(basket);
+			
+		}
+	}
+	
+	private boolean searchCondition(User user, SearchUserDTO searchDTO) {
+		if (!user.getName().contains(searchDTO.getName())) {
+			return false;
+		}
+		if (!user.getSurname().contains(searchDTO.getSurname())) {
+			return false;
+		}
+		
+		if (!user.getUsername().contains(searchDTO.getUsername())) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	public ArrayList<User> searchUser(SearchUserDTO searchDTO) {
+		if (searchDTO.getName() == null) {
+			searchDTO.setName("");
+		}
+
+		if (searchDTO.getSurname() == null) {
+			searchDTO.setSurname("");
+		}
+		if(searchDTO.getUsername() == null) {
+			searchDTO.setUsername("");
+		}
+
+
+		ArrayList<User> searchedUsers = new ArrayList<User>();
+		for (User u : users) {
+			if (searchCondition(u, searchDTO)) {
+				searchedUsers.add(u);				
+			}
+		}
+		return searchedUsers;
+	}
+	
 }

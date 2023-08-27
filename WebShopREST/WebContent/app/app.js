@@ -6,6 +6,8 @@ const ViewRentACarObject = {template: "<viewRentACarObject></viewRentACarObject>
 const CreateObject = {template: "<createObject></createObject>"}
 const CreateVehicle = {template: "<createVehicle></createVehicle>"}
 const CreateManagerForObject = {template: "<managerForObject></managerForObject>"}
+const DetailedObject = {template: "<detailedObject></detailedObject>"}
+const ViewAllUsers = {template: "<viewAllUsers></viewAllUsers>"}
 
 const router = new VueRouter({
     mode: 'hash',
@@ -17,7 +19,9 @@ const router = new VueRouter({
         { path: '/viewRentACarObject', component: ViewRentACarObject},
         { path: '/createObject', component: CreateObject},
         { path: '/createVehicle', component: CreateVehicle},
-        { path: '/managerForObject', component: CreateManagerForObject}
+        { path: '/managerForObject', component: CreateManagerForObject},
+        { path: '/detailedObject/:id', name: 'detailed', component: DetailedObject},
+        { path: '/viewAllUsers', component: ViewAllUsers }
     ]
 });
 

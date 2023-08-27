@@ -14,14 +14,22 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import dto.UserDTO;
 import dao.ProjectDAO;
+import dao.RentACarObjectDAO;
 import dao.UserDAO;
+import dto.DetailedRentACarDTO;
 import dto.LoginDTO;
 import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
+import dto.RentACarDTO;
+import dto.SearchDTO;
 import dto.SimpleUserDTO;
+import model.RentACarObject;
 import model.User;
+import dto.SearchUserDTO;
 
 @Path("/users")
 public class UserService {
@@ -41,13 +49,22 @@ public class UserService {
         }
     }
 
+   
+    
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<User> getAll(){
-    	return UserDAO.getInstance().getAll();
+    public ArrayList<UserDTO> getAllUsers(){
+    	ArrayList<User> users = UserDAO.getInstance().getAll();
+    	ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
+    	for(User user : users) {
+    		dtos.add(UserDTO.toObject(user));
+    	}
+    	
+        return dtos;
+    	
     }
-
+    
     @POST
     @Path("/createUser")
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,21 +105,18 @@ public class UserService {
     }
 
 
-    @PUT
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public User updateUser(@PathParam("id") int id, User user) {
-    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-        return dao.update(id, user);
-    }
+  
 
     @GET
     @Path("/searchByUsername/{username}")
     @Produces(MediaType.APPLICATION_JSON)
-    public User searchByUsername(@PathParam("username") String username) {
-    	UserDAO dao = (UserDAO) ctx.getAttribute("UserDAO");
-        return dao.getByUsername(username);
+    public UserDTO searchByUsername(@PathParam("username") String username) {
+    	User user = UserDAO.getInstance().getByUsername(username);
+    	UserDTO dto = UserDTO.toObject(user);
+    	return dto;
     }
+    
+   
     @GET
     @Path("/getFreeManagers")
     @Produces(MediaType.APPLICATION_JSON)
@@ -113,6 +127,30 @@ public class UserService {
     		dtos.add(SimpleUserDTO.ConvertSimpleUserDTO(user));
     	}
     	return dtos;
+    }
+    
+    
+    @POST
+    @Path("/searchUser")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<UserDTO> searchUser(SearchUserDTO searchDTO) {
+    	ArrayList<User> users = UserDAO.getInstance().searchUser(searchDTO);
+    	ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
+    	for(User user : users) {
+    		dtos.add(UserDTO.toObject(user));
+    	}
+    	
+        return dtos;
+    }
+    
+    @PUT
+    @Path("/update/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public UserDTO updateUser(@PathParam("id") int id, UserDTO updatedUserDTO) {
+    	User user = UserDAO.getInstance().update(id, updatedUserDTO);
+    	UserDTO dto = UserDTO.toObject(user);
+    	return dto;
     }
 
     

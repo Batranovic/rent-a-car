@@ -6,12 +6,12 @@
   "surname" : "Batranovic",
   "gender" : "F",
   "birthday" : "01-01-2001",
-  "role" : "Customer",
+  "role" : "customer",
   "allRentals": [],
   "basket" : {"id": 1},
   "rentACarObject": null,
-  "points" : 0,
-  "customerType" : null
+  "points" : 10,
+  "customerType" : "silver"
 }, {
    "id" : "2",
   "username" : "masa",
@@ -20,12 +20,12 @@
   "surname" : "Micovic",
   "gender" : "F",
   "birthday" : "02-02-2002",
-  "role" : "Manager",
+  "role" : "manager",
   "allRentals": [],
   "basket" : {"id": 2},
   "rentACarObject": null,
-  "points" : 0,
-  "customerType" : null
+  "points" : 20,
+  "customerType" : "bronze"
 }, {
    "id" : "3",
   "username" : "fica",
@@ -34,10 +34,10 @@
   "surname" : "Filipovic",
   "gender" : "M",
   "birthday" : "03-03-2003",
-  "role" : "Manager",
+  "role" : "manager",
   "allRentals": [],
   "basket" : {"id": 2},
   "rentACarObject": null,
-  "points" : 0,
-  "customerType" : null
+  "points" : 30,
+  "customerType" : "golden"
 }]

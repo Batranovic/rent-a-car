@@ -1,4 +1,7 @@
 package model;
+import java.util.ArrayList;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class RentACarObject {
 	private int id;
@@ -9,13 +12,16 @@ public class RentACarObject {
 	private Location location;
 	private String logo;
 	private double grade;
+	@JsonIgnore
+	private ArrayList<Vehicle> vehicles;
 	
 	public RentACarObject() {
 		super();
+		vehicles =  new ArrayList<Vehicle>();
 	}
 	
 	public RentACarObject(int id, String name, String from, String to, boolean open, Location location, String logo,
-			double grade) {
+			double grade, ArrayList<Vehicle> vehicles) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -25,6 +31,7 @@ public class RentACarObject {
 		this.location = location;
 		this.logo = logo;
 		this.grade = grade;
+		
 	}
 
 	public int getId() {
@@ -91,4 +98,11 @@ public class RentACarObject {
 		this.grade = grade;
 	}
 
+	public ArrayList<Vehicle> getVehicles(){
+		return vehicles;
+	}
+	
+	public void setVehicles(ArrayList<Vehicle> vehicles) {
+		this.vehicles = vehicles;
+	}
 }

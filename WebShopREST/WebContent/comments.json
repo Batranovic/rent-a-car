@@ -1,0 +1,31 @@
+[ {
+  "id" : "1",
+  "user" :  {"id":1},
+  "rentACarObject" :  {"id":1},
+  "text" : "Not a good experience",
+  "grade": 2,
+  "status": "accepted"
+}, {
+  "id" : "2",
+  "user" : {"id":1},
+  "rentACarObject" : {"id":1},
+  "text" : "Very good",
+  "grade": 4,
+  "status": "accepted"
+},
+ {
+  "id" : "3",
+  "user" : {"id":2},
+  "rentACarObject" : {"id":2},
+  "text" : "Great",
+  "grade": 5,
+  "status": "waiting"
+},
+ {
+  "id" : "4",
+  "user" : {"id":2},
+  "rentACarObject" : {"id":3},
+  "text" : "Okay",
+  "grade": 5,
+  "status": "denied"
+}]

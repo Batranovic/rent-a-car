@@ -33,7 +33,7 @@ public class ManagerCreationForObjectDTO {
 		user.setGender(gender);
 		user.setUsername(username);
 		user.setPassword(password);
-		user.setRole(Role.Manager);
+		user.setRole(Role.manager);
 		return user;
 	}
 	

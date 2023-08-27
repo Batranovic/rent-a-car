@@ -35,6 +35,7 @@ Vue.component("login", {
         </p>
       </form>
        <button  class="car-objects-button" v-on:click="viewCarObjects">CarObjects</button><br>
+       <button  class="users-objects-button" v-on:click="viewAllUsers">Users</button><br>
     </div>
   `,
 
@@ -44,6 +45,9 @@ Vue.component("login", {
     },
     viewCarObjects: function(){
 		router.push("/viewRentACarObject");
+	},
+	viewAllUsers: function(){
+		router.push("/viewAllUsers");
 	},
 
     logIn: function() {

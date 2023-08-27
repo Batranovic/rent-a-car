@@ -46,7 +46,6 @@ public class CustomerDAO {
 	}
 	
 	public ArrayList<Customer> getAll() {
-		readFromFileJSON();
 		return new ArrayList<>(customers);
 	}
 	
@@ -89,7 +88,7 @@ public class CustomerDAO {
 
 		try {
 			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(file), customers);
+			objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, customers);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
