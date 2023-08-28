@@ -1,14 +1,21 @@
 package dao;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import enums.OrderStatus;
 import model.Basket;
+import model.Order;
+import model.RentACarObject;
 import model.User;
 
 public class BasketDAO {
@@ -21,7 +28,7 @@ public class BasketDAO {
 	private BasketDAO() {
 		objectMapper = new ObjectMapper();
 		baskets = new ArrayList<Basket>();
-		String filePath = ProjectDAO.ctxPath + "basket.JSON";
+		String filePath = ProjectDAO.ctxPath + "basket.txt";
 		file = new File(filePath);
 		
 		readFromFileJSON();
@@ -83,20 +90,45 @@ public class BasketDAO {
 	}
 	
 	private void writeToFileJSON() {
-		
-		try {
-			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(file), baskets);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		 try {
+		      FileWriter fileWriter = new FileWriter(file);
+		      BufferedWriter output = new BufferedWriter(fileWriter);
+
+		      for(Basket basket : baskets) {
+		    	  output.write(basket.toStringForFile());
+		      }
+
+		      
+		      output.close();
+		    }
+
+		    catch (Exception e) {
+		      e.getStackTrace();
+		    }
+	
 		
 	}
 	
 	private void readFromFileJSON() {
-		try {
-			JavaType type = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class, Basket.class);
-			baskets = objectMapper.readValue(file, type);
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+			String strCurrentLine;
+
+			while ((strCurrentLine = br.readLine()) != null) {
+				if(strCurrentLine.isEmpty()) {
+					continue;
+				}
+				String parts[] = strCurrentLine.split("\\|");
+				int id = Integer.parseInt(parts[0]);
+				int userId = Integer.parseInt(parts[1]);
+				int price = Integer.parseInt(parts[2]);
+				User user = new User(userId);
+				
+				Basket basket = new Basket(id, user, price);
+				baskets.add(basket);
+				
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

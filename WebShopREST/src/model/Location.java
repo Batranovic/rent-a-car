@@ -18,6 +18,13 @@ public class Location {
 		this.address = address;
 	}
 
+	public Location(int locationId) {
+		this.id = locationId;
+	}
+
+	public String toStringForFile() {
+		return id + "|" + longitude+ "|" + latitude + "|" + address;
+	}
 	public int getId() {
 		return id;
 	}

@@ -1,6 +1,11 @@
 package dao;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JavaType;
@@ -8,8 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dto.ObjectCreationDTO;
 import dto.SearchDTO;
+import enums.OrderStatus;
 import enums.VehicleType;
 import model.Location;
+import model.Order;
 import model.RentACarObject;
 import model.User;
 import model.Vehicle;
@@ -24,7 +31,7 @@ public class RentACarObjectDAO {
 	private RentACarObjectDAO() {
 		objectMapper = new ObjectMapper();
 		rentACarObjects = new ArrayList<RentACarObject>();
-		String filePath = ProjectDAO.ctxPath + "rentACarObject.JSON";
+		String filePath = ProjectDAO.ctxPath + "rentACarObject.txt";
 		file = new File(filePath);
 
 		readFromFileJSON();
@@ -132,19 +139,51 @@ public class RentACarObjectDAO {
 	}
 
 	private void writeToFileJSON() {
-		try {
-			createFile();
-			objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, rentACarObjects);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		 try {
+		      FileWriter fileWriter = new FileWriter(file);
+		      BufferedWriter output = new BufferedWriter(fileWriter);
+
+		      for(RentACarObject object : rentACarObjects) {
+		    	  output.write(object.toStringForFile());
+		      }
+
+		      
+		      output.close();
+		    }
+
+		    catch (Exception e) {
+		      e.getStackTrace();
+		    }
+		
+		
 	}
 
 	private void readFromFileJSON() {
-		try {
-			JavaType type = objectMapper.getTypeFactory().constructCollectionType(ArrayList.class,
-					RentACarObject.class);
-			rentACarObjects = objectMapper.readValue(file, type);
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
+			String strCurrentLine;
+
+			while ((strCurrentLine = br.readLine()) != null) {
+				if(strCurrentLine.isEmpty()) {
+					continue;
+				}
+		
+				String parts[] = strCurrentLine.split("\\|");
+				int id = Integer.parseInt(parts[0]);
+				String name = parts[1];
+				String from = parts[2];
+				String to = parts[3];
+				boolean open = Boolean.parseBoolean(parts[4]);
+				int locationId = Integer.parseInt(parts[5]);
+				String logo = parts[6];
+				double grade = Double.parseDouble(parts[7]);
+				Location location = new Location(locationId);
+				
+				RentACarObject rent = new RentACarObject(id, name, from, to, open, location, logo, grade);
+				rentACarObjects.add(rent);
+				
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

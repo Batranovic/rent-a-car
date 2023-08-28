@@ -18,7 +18,20 @@ public class Basket {
 		this.user = u;
 		this.price = p;
 	}
+	public Basket(int id, User u, int p) {
+		this.id = id;
+		this.vehicles = new ArrayList<Vehicle>();
+		this.user = u;
+		this.price = p;
+	}
 
+	public Basket(int basketId) {
+		this.id = basketId;
+	}
+
+	public String toStringForFile() {
+		return id + "|" + user.getId() + "|" + price;
+	}
 	public int getId() {
 		return id;
 	}

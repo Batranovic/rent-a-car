@@ -12,7 +12,6 @@ public class RentACarObject {
 	private Location location;
 	private String logo;
 	private double grade;
-	@JsonIgnore
 	private ArrayList<Vehicle> vehicles;
 	
 	public RentACarObject() {
@@ -32,6 +31,29 @@ public class RentACarObject {
 		this.logo = logo;
 		this.grade = grade;
 		
+	}
+	public RentACarObject(int id, String name, String from, String to, boolean open, Location location, String logo,
+			double grade) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.from = from;
+		this.to = to;
+		this.open = open;
+		this.location = location;
+		this.logo = logo;
+		this.grade = grade;
+		this.vehicles = new ArrayList<Vehicle>();
+		
+	}
+
+	public RentACarObject(int rentACarObjectId) {
+		this.id = rentACarObjectId;
+	}
+
+	public String toStringForFile() {
+		return id + "|" + name + "|" + from + "|" + to + "|" + open + "|"
+				+ location.getId() + "|" + logo + "|" + grade ;
 	}
 
 	public int getId() {

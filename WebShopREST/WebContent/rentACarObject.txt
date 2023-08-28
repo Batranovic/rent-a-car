@@ -1,0 +1,2 @@
+1|AutoShop|8 am|3 pm|true|1|https://png.pngtree.com/png-clipart/20210606/original/pngtree-sport-car-logo-vector-png-image_6398339.jpg|8.2
+2|CarDeal|9 am|8 pm|false|2|https://t3.ftcdn.net/jpg/02/56/94/74/360_F_256947432_mW9bJpGFdJo9kw9XovizaHcQI2NOVXc8.jpg|5

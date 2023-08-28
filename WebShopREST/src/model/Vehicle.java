@@ -43,6 +43,12 @@ public class Vehicle {
 		this.status = vS;
 		this.object = object;
 	}
+	
+	public String toStringForFile() {
+		return id + "|" + brand + "|" + model + "|" + vehicleType.toString() + "|" + vehicleKind + "|"
+				+ fuel + "|" + consumption + "|" + numberOfDoors + "|" + numberOfPeople + "|" + description + 
+				"|" + image + "|" + status + "|" + object.getId();
+	}
 
 	public int getId() {
 		return id;

@@ -14,11 +14,11 @@ const ManagersObjects = {templayte: "<managersObjects></managersObjects>"}
 const router = new VueRouter({
     mode: 'hash',
     routes: [
-        { path: '/', component: LogIn},
+        { path: '/logIn', component: LogIn},
         { path: '/signUp', component: SignUp},
 		{ path: '/userPage/:username', component: UserPage},         
         { path: '/searchByUsername/:username', component: ProfileModification},
-        { path: '/viewRentACarObject', component: ViewRentACarObject},
+        { path: '/', component: ViewRentACarObject},
         { path: '/createObject', component: CreateObject},
         { path: '/createVehicle', component: CreateVehicle},
         { path: '/managerForObject', component: CreateManagerForObject},

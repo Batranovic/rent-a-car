@@ -44,7 +44,7 @@ Vue.component("login", {
       router.push("/signUp");
     },
     viewCarObjects: function(){
-		router.push("/viewRentACarObject");
+		router.push("/");
 	},
 	viewAllUsers: function(){
 		router.push("/viewAllUsers");
