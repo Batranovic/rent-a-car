@@ -62,8 +62,10 @@ Vue.component("managerForObject", {
 	`,
 	
 	mounted(){
-		
-		
+		if(localStorage.getItem("createdRentACarObject") == null) {
+			this.errorMessage="You cannot create manager";
+			this.errorColor = "red";
+		}
 	}, 
 	
 	methods: {
@@ -118,7 +120,8 @@ Vue.component("managerForObject", {
 			        axios.post('rest/rentACarObjects/', createdObject)
 				    .then(response => {
 						const a = response.data;
-				        router.push(`/`);
+				        router.push(`/viewRentACarObject`);
+				        localStorage.removeItem("createdRentACarObject");
 				    });	
 			    });
 		}

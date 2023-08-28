@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import dao.ProjectDAO;
 import dao.RentACarObjectDAO;
 import dto.DetailedRentACarDTO;
+import dto.ObjectCreationDTO;
 import dto.RentACarDTO;
 import dto.SearchDTO;
 import model.RentACarObject;
@@ -62,10 +64,7 @@ public class RentACarObjectService {
         return dto;
     	
     }
-    
-   
-    	
-    
+
     @POST
     @Path("/search")
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,6 +78,19 @@ public class RentACarObjectService {
         return dtos;
     }
     
+    @POST
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public ObjectCreationDTO createUser(ObjectCreationDTO objectDTO) {
+    	RentACarObject rentACarObject = RentACarObjectDAO.getInstance().create(objectDTO);
+    	if(rentACarObject == null) {
+    		return null;
+    	}
+    	
+        return ObjectCreationDTO.convertToDTO(rentACarObject);
+    }
+
 
 
 }

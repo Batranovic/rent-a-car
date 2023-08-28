@@ -5,19 +5,22 @@ import enums.Role;
 import model.User;
 
 public class ManagerCreationForObjectDTO {
+	private int id;
 	private String name;
 	private String surname;
 	private Gender gender;
 	private String birthday;
 	private String username;
 	private String password;
-	
+
 	public ManagerCreationForObjectDTO() {
 		super();
 	}
-	
-	public ManagerCreationForObjectDTO(String name, String surname, Gender gender, String birthday, String username, String password) {
+
+	public ManagerCreationForObjectDTO(int id, String name, String surname, Gender gender, String birthday,
+			String username, String password) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
@@ -25,7 +28,15 @@ public class ManagerCreationForObjectDTO {
 		this.username = username;
 		this.password = password;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public User ConvertToUser() {
 		User user = new User();
 		user.setName(name);
@@ -36,9 +47,10 @@ public class ManagerCreationForObjectDTO {
 		user.setRole(Role.manager);
 		return user;
 	}
-	
+
 	public static ManagerCreationForObjectDTO ConvertToDTO(User user) {
 		ManagerCreationForObjectDTO dto = new ManagerCreationForObjectDTO();
+		dto.setId(user.getId());
 		dto.name = user.getName();
 		dto.surname = user.getSurname();
 		dto.gender = user.getGender();

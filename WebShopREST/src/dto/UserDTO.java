@@ -125,6 +125,4 @@ public class UserDTO {
 	public void setCustomerType(String type) {
 		this.customerType = type;
 	}
-	
-	
 }
