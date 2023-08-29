@@ -14,22 +14,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
-import dto.UserDTO;
 import dao.ProjectDAO;
-import dao.RentACarObjectDAO;
 import dao.UserDAO;
-import dto.DetailedRentACarDTO;
 import dto.LoginDTO;
 import dto.ManagerCreationForObjectDTO;
 import dto.RegisterUserDTO;
-import dto.RentACarDTO;
-import dto.SearchDTO;
-import dto.SimpleUserDTO;
-import model.RentACarObject;
-import model.User;
 import dto.SearchUserDTO;
+import dto.SimpleUserDTO;
+import dto.UserDTO;
+import model.User;
 
 @Path("/users")
 public class UserService {

@@ -166,7 +166,7 @@ Vue.component("createObject", {
 				axios.post('rest/rentACarObjects/', this.object)
 				    .then(response => {
 						const a = response.data;
-				        router.push(`/`);
+				        router.push(`/viewRentACarObject`);
 				    });				
 			}else{
 				localStorage.setItem("createdRentACarObject", JSON.stringify(this.object));
