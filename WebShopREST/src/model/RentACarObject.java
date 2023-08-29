@@ -53,7 +53,7 @@ public class RentACarObject {
 
 	public String toStringForFile() {
 		return id + "|" + name + "|" + from + "|" + to + "|" + open + "|"
-				+ location.getId() + "|" + logo + "|" + grade ;
+				+ ((location == null) ? -1 : location.getId()) + "|" + logo + "|" + grade ;
 	}
 
 	public int getId() {

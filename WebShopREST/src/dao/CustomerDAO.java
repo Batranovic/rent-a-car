@@ -23,11 +23,9 @@ public class CustomerDAO {
 	private static CustomerDAO instance = null;
 	
 	private ArrayList<Customer> customers;
-	private final ObjectMapper objectMapper;
 	private final File file;
 	
 	private CustomerDAO() {
-		objectMapper = new ObjectMapper();
 		customers = new ArrayList<Customer>();
 		String filePath = ProjectDAO.ctxPath + "customer.txt";
 		file = new File(filePath);
@@ -52,6 +50,7 @@ public class CustomerDAO {
 		}
 		return id + 1;
 	}
+	
 	
 	public ArrayList<Customer> getAll() {
 		return new ArrayList<>(customers);
@@ -87,10 +86,16 @@ public class CustomerDAO {
 		return foundCustomer;
 	}
 	
-	private void createFile() throws IOException {
-		if (!file.exists())
-			file.createNewFile();
+	public Customer getCustomerByCustomerType(CustomerType customerType) {
+		for(Customer customer : customers) {
+			if(customer.getType() == customerType) {
+				return customer;
+			}
+		}
+		return null;
 	}
+	
+	
 	
 	private void writeToFileJSON() {
 		 try {
@@ -98,7 +103,7 @@ public class CustomerDAO {
 		      BufferedWriter output = new BufferedWriter(fileWriter);
 
 		      for(Customer customer : customers) {
-		    	  output.write(customer.toStringForFile());
+		    	  output.write(customer.toStringForFile()  + "\n");
 		      }
 
 		      

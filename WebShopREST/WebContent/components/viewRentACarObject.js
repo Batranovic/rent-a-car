@@ -101,7 +101,7 @@ Vue.component("viewRentACarObject", {
 	  
 	</table>
 	 <button  class="car-objects-button" v-on:click="logIn">Log in</button><br>
-
+	 
     </div>
   `,
 	methods: {

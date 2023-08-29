@@ -10,20 +10,23 @@ import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dto.SearchDTO;
+import dto.SearchOrderDTO;
 import enums.OrderStatus;
+import model.Basket;
+import model.Comment;
 import model.Order;
 import model.RentACarObject;
 import model.User;
+import model.Vehicle;
 
 public class OrderDAO {
 	private static OrderDAO instance = null;
 
 	private ArrayList<Order> orders;
-	private final ObjectMapper objectMapper;
 	private final File file;
 
 	private OrderDAO() {
-		objectMapper = new ObjectMapper();
 		orders = new ArrayList<Order>();
 		String filePath = ProjectDAO.ctxPath + "order.txt";
 		file = new File(filePath);
@@ -62,10 +65,57 @@ public class OrderDAO {
 		}
 		return null;
 	}
+	
+	private boolean searchCondition(Order order, SearchOrderDTO searchDTO) {
+		if (!order.getRentACarObject().getName().contains(searchDTO.getRentACarObject())) {
+			return false;
+		}
+		if (!order.getRentalDateAndTime().contains(searchDTO.getRentalDateAndTime())) {
+			return false;
+		}
 
-	private void createFile() throws IOException {
-		if (!file.exists())
-			file.createNewFile();
+		if(searchDTO.getPrice() != -1) {
+			if (order.getPrice() != searchDTO.getPrice()) {
+				return false;
+			}			
+		}
+		
+		return true;
+	}
+
+	public ArrayList<Order> searchOrder(SearchOrderDTO searchDTO) {
+		if (searchDTO.getRentACarObject() == null) {
+			searchDTO.setRentACarObject("");
+		}
+
+		if (searchDTO.getRentalDateAndTime() == null) {
+			searchDTO.setRentalDateAndTime("");
+		}
+		
+
+		ArrayList<Order> searchedOrders = new ArrayList<Order>();
+		for (Order o : orders) {
+			if (searchCondition(o, searchDTO)) {
+				searchedOrders.add(o);				
+			}
+		}
+		return searchedOrders;
+	}
+	
+	private void writeToFileOrderVehicle() {
+		try {
+			FileWriter fileWriter = new FileWriter(ProjectDAO.ctxPath + "orderVehicle.txt");
+			BufferedWriter output = new BufferedWriter(fileWriter);
+			for (Order order : orders) {
+				for(Vehicle vehicle : order.getVehicles()) {
+					output.write(order.getId() + "|" + vehicle.getId());					
+				}
+			}
+			output.close();
+		}
+		catch (Exception e) {
+			e.getStackTrace();
+		}
 	}
 
 	private void writeToFileJSON() {
@@ -74,7 +124,7 @@ public class OrderDAO {
 			BufferedWriter output = new BufferedWriter(fileWriter);
 
 			for (Order order : orders) {
-				output.write(order.toStringForFile());
+				output.write(order.toStringForFile() + "\n");
 			}
 
 			output.close();
@@ -83,7 +133,36 @@ public class OrderDAO {
 		catch (Exception e) {
 			e.getStackTrace();
 		}
-
+		writeToFileOrderVehicle();
+	}
+	
+	public void bindRentACarObject() {
+		for (Order order : orders) {
+			
+			int objectId = order.getRentACarObject().getId();
+			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
+			if (rentACarObject == null) {
+				System.out.println("Order/RentACarObject bind error");
+				continue;
+			}
+			order.setRentACarObject(rentACarObject);
+			
+		}
+	}
+	
+	
+	public void bindUser() {
+		for (Order order : orders) {
+			
+			int userId = order.getUser().getId();
+			User user = UserDAO.getInstance().getById(userId);
+			if (user == null) {
+				System.out.println("Order/User bind error");
+				continue;
+			}
+			order.setUser(user);
+			
+		}
 	}
 
 	private void readFromFileJSON() {
@@ -114,6 +193,16 @@ public class OrderDAO {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<Order> getAllOrdersForUser(int userId){
+		ArrayList<Order> userOrders = new ArrayList<Order>();
+		for(Order order : orders) {
+			if(order.getUser().getId() == userId) {
+				userOrders.add(order);
+			}
+		}
+		return userOrders;
 	}
 
 }

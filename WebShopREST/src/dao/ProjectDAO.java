@@ -3,8 +3,22 @@ package dao;
 public class ProjectDAO {
 	public static String ctxPath;
 	
-	public static void startProject() {
-		
+	private static ProjectDAO instance = null;
+	
+	private ProjectDAO() {
+		startProject();
+	}
+	
+	public static ProjectDAO getInstance() {
+		if(instance == null) {
+			instance = new ProjectDAO();
+		}
+		return instance;
+	}
+	
+	
+	private void startProject() {
+	
 		UserDAO.getInstance();
 		RentACarObjectDAO.getInstance();
 		BasketDAO.getInstance();
@@ -12,10 +26,18 @@ public class ProjectDAO {
 		LocationDAO.getInstance();
 		VehicleDAO.getInstance();
 		
-		UserDAO.getInstance().bindBasket();
 		UserDAO.getInstance().bindRentACarObject();
+		UserDAO.getInstance().bindBasket();
+		UserDAO.getInstance().bindCustomer();
 		RentACarObjectDAO.getInstance().bindLocation();	
 		VehicleDAO.getInstance().bindRentACarObject();
+		BasketDAO.getInstance().bindUser();
+		BasketDAO.getInstance().bindVehicle();
+		OrderDAO.getInstance().bindRentACarObject();
+		OrderDAO.getInstance().bindUser();
+		CommentDAO.getInstance().bindRentACarObject();
+		CommentDAO.getInstance().bindUser();
+		
 		
 	}
 }

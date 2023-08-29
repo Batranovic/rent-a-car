@@ -36,7 +36,7 @@ public class CommentService {
 	        if(ctx.getAttribute("commentDAO") == null) {
 	        	String contextPath = ctx.getRealPath("");
 	        	ProjectDAO.ctxPath = contextPath;
-	        	ProjectDAO.startProject();
+	        	ProjectDAO.getInstance();
 	        }
 	    }
 	    

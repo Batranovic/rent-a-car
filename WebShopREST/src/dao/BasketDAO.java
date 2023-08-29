@@ -14,108 +14,124 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import enums.OrderStatus;
 import model.Basket;
+import model.Comment;
 import model.Order;
 import model.RentACarObject;
 import model.User;
+import model.Vehicle;
 
 public class BasketDAO {
 	private static BasketDAO instance = null;
-	
+
 	private ArrayList<Basket> baskets;
-	private final ObjectMapper objectMapper;
 	private final File file;
-	
+
 	private BasketDAO() {
-		objectMapper = new ObjectMapper();
 		baskets = new ArrayList<Basket>();
 		String filePath = ProjectDAO.ctxPath + "basket.txt";
 		file = new File(filePath);
-		
+
 		readFromFileJSON();
 	}
-	
+
 	public static BasketDAO getInstance() {
-		if(instance == null)
-		{
+		if (instance == null) {
 			instance = new BasketDAO();
 		}
 		return instance;
 	}
-	
+
 	private Integer nextId() {
 		int id = 0;
-		for(Basket basket: baskets)
-		{
-			if(basket.getId() > id)
-			{
+		for (Basket basket : baskets) {
+			if (basket.getId() > id) {
 				id = basket.getId();
 			}
 		}
 		return id + 1;
 	}
-	
-	
+
 	public Basket create(Basket basket) {
 		basket.setId(nextId());
 		baskets.add(basket);
 		writeToFileJSON();
 		return basket;
 	}
-	
+
 	public Basket update(int id, Basket basket) {
 		Basket foundBasket = getById(id);
-		
-		if(foundBasket == null)
-		{
+
+		if (foundBasket == null) {
 			return null;
 		}
 		foundBasket.setVehicles(basket.getVehicles());
 		foundBasket.setUser(basket.getUser());
 		foundBasket.setPrice(basket.getPrice());
-		
+
 		return foundBasket;
 	}
 
 	public Basket getById(int id) {
-		for(Basket b: baskets) {
-			if(b.getId() == id)
+		for (Basket b : baskets) {
+			if (b.getId() == id)
 				return b;
 		}
 		return null;
 	}
-	
-	private void createFile() throws IOException {
-		if (!file.exists())
-			file.createNewFile();
+
+	public void bindUser() {
+		for (Basket basket : baskets) {
+
+			int userId = basket.getUser().getId();
+			User user = UserDAO.getInstance().getById(userId);
+			if (user == null) {
+				System.out.println("Basket/User bind error");
+				continue;
+			}
+			basket.setUser(user);
+			user.setBasket(basket);
+
+		}
 	}
-	
+
 	private void writeToFileJSON() {
-		 try {
-		      FileWriter fileWriter = new FileWriter(file);
-		      BufferedWriter output = new BufferedWriter(fileWriter);
-
-		      for(Basket basket : baskets) {
-		    	  output.write(basket.toStringForFile());
-		      }
-
-		      
-		      output.close();
-		    }
-
-		    catch (Exception e) {
-		      e.getStackTrace();
-		    }
-	
-		
+		try {
+			FileWriter fileWriter = new FileWriter(file);
+			BufferedWriter output = new BufferedWriter(fileWriter);
+			for (Basket basket : baskets) {
+				output.write(basket.toStringForFile()  + "\n");
+			}
+			output.close();
+		}
+		catch (Exception e) {
+			e.getStackTrace();
+		}
+		writeToFileBasketVehicle();
 	}
 	
+	private void writeToFileBasketVehicle() {
+		try {
+			FileWriter fileWriter = new FileWriter(ProjectDAO.ctxPath + "basketVehicle.txt");
+			BufferedWriter output = new BufferedWriter(fileWriter);
+			for (Basket basket : baskets) {
+				for(Vehicle vehicle : basket.getVehicles()) {
+					output.write(basket.getId() + "|" + vehicle.getId());					
+				}
+			}
+			output.close();
+		}
+		catch (Exception e) {
+			e.getStackTrace();
+		}
+	}
+
 	private void readFromFileJSON() {
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
 			String strCurrentLine;
 
 			while ((strCurrentLine = br.readLine()) != null) {
-				if(strCurrentLine.isEmpty()) {
+				if (strCurrentLine.isEmpty()) {
 					continue;
 				}
 				String parts[] = strCurrentLine.split("\\|");
@@ -123,10 +139,41 @@ public class BasketDAO {
 				int userId = Integer.parseInt(parts[1]);
 				int price = Integer.parseInt(parts[2]);
 				User user = new User(userId);
-				
+
 				Basket basket = new Basket(id, user, price);
 				baskets.add(basket);
-				
+
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void bindVehicle() {
+		try (BufferedReader br = new BufferedReader(new FileReader(ProjectDAO.ctxPath + "basketVehicle.txt"))) {
+
+			String strCurrentLine;
+
+			while ((strCurrentLine = br.readLine()) != null) {
+				if (strCurrentLine.isEmpty()) {
+					continue;
+				}
+				String parts[] = strCurrentLine.split("\\|");
+				int basketId = Integer.parseInt(parts[0]);
+				int vehicleId = Integer.parseInt(parts[1]);
+
+				Basket basket = BasketDAO.getInstance().getById(basketId);
+				if (basket == null) {
+					System.out.println("Bind error (basket)");
+					continue;
+				}
+				Vehicle vehicle = VehicleDAO.getInstance().getById(vehicleId);
+				if (vehicle == null) {
+					System.out.println("Bind error (basket)");
+					continue;
+				}
+				basket.getVehicles().add(vehicle);
 			}
 
 		} catch (IOException e) {

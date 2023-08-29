@@ -5,8 +5,8 @@ import enums.OrderStatus;
 
 public class Order {
 	private int id; // 10 karaktera
-	private ArrayList<Vehicle> vehicles;
 	private RentACarObject rentACarObject;
+	private ArrayList<Vehicle> vehicles;
 	private String rentalDateAndTime;
 	private int leaseDuration;
 	private int price;
@@ -17,11 +17,23 @@ public class Order {
 		super();
 	}
 
-	public Order(int id, ArrayList<Vehicle> vehicles, RentACarObject rentACarObject, String dateAndTime,
+	public Order(int id, RentACarObject rentACarObject, ArrayList<Vehicle> v, String dateAndTime,
 			int leaseDuration, int price, User user, OrderStatus orderStatus) {
 		super();
 		this.id = id;
-		this.vehicles = vehicles;
+		this.rentACarObject = rentACarObject;
+		this.vehicles = new ArrayList<Vehicle>();
+		this.rentalDateAndTime = dateAndTime;
+		this.leaseDuration = leaseDuration;
+		this.price = price;
+		this.user = user;
+		this.orderStatus = orderStatus;
+	}
+	
+	public Order(int id, RentACarObject rentACarObject, String dateAndTime,
+			int leaseDuration, int price, User user, OrderStatus orderStatus) {
+		super();
+		this.id = id;
 		this.rentACarObject = rentACarObject;
 		this.rentalDateAndTime = dateAndTime;
 		this.leaseDuration = leaseDuration;
@@ -30,17 +42,24 @@ public class Order {
 		this.orderStatus = orderStatus;
 	}
 
-	public Order(int id, RentACarObject rentACarObject, String dateAndTime, int leaseDuration, int price, User user,
-			OrderStatus orderStatus) {
-		super();
-		this.id = id;
-		this.vehicles = new ArrayList<Vehicle>();
-		this.rentACarObject = rentACarObject;
-		this.rentalDateAndTime = dateAndTime;
-		this.leaseDuration = leaseDuration;
-		this.price = price;
-		this.user = user;
-		this.orderStatus = orderStatus;
+	
+
+
+
+	public ArrayList<Vehicle> getVehicles() {
+		return vehicles;
+	}
+
+	public void setVehicles(ArrayList<Vehicle> vehicles) {
+		this.vehicles = vehicles;
+	}
+
+	public String getRentalDateAndTime() {
+		return rentalDateAndTime;
+	}
+
+	public void setRentalDateAndTime(String rentalDateAndTime) {
+		this.rentalDateAndTime = rentalDateAndTime;
 	}
 
 	public int getId() {
@@ -51,13 +70,7 @@ public class Order {
 		this.id = id;
 	}
 
-	public ArrayList<Vehicle> getVehicles() {
-		return vehicles;
-	}
-
-	public void setVehicles(ArrayList<Vehicle> vehicles) {
-		this.vehicles = vehicles;
-	}
+	
 
 	public RentACarObject getRentACarObject() {
 		return rentACarObject;

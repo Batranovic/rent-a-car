@@ -1,13 +1,20 @@
-Vue.component("user-page", {
+Vue.component("managerPage", {
 	data: function() {
 		return {
 			users: null,
 			passedUsername: null,
+			orders: null,
 			searchCriteria: {
 				rentACarObject: '',
 				rentalDateAndTime: '',
 				price: ''
 			},
+			filterCriteria: {
+				rentACarObject: '',
+				rentalDateAndTime: '',
+				price: ''
+			},
+			searchResultsBackUp : [],
 			searchResults: [], // Array to store search results
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
 			sortDirection: 'asc',
@@ -17,7 +24,7 @@ Vue.component("user-page", {
 		`
 	   <div class="container">
 		<form v-if="users">
-			<h2><b>Your page</b></h2>
+			<h3><b>Your page</b></h3>
 				<table>
 					<tr>
 						<td>Name:</td>
@@ -46,32 +53,23 @@ Vue.component("user-page", {
 					<button type="sumbit" v-on:click="modify()">Modify</button>
 				</table>
 			</form>
-
-	   <br>
-	   <h2>View all rentals</h2>
-	   <br>
-	   
+			<button  class="car-objects-button" v-on:click="myRentals">My rentals</button><br>
+		
+	  <h3>View all rentals</h3>
 	   <table>
-          <tr>
-            <td><label>RentACarObject:</label></td>
-            <td><input type="text" v-model="searchCriteria.rentACarObject"></td>
-            
+          <tr>  
             <td><label>RentalDateAndTime</label></td>
-            <td><input type="date" v-model="searchCriteria.rentalDateAndTime"></td>
+            <td><input type="time" v-model="searchCriteria.rentalDateAndTime"></td>
             
             <td><label>Price:</label></td>
             <td><input type="number" v-model="searchCriteria.price"></td>
             
             <td><button type="button" v-on:click="search()">Search</button></td>
           </tr>
-       </table>
+        </table>
         
       <table class="rentacar-table" border="1">
 	  <tr bgcolor="lightgrey">
-	    <th @click="sort('rentACarObject')">Name 
-	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'name' && sortDirection === 'asc' }"></i>
-	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'name' && sortDirection === 'desc' }"></i>
-	    </th>
 	    <th @click="sort('rentalDateAndTime')">RentalDateAndTime 
 	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'location' && sortDirection === 'asc' }"></i>
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'location' && sortDirection === 'desc' }"></i>
@@ -82,8 +80,7 @@ Vue.component("user-page", {
 	    </th>
 	  </tr>
 	  
-	  <tr v-for="result in searchResults" >
-	    <td>{{ result.rentACarObject }}</td>
+	  <tr v-for="result in searchResults" :key="result.id"  @click="goToDetailed(result.id)">
 	    <td>{{ result.rentalDateAndTime }}</td>
 	    <td>{{ result.price }}</td>
 	  </tr>
@@ -117,41 +114,14 @@ Vue.component("user-page", {
 				this.users = response.data
 				axios.get(`rest/orders/getOrderForUser/${this.users.id}`)
 					.then(response => {
-						this.searchResults = response.data;
+						this.orders = response.data
 					});
 			});
 
 
+
 	},
 	methods: {
-		sort: function(column) {
-			if (this.sortBy === column) {
-				this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-			} else {
-				this.sortBy = column;
-				this.sortDirection = 'asc';
-			}
-			this.sortSearchResults();
-		},
-		sortSearchResults: function() {
-			const sortFactor = this.sortDirection === 'asc' ? 1 : -1;
-			this.searchResults.sort((a, b) => {
-				const aValue = a[this.sortBy];
-				const bValue = b[this.sortBy];
-
-
-				if (this.sortBy === 'price') {
-					return (aValue - bValue) * sortFactor;
-				}
-
-				// For other columns, use localeCompare
-				return aValue.localeCompare(bValue) * sortFactor;
-			});
-		},
-
-		myRentals: function() {
-			router.push("/myRentals");
-		},
 		modify: function() {
 			axios.put(`rest/users/update/${this.users.id}`, this.users)
 				.then(response => {
@@ -160,17 +130,6 @@ Vue.component("user-page", {
 				.catch(error => {
 					console.error("Error updating user:", error);
 				});
-		},
-		search: function() {
-			if (this.searchCriteria.price === null) {
-				this.searchCriteria.price = -1;
-			}
-
-			axios.post('rest/orders/search', this.searchCriteria)
-				.then(response => {
-					this.searchResults = response.data;
-				});
-
-		},
+		}
 	}
 });

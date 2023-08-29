@@ -33,7 +33,7 @@ public class RentACarObjectService {
         if(ctx.getAttribute("rentACarObjectDAO") == null) {
         	String contextPath = ctx.getRealPath("");
         	ProjectDAO.ctxPath = contextPath;
-        	ProjectDAO.startProject();
+        	ProjectDAO.getInstance();
         }
     }
 

@@ -45,7 +45,7 @@ public class UserService {
         if(ctx.getAttribute("UserDAO") == null) {
         	String contextPath = ctx.getRealPath("");
             ProjectDAO.ctxPath = contextPath;
-            ProjectDAO.startProject();
+            ProjectDAO.getInstance();
         }
     }
 
@@ -64,6 +64,8 @@ public class UserService {
         return dtos;
     	
     }
+    
+    
     
     @POST
     @Path("/createUser")

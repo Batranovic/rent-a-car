@@ -1,2 +1,2 @@
-1|nina|123|Nina|Batranovic|F|01-01-2001|customer|1|1|1000|silver
-2|masa|123|Masa|Micovic|F|02-02-2002|manager|2|2|2000|bronze
+1|nina|123|Nina|Batranovic|F|01-01-2001|customer|1|1|1000|1
+2|masa|123|Masa|Micovic|F|02-02-2002|manager|2|2|2000|2

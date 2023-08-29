@@ -25,11 +25,9 @@ public class RentACarObjectDAO {
 	private static RentACarObjectDAO instance = null;
 
 	private ArrayList<RentACarObject> rentACarObjects;
-	private final ObjectMapper objectMapper;
 	private final File file;
 
 	private RentACarObjectDAO() {
-		objectMapper = new ObjectMapper();
 		rentACarObjects = new ArrayList<RentACarObject>();
 		String filePath = ProjectDAO.ctxPath + "rentACarObject.txt";
 		file = new File(filePath);
@@ -137,6 +135,19 @@ public class RentACarObjectDAO {
 		}
 		return searchedObjects;
 	}
+	
+	public void bindLocation() {
+		for(RentACarObject rentACar : rentACarObjects) {
+			
+			int locationId = rentACar.getLocation().getId();
+			Location location = LocationDAO.getInstance().getById(locationId);
+			if(location == null) {
+				System.out.println("RentACarObject/Location bind error");
+				continue;
+			}
+			rentACar.setLocation(location);
+		}
+	}
 
 	private void writeToFileJSON() {
 		 try {
@@ -144,7 +155,7 @@ public class RentACarObjectDAO {
 		      BufferedWriter output = new BufferedWriter(fileWriter);
 
 		      for(RentACarObject object : rentACarObjects) {
-		    	  output.write(object.toStringForFile());
+		    	  output.write(object.toStringForFile()  + "\n");
 		      }
 
 		      
@@ -189,20 +200,7 @@ public class RentACarObjectDAO {
 		}
 	}
 	
-	public void bindLocation() {
-		for(RentACarObject rentACar : rentACarObjects) {
-			if(rentACar.getLocation() == null) {
-				continue;
-			}
-			int locationId = rentACar.getLocation().getId();
-			Location location = LocationDAO.getInstance().getById(locationId);
-			if(location == null) {
-				System.out.println("RentACarObject/Location bind error");
-				continue;
-			}
-			rentACar.setLocation(location);
-		}
-	}
+	
 
 	private void createFile() throws IOException {
 		if (!file.exists()) {

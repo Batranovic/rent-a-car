@@ -29,7 +29,7 @@ public class VehicleService {
     public void init() {
         	String contextPath = ctx.getRealPath("");
         	ProjectDAO.ctxPath = contextPath;
-        	ProjectDAO.startProject();
+        	ProjectDAO.getInstance();
         
     }
     

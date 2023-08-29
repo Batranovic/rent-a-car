@@ -29,16 +29,15 @@ import model.User;
 import model.Vehicle;
 import model.Customer;
 import model.Order;
+
 public class UserDAO {
 	private static UserDAO instance = null;
 
 	private ArrayList<User> users;
-	private final ObjectMapper objectMapper;
 	private final File file;
 
 	private UserDAO() {
 
-		objectMapper = new ObjectMapper();
 		users = new ArrayList<User>();
 		String filePath = ProjectDAO.ctxPath + "users.txt";
 		file = new File(filePath);
@@ -115,7 +114,7 @@ public class UserDAO {
 		writeToFileJSON();
 		return foundUser;
 	}
-	
+
 	public User update(int id, User user) {
 		User foundUser = getById(id);
 
@@ -132,6 +131,7 @@ public class UserDAO {
 		writeToFileJSON();
 		return foundUser;
 	}
+
 	private boolean isUsernameUnique(User user) {
 		return users.stream().noneMatch(u -> u.getUsername().equals(user.getUsername()));
 	}
@@ -147,23 +147,44 @@ public class UserDAO {
 	}
 
 	private void writeToFileJSON() {
-		 try {
-		      FileWriter fileWriter = new FileWriter(file);
-		      BufferedWriter output = new BufferedWriter(fileWriter);
+		try {
+			FileWriter fileWriter = new FileWriter(file);
+			BufferedWriter output = new BufferedWriter(fileWriter);
 
-		      for(User user : users) {
-		    	  output.write(user.toStringForFile());
-		      }
+			for (User user : users) {
+				output.write(user.toStringForFile() + "\n");
+			}
 
-		      
-		      output.close();
-		    }
+			output.close();
+		}
 
-		    catch (Exception e) {
-		      e.getStackTrace();
-		    }
+		catch (Exception e) {
+			e.getStackTrace();
+		}
+
+	}
+	public void bindRentACarObject() {
+		for (User user : users) {
+			int objectId = user.getRentACarObject().getId();
+			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
 		
-		
+			user.setRentACarObject(rentACarObject);
+		}
+	}
+	public void bindBasket() {
+		for (User user : users) {
+			int basketId = user.getBasket().getId();
+			Basket basket = BasketDAO.getInstance().getById(basketId);
+			user.setBasket(basket);
+		}
+	}
+	
+	public void bindCustomer() {
+		for(User user : users) {
+			int userId = user.getCustomerType().getId();
+			Customer customer = CustomerDAO.getInstance().getById(userId);
+			user.setCustomerType(customer);
+		}
 	}
 
 	private void readFromFileJSON() {
@@ -172,7 +193,7 @@ public class UserDAO {
 			String strCurrentLine;
 
 			while ((strCurrentLine = br.readLine()) != null) {
-				if(strCurrentLine.isEmpty()) {
+				if (strCurrentLine.isEmpty()) {
 					continue;
 				}
 				String parts[] = strCurrentLine.split("\\|");
@@ -187,14 +208,15 @@ public class UserDAO {
 				int basketId = Integer.parseInt(parts[8]);
 				int rentACarObjectId = Integer.parseInt(parts[9]);
 				int points = Integer.parseInt(parts[10]);
-				CustomerType type = CustomerType.valueOf(parts[11]);
+				int customerId = Integer.parseInt(parts[11]);
 				Basket basket = new Basket(basketId);
 				RentACarObject rentACarObject = new RentACarObject(rentACarObjectId);
+				Customer customer = new Customer(customerId);
 
-				User user = new User(id, username, password, name, surname, gender,
-						birthday, role, basket, rentACarObject, points, type);
+				User user = new User(id, username, password, name, surname, gender, birthday, role, basket,
+						rentACarObject, points, customer);
 				users.add(user);
-				
+
 			}
 
 		} catch (IOException e) {
@@ -202,14 +224,10 @@ public class UserDAO {
 		}
 	}
 
-	private void createFile() throws IOException {
-		if (!file.exists())
-			file.createNewFile();
-	}
-	
+
 	public boolean isUsernameUnique(String username) {
-		for(User user : users) {
-			if(user.getUsername().equals(username)) {
+		for (User user : users) {
+			if (user.getUsername().equals(username)) {
 				return false;
 			}
 		}
@@ -218,79 +236,47 @@ public class UserDAO {
 
 	public User createCustomer(RegisterUserDTO userDTO) {
 		User user = userDTO.convertToUser();
-		//dodatna logika
-		if(!isUsernameUnique(user.getUsername())) {
+		// dodatna logika
+		if (!isUsernameUnique(user.getUsername())) {
 			return null;
 		}
+		Customer customer = CustomerDAO.getInstance().getCustomerByCustomerType(CustomerType.bronze);
+		user.setCustomerType(customer);
 		user.setId(nextId());
 		users.add(user);
 		writeToFileJSON();
 		return user;
 	}
-	
+
 	public User createManager(ManagerCreationForObjectDTO userDTO) {
 		User user = userDTO.ConvertToUser();
-
 		user.setId(nextId());
 		users.add(user);
 		writeToFileJSON();
 		return user;
 	}
-	
+
 	public User login(LoginDTO dto) {
-		for(User user : users) {
-			if(user.getUsername().equals(dto.getUsername()) && user.getPassword().equals(dto.getPassword())) {
+		for (User user : users) {
+			if (user.getUsername().equals(dto.getUsername()) && user.getPassword().equals(dto.getPassword())) {
 				return user;
 			}
 		}
 		return null;
 	}
 
-	public ArrayList<User> getAllFreeManagers(){
+	public ArrayList<User> getAllFreeManagers() {
 		ArrayList<User> freeManagers = new ArrayList<User>();
-		for(User user: users) {
-			if(user.getRole() == Role.manager && user.getRentACarObject() == null) {
+		for (User user : users) {
+			if (user.getRole() == Role.manager && user.getRentACarObject() == null) {
 				freeManagers.add(user);
 			}
 		}
 		return freeManagers;
 	}
+
 	
-	
-	
-	
-	public void bindRentACarObject() {
-		for(User user : users) {
-			if(user.getRentACarObject() == null) {
-				continue;
-			}
-			int objectId = user.getRentACarObject().getId();
-			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
-			if(rentACarObject == null) {
-				System.out.println("User/RentACarObject bind error");
-				continue;
-			}
-			user.setRentACarObject(rentACarObject);
-			
-		}
-	}
-	
-	public void bindBasket() {
-		for(User user : users) {
-			if(user.getBasket() == null) {
-				continue;
-			}
-			int basketId = user.getBasket().getId();
-			Basket basket = BasketDAO.getInstance().getById(basketId);
-			if(basket == null) {
-				System.out.println("User/Basket bind error");
-				continue;
-			}
-			user.setBasket(basket);
-			
-		}
-	}
-	
+
 	private boolean searchCondition(User user, SearchUserDTO searchDTO) {
 		if (!user.getName().contains(searchDTO.getName())) {
 			return false;
@@ -298,11 +284,11 @@ public class UserDAO {
 		if (!user.getSurname().contains(searchDTO.getSurname())) {
 			return false;
 		}
-		
+
 		if (!user.getUsername().contains(searchDTO.getUsername())) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -314,18 +300,17 @@ public class UserDAO {
 		if (searchDTO.getSurname() == null) {
 			searchDTO.setSurname("");
 		}
-		if(searchDTO.getUsername() == null) {
+		if (searchDTO.getUsername() == null) {
 			searchDTO.setUsername("");
 		}
-
 
 		ArrayList<User> searchedUsers = new ArrayList<User>();
 		for (User u : users) {
 			if (searchCondition(u, searchDTO)) {
-				searchedUsers.add(u);				
+				searchedUsers.add(u);
 			}
 		}
 		return searchedUsers;
 	}
-	
+
 }

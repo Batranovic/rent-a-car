@@ -18,6 +18,10 @@ public class Customer {
 		this.neededPoints = p;
 	}
 
+	public Customer(int customerId) {
+		this.id = customerId;
+	}
+
 	public String toStringForFile() {
 		return id + "|" + type + "|" + discount + "|" + neededPoints;
 	}

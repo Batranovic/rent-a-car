@@ -23,11 +23,9 @@ public class LocationDAO {
 private static LocationDAO instance = null;
 	
 	private ArrayList<Location> locations;
-	private final ObjectMapper objectMapper;
 	private final File file;
 	
 	private LocationDAO() {
-		objectMapper = new ObjectMapper();
 		locations = new ArrayList<Location>();
 		String filePath = ProjectDAO.ctxPath + "location.txt";
 		file = new File(filePath);
@@ -99,7 +97,7 @@ private static LocationDAO instance = null;
 		      BufferedWriter output = new BufferedWriter(fileWriter);
 
 		      for(Location location : locations) {
-		    	  output.write(location.toStringForFile());
+		    	  output.write(location.toStringForFile() + "\n");
 		      }
 
 		      

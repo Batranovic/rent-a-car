@@ -28,12 +28,10 @@ public class VehicleDAO {
 	private static VehicleDAO instance = null;
 
 	private ArrayList<Vehicle> vehicles;
-	private final ObjectMapper objectMapper;
 	private final File file;
 
 	private VehicleDAO() {
 
-		objectMapper = new ObjectMapper();
 		vehicles = new ArrayList<Vehicle>();
 		String filePath = ProjectDAO.ctxPath + "vehicle.txt";
 		file = new File(filePath);
@@ -59,7 +57,6 @@ public class VehicleDAO {
 	}
 
 	public ArrayList<Vehicle> getAll() {
-		readFromFileJSON();
 		return new ArrayList<>(vehicles);
 	}
 
@@ -112,10 +109,7 @@ public class VehicleDAO {
 		return foundVehicle;
 	}
 
-	private void createFile() throws IOException {
-		if (!file.exists())
-			file.createNewFile();
-	}
+
 
 	private void writeToFileJSON() {
 		try {
@@ -123,7 +117,7 @@ public class VehicleDAO {
 			BufferedWriter output = new BufferedWriter(fileWriter);
 
 			for (Vehicle vehicle : vehicles) {
-				output.write(vehicle.toStringForFile());
+				output.write(vehicle.toStringForFile() + "\n");
 			}
 
 			output.close();
@@ -137,9 +131,6 @@ public class VehicleDAO {
 
 	public void bindRentACarObject() {
 		for (Vehicle vehicle : vehicles) {
-			if (vehicle.getObject() == null) {
-				continue;
-			}
 			int objectId = vehicle.getObject().getId();
 			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
 			if (rentACarObject == null) {
@@ -148,8 +139,7 @@ public class VehicleDAO {
 			}
 			vehicle.setObject(rentACarObject);
 			rentACarObject.getVehicles().add(vehicle);
-			int a = 0;
-			int b = a + 1;
+			
 		}
 	}
 
