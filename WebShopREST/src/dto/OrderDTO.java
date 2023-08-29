@@ -8,17 +8,19 @@ public class OrderDTO {
 	private String rentalDateAndTime;
 	private int price;
 	private String status;
+	private String userId;
 	
 	public OrderDTO() {
 		super();
 	}
-	public OrderDTO(String rentACarObject,int rentId, String rentalDateAndTime, int price, String status) {
+	public OrderDTO(String rentACarObject,int rentId, String rentalDateAndTime, int price, String status, String userId) {
 		super();
 		this.rentACarObject = rentACarObject;
 		this.rentACarObjectId = rentId;
 		this.rentalDateAndTime = rentalDateAndTime;
 		this.price = price;
 		this.status = status;
+		this.userId = userId;
 	}
 	
 	public static OrderDTO toObject(Order order) {
@@ -28,9 +30,16 @@ public class OrderDTO {
 		dto.setRentalDateAndTime(order.getRentalDateAndTime());
 		dto.setPrice(order.getPrice());		
 		dto.setStatus(order.getOrderStatus().toString());
+		dto.setUserId(order.getUser().getName());
 		return dto;
 	}
 	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	public int getRentACarObjectId() {
 		return rentACarObjectId;
 	}

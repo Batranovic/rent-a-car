@@ -77,12 +77,14 @@ Vue.component("managerPage", {
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'desc' }"></i>
 	    </th>
 	    <th>Status</th>
+	    <th>Custommer</th>
 	  </tr>
 	  
 	  <tr v-for="result in searchResults" >
 	    <td>{{ result.rentalDateAndTime }}</td>
 	    <td>{{ result.price }}</td>
 	    <td>{{ result.status }}</td>
+	    <td>{{ result.userId }}</td>
 	  </tr>
 	  
 	</table>
@@ -110,6 +112,8 @@ Vue.component("managerPage", {
             </tr>
           
           </table>
+          
+          <button  class="car-objects-button" v-on:click="myObject()">My object</button><br>
         </div>
 	    `,
 	computed: {
@@ -213,7 +217,7 @@ Vue.component("managerPage", {
 				});
 		},
 
-		dent: function(id) {
+		deny: function(id) {
 			axios.put(`rest/comments/denyComment/` + id)
 				.then(response => {
 					axios.get(`rest/comments/getCommentsForRentObject/${this.users.rentACarObjectId}`)
@@ -225,6 +229,9 @@ Vue.component("managerPage", {
 							console.error("Error fetching comments", error);
 						});
 				});
-		}
+		},
+		myObject: function(){
+		router.push("/detailedObject/"+ this.users.rentACarObjectId);
+	},
 	}
 });

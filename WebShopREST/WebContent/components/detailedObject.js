@@ -36,18 +36,19 @@ Vue.component("detailedObject", {
             	<td>{{ object.address }}</td>
              </tr> 
             </table>
-            <table class="rentacar-table">
-            <tr>
-			        <td>
-			          <ul>
-			            <li v-for="vehicle in uniqueVehicles" :key="vehicle.id">
-			             <img :src="vehicle.picture" alt="vehicle Image" width="100">
-			              {{ vehicle.brand }},
-			              {{ vehicle.model }}
-			            </li>
-			          </ul>
-			        </td>
-            </tr>
+            <table class="rentacar-table" border="1">
+	            <tr>
+	            	<th>Brand</th>
+	            	<th>Model</th>
+	            	<th>Fuel type</th>
+	            </tr>
+	            <tr v-for="vehicle in uniqueVehicles" :key="vehicle.id">
+	            	<td> {{ vehicle.brand }}</td>
+	            	<td> {{ vehicle.model }}</td>
+	            	<td> {{ vehicle.fuelType }}</td>
+	            	
+	            </tr>
+			        
             </table>
             <table class="rentacar-table">
             <tr>
@@ -55,7 +56,7 @@ Vue.component("detailedObject", {
 			        <td>
 			          <ul>
 			            <li v-for="comment in comments" :key="comment.id">
-			            	{{ comment.text }}
+			            	{{ comment.text }}, {{ comment.grade }}
 			            </li>
 			          </ul>
 			        </td>
