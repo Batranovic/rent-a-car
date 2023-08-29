@@ -4,8 +4,10 @@ Vue.component("managerPage", {
 			users: null,
 			passedId: null,
 			searchCriteria: {
-				rentalDateAndTime: '',
-				price: ''
+				rentalDateAndTimeFrom: null,
+				rentalDateAndTimeTo: null,
+				priceFrom: null,
+				priceTo: null
 			},
 			searchResults: [], // Array to store search results
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
@@ -56,11 +58,17 @@ Vue.component("managerPage", {
 	   <table>
           <tr>
             
-            <td><label>RentalDateAndTime</label></td>
-            <td><input type="date" v-model="searchCriteria.rentalDateAndTime"></td>
+            <td><label>From</label></td>
+            <td><input type="date" v-model="searchCriteria.rentalDateAndTimeFrom"></td>
+             
+            <td><label>To</label></td
+            <td><input type="date" v-model="searchCriteria.rentalDateAndTimeTo"></td>
             
-            <td><label>Price:</label></td>
-            <td><input type="number" v-model="searchCriteria.price"></td>
+            <td><label>Price from:</label></td>
+            <td><input type="number" v-model="searchCriteria.priceFrom"></td>
+            
+            <td><label>Price to:</label></td>
+            <td><input type="number" v-model="searchCriteria.priceTo"></td>
             
             <td><button type="button" v-on:click="search()">Search</button></td>
           </tr>
@@ -193,11 +201,14 @@ Vue.component("managerPage", {
 				});
 		},
 		search: function() {
-			if (this.searchCriteria.price === null) {
-				this.searchCriteria.price = -1;
+			if (this.searchCriteria.priceFrom === null) {
+				this.searchCriteria.priceFrom = -1;
+			}
+			if (this.searchCriteria.priceTo === null) {
+				this.searchCriteria.priceTo = -1;
 			}
 
-			axios.post('rest/orders/search', this.searchCriteria)
+			axios.post(`rest/orders/searchForManagerOrder/${this.users.rentACarObjectId}`, this.searchCriteria)
 				.then(response => {
 					this.searchResults = response.data;
 				});

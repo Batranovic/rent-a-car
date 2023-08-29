@@ -73,10 +73,23 @@ public class OrderService {
 	    
 
     @POST
-    @Path("/search")
+    @Path("/search/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<OrderDTO> searchOrder(SearchOrderDTO searchDTO) {
-    	ArrayList<Order> orders = OrderDAO.getInstance().searchOrder(searchDTO);
+    public ArrayList<OrderDTO> searchOrder(@PathParam("id") int id, SearchOrderDTO searchDTO) {
+    	ArrayList<Order> orders = OrderDAO.getInstance().searchOrder(searchDTO, id);
+    	ArrayList<OrderDTO> dtos = new ArrayList<OrderDTO>();
+    	for(Order order : orders) {
+    		dtos.add(OrderDTO.toObject(order) );
+    	}
+    	
+        return dtos;
+    }
+    
+    @POST
+    @Path("/searchForManagerOrder/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<OrderDTO> searchForManagerOrder(@PathParam("id") int id, SearchOrderDTO searchDTO) {
+    	ArrayList<Order> orders = OrderDAO.getInstance().searchManagerOrder(searchDTO, id);
     	ArrayList<OrderDTO> dtos = new ArrayList<OrderDTO>();
     	for(Order order : orders) {
     		dtos.add(OrderDTO.toObject(order) );

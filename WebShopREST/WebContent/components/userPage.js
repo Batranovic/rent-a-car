@@ -7,8 +7,8 @@ Vue.component("user-page", {
 				rentACarObject: '',
 				rentalDateAndTimeFrom: '',
 				rentalDateAndTimeTo: '',
-				priceFrom: '',
-				priceTo: ''
+				priceFrom: null,
+				priceTo: null
 			},
 			searchResults: [], // Array to store search results
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
@@ -174,11 +174,14 @@ Vue.component("user-page", {
 				});
 		},
 		search: function() {
-			if (this.searchCriteria.price === null) {
-				this.searchCriteria.price = -1;
+			if (this.searchCriteria.priceFrom === null) {
+				this.searchCriteria.priceFrom = -1;
 			}
-
-			axios.post('rest/orders/search', this.searchCriteria)
+			if (this.searchCriteria.priceTo === null) {
+				this.searchCriteria.priceTo = -1;
+			}
+			
+			axios.post(`rest/orders/search/${this.users.id}`, this.searchCriteria)
 				.then(response => {
 					this.searchResults = response.data;
 				});

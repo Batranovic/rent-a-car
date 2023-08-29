@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import dto.SearchOrderDTO;
@@ -66,34 +68,42 @@ public class OrderDAO {
 	
 	
 	private boolean searchCondition(Order order, SearchOrderDTO searchDTO) {
-		LocalDate from = LocalDate.parse(searchDTO.getRentalDateAndTimeFrom());
-		LocalDate to = LocalDate.parse(searchDTO.getRentalDateAndTimeTo());
-		
-		
-		
-		
-		if (!order.getRentACarObject().getName().contains(searchDTO.getRentACarObject())) {
-			return false;
-		}
-		
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-		if(searchDTO.getPriceFrom() != -1) {
-			if (order.getPrice() != searchDTO.getPriceFrom()) {
-				return false;
-			}			
-		}
-		
-		if(searchDTO.getPriceTo() != -1) {
-			if (order.getPrice() != searchDTO.getPriceTo()) {
-				return false;
-			}			
-		}
-		
-		return true;
+	    if (!searchDTO.getRentalDateAndTimeFrom().isEmpty()) {
+	        LocalDate from = LocalDate.parse(searchDTO.getRentalDateAndTimeFrom(), formatter);
+	        LocalDate rentalDate = LocalDate.parse(order.getRentalDateAndTime(), formatter);
+
+	        if (rentalDate.isBefore(from)) {
+	            return false;
+	        }
+	    }
+
+	    if (!searchDTO.getRentalDateAndTimeTo().isEmpty()) {
+	        LocalDate to = LocalDate.parse(searchDTO.getRentalDateAndTimeTo(), formatter);
+	        LocalDate rentalDate = LocalDate.parse(order.getRentalDateAndTime(), formatter);
+
+	        if (rentalDate.isAfter(to)) {
+	            return false;
+	        }
+	    }
+
+	    if (!order.getRentACarObject().getName().contains(searchDTO.getRentACarObject())) {
+	        return false;
+	    }
+
+	    if (searchDTO.getPriceFrom() != -1 || searchDTO.getPriceTo() != -1) {
+	        if (order.getPrice() < searchDTO.getPriceFrom() || order.getPrice() > searchDTO.getPriceTo()) {
+	            return false;
+	        }
+	    }
+
+	    return true;
 	}
 
-	public ArrayList<Order> searchOrder(SearchOrderDTO searchDTO) {
-		
+
+
+	public ArrayList<Order> searchOrder(SearchOrderDTO searchDTO, int userId) {
 		
 		if (searchDTO.getRentACarObject() == null) {
 			searchDTO.setRentACarObject("");
@@ -110,13 +120,69 @@ public class OrderDAO {
 
 		ArrayList<Order> searchedOrders = new ArrayList<Order>();
 		for (Order o : orders) {
-			if (searchCondition(o, searchDTO)) {
-				searchedOrders.add(o);				
+			if(o.getUser().getId() == userId) {
+				if (searchCondition(o, searchDTO)) {
+					searchedOrders.add(o);				
+				}
 			}
 		}
 		return searchedOrders;
 	}
 	
+	private boolean searchManagerCondition(Order order, SearchOrderDTO searchDTO) {
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+	    if (!searchDTO.getRentalDateAndTimeFrom().isEmpty()) {
+	        LocalDate from = LocalDate.parse(searchDTO.getRentalDateAndTimeFrom(), formatter);
+	        LocalDate rentalDate = LocalDate.parse(order.getRentalDateAndTime(), formatter);
+
+	        if (rentalDate.isBefore(from)) {
+	            return false;
+	        }
+	    }
+
+	    if (!searchDTO.getRentalDateAndTimeTo().isEmpty()) {
+	        LocalDate to = LocalDate.parse(searchDTO.getRentalDateAndTimeTo(), formatter);
+	        LocalDate rentalDate = LocalDate.parse(order.getRentalDateAndTime(), formatter);
+
+	        if (rentalDate.isAfter(to)) {
+	            return false;
+	        }
+	    }
+
+
+	    if (searchDTO.getPriceFrom() != -1 || searchDTO.getPriceTo() != -1) {
+	        if (order.getPrice() < searchDTO.getPriceFrom() || order.getPrice() > searchDTO.getPriceTo()) {
+	            return false;
+	        }
+	    }
+
+	    return true;
+	}
+
+
+	public ArrayList<Order> searchManagerOrder(SearchOrderDTO searchDTO, int objectId) {
+			
+			if (searchDTO.getRentalDateAndTimeFrom() == null) {
+				searchDTO.setRentalDateAndTimeFrom("");
+			}
+			
+			if (searchDTO.getRentalDateAndTimeTo() == null) {
+				searchDTO.setRentalDateAndTimeTo("");
+			}
+			
+	
+			ArrayList<Order> searchedOrders = new ArrayList<Order>();
+			for (Order o : orders) {
+				if(o.getRentACarObject().getId() == objectId) {
+					if (searchManagerCondition(o, searchDTO)) {
+						searchedOrders.add(o);				
+					}
+				}
+			}
+			return searchedOrders;
+		}
+		
 	private void writeToFileOrderVehicle() {
 		try {
 			FileWriter fileWriter = new FileWriter(ProjectDAO.ctxPath + "orderVehicle.txt");
