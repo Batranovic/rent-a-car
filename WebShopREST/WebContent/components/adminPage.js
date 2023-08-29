@@ -1,6 +1,9 @@
-Vue.component("viewAllUsers", {
+Vue.component("adminPage", {
 	data: function() {
 		return {
+			users: null,
+			passedUsername: null,
+			
 			searchCriteria: {
 				name: '',
 				surname: '',
@@ -14,13 +17,45 @@ Vue.component("viewAllUsers", {
 			searchResults: [], // Array to store search results
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
 			sortDirection: 'asc',
-			
-		};
+		}
 	},
-	template: `
-    <div class="container">
-      <center>
-        <h1>All Users</h1>
+	template:
+		`
+	   <div class="container">
+		<form v-if="users">
+			<h2><b>Admin page</b></h2>
+				<table>
+					<tr>
+						<td>Name:</td>
+						<td><input type = "text" v-model = "users.name" ></td>
+					</tr>
+					<tr>
+						<td>Surname:</td>
+						<td><input type = "text" v-model = "users.surname" ></td>
+					</tr>
+					<tr>
+						<td>Username:</td>
+						<td><input type = "text" v-model = "users.username"></td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td><input type = "text" v-model = "users.password"></td>
+					</tr>
+					<tr>
+						<td>Gender:</td>
+						<td><input type = "text" v-model = "users.gender"></td>
+					</tr>
+					<tr>
+						<td>Birthday:</td>
+						<td><input type = "date" v-model="formattedBirthday"></td>
+					</tr>
+					<button type="sumbit" v-on:click="modify()">Modify</button>
+				</table>
+			</form>
+
+		<br>
+		
+	   <h2>All Users</h2>
       </center>
         <table>
           <tr>
@@ -89,9 +124,42 @@ Vue.component("viewAllUsers", {
 	  </tr>
 	  
 	</table>
+        </div>
+	    `,
+	computed: {
+		formattedBirthday: {
+			get() {
+				if (this.users && this.users.birthday) {
+					const parts = this.users.birthday.split("-");
+					if (parts.length === 3) {
+						return `${parts[2]}-${parts[1]}-${parts[0]}`;
+					}
+				}
+				return "";
+			},
+			set(value) {
+				const parts = value.split("-");
+				if (parts.length === 3) {
+					this.users.birthday = `${parts[2]}-${parts[1]}-${parts[0]}`;
+				}
+			}
+		}
+	},
+	mounted() {
+		this.passedUsername = this.$route.params.username;
+		axios.get(`rest/users/searchByUsername/` + this.passedUsername)
+			.then(response => {
+				this.users = response.data
+				axios.get('rest/users/')
+					.then(response => {
+						this.searchResults = response.data;
+						this.searchResultsBackUp = response.data;
+					});
+	
+			});
 
-    </div>
-  `,
+
+	},
 	methods: {
 		sort: function(column) {
 			if (this.sortBy === column) {
@@ -107,24 +175,25 @@ Vue.component("viewAllUsers", {
 			this.searchResults.sort((a, b) => {
 				const aValue = a[this.sortBy];
 				const bValue = b[this.sortBy];
-				
-				
+
+
 				if (this.sortBy === 'points') {
 					return (aValue - bValue) * sortFactor;
 				}
+
 				// For other columns, use localeCompare
 				return aValue.localeCompare(bValue) * sortFactor;
 			});
 		},
 
-		search: function() {
-			
-			axios.post('rest/users/searchUser', this.searchCriteria)
+		modify: function() {
+			axios.put(`rest/users/update/${this.users.id}`, this.users)
 				.then(response => {
-					this.searchResults = response.data;
-					this.searchResultsBackUp = response.data;
+					console.log('Modified:', response.data);
+				})
+				.catch(error => {
+					console.error("Error updating user:", error);
 				});
-
 		},
 		filter: function() {
 	    this.searchResults = this.searchResultsBackUp.filter(obj => {
@@ -139,14 +208,13 @@ Vue.component("viewAllUsers", {
 	        return true;
 	    });
 	},
+		search: function() {
+			axios.post('rest/users/searchUser', this.searchCriteria)
+				.then(response => {
+					this.searchResults = response.data;
+					this.searchResultsBackUp = response.data;
+				});
 
-	
-	},
-	mounted() {
-		axios.get('rest/users/')
-			.then(response => {
-				this.searchResults = response.data;
-				this.searchResultsBackUp = response.data;
-			});
+		},
 	}
 });

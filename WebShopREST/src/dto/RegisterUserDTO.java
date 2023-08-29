@@ -17,13 +17,14 @@ public class RegisterUserDTO {
 	private String birthday;
 	private String username;
 	private String password;
+	private String role;
 
 	public RegisterUserDTO() {
 		super();
 	}
 
 	public RegisterUserDTO(String name, String surname, Gender gender, String birthday, String username,
-			String password) {
+			String password, String role) {
 		super();
 		this.name = name;
 		this.surname = surname;
@@ -31,6 +32,7 @@ public class RegisterUserDTO {
 		this.birthday = birthday;
 		this.username = username;
 		this.password = password;
+		this.role = role;
 	}
 	
 	public User convertToUser() {
@@ -55,7 +57,16 @@ public class RegisterUserDTO {
 		dto.birthday = user.getBirthday();
 		dto.username = user.getUsername();
 		dto.password = user.getPassword();
+		dto.role = user.getRole().toString();
 		return dto;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public String getName() {

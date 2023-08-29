@@ -35,7 +35,6 @@ Vue.component("login", {
         </p>
       </form>
        <button  class="car-objects-button" v-on:click="viewCarObjects">CarObjects</button><br>
-       <button  class="users-objects-button" v-on:click="viewAllUsers">Users</button><br>
     </div>
   `,
 
@@ -45,9 +44,6 @@ Vue.component("login", {
     },
     viewCarObjects: function(){
 		router.push("/");
-	},
-	viewAllUsers: function(){
-		router.push("/viewAllUsers");
 	},
 
     logIn: function() {
@@ -61,7 +57,13 @@ Vue.component("login", {
             this.user.password = "";
           
           } else {
-            router.push(`/userPage/${result.username}`);
+           if (result.role === "customer") {
+          router.push(`/userPage/${result.username}`);
+        } else if (result.role === "manager") {
+          router.push(`/managerPage/${result.username}`);
+        } else if (result.role === "administrator") {
+          router.push(`/adminPage/${result.username}`);
+        }
           }
         })
         .catch(error => {

@@ -48,7 +48,7 @@ Vue.component("user-page", {
 			</form>
 
 	   <br>
-	   <h2>View all rentals</h2>
+	   <h2>Your rentals</h2>
 	   <br>
 	   
 	   <table>
@@ -72,7 +72,7 @@ Vue.component("user-page", {
 	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'name' && sortDirection === 'asc' }"></i>
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'name' && sortDirection === 'desc' }"></i>
 	    </th>
-	    <th @click="sort('rentalDateAndTime')">RentalDateAndTime 
+	    <th @click="sort('rentalDateAndTime')">RentalDate 
 	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'location' && sortDirection === 'asc' }"></i>
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'location' && sortDirection === 'desc' }"></i>
 	    </th>
@@ -80,12 +80,14 @@ Vue.component("user-page", {
 	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'asc' }"></i>
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'desc' }"></i>
 	    </th>
+	    <th>Order status</th>
 	  </tr>
 	  
 	  <tr v-for="result in searchResults" >
 	    <td>{{ result.rentACarObject }}</td>
 	    <td>{{ result.rentalDateAndTime }}</td>
 	    <td>{{ result.price }}</td>
+	    <td>{{ result.status }}
 	  </tr>
 	  
 	</table>
@@ -149,9 +151,6 @@ Vue.component("user-page", {
 			});
 		},
 
-		myRentals: function() {
-			router.push("/myRentals");
-		},
 		modify: function() {
 			axios.put(`rest/users/update/${this.users.id}`, this.users)
 				.then(response => {

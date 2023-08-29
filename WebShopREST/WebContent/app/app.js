@@ -7,8 +7,8 @@ const CreateObject = {template: "<createObject></createObject>"}
 const CreateVehicle = {template: "<createVehicle></createVehicle>"}
 const CreateManagerForObject = {template: "<managerForObject></managerForObject>"}
 const DetailedObject = {template: "<detailedObject></detailedObject>"}
-const ViewAllUsers = {template: "<viewAllUsers></viewAllUsers>"}
 const ManagerPage = {template: "<managerPage></managerPage>"}
+const AdminPage = {template: "<adminPage></adminPage>"}
 
 const router = new VueRouter({
     mode: 'hash',
@@ -22,8 +22,8 @@ const router = new VueRouter({
         { path: '/createVehicle', component: CreateVehicle},
         { path: '/managerForObject', component: CreateManagerForObject},
         { path: '/detailedObject/:id', name: 'detailed', component: DetailedObject},
-        { path: '/viewAllUsers', component: ViewAllUsers },
-        { path: '/managerPage', component: ManagerPage}
+        { path: '/managerPage/:username', component: ManagerPage},
+        { path: '/adminPage/:username', component: AdminPage}
     ]
 });
 

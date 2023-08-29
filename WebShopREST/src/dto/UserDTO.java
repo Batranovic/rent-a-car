@@ -41,7 +41,7 @@ public class UserDTO {
 		dto.setUsername(user.getUsername());
 		dto.setPoints(user.getPoints());
 		dto.setRole(user.getRole().toString());
-		dto.setCustomerType(user.getCustomerType().toString());
+		dto.setCustomerType(user.getCustomerType().getType().toString());
 		dto.setBirthday(user.getBirthday());
 		dto.setGender(user.getGender().toString());
 		dto.setPassword(user.getPassword());
