@@ -2,11 +2,13 @@ Vue.component("user-page", {
 	data: function() {
 		return {
 			users: null,
-			passedUsername: null,
+			passedId: null,
 			searchCriteria: {
 				rentACarObject: '',
-				rentalDateAndTime: '',
-				price: ''
+				rentalDateAndTimeFrom: '',
+				rentalDateAndTimeTo: '',
+				priceFrom: '',
+				priceTo: ''
 			},
 			searchResults: [], // Array to store search results
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
@@ -17,7 +19,9 @@ Vue.component("user-page", {
 		`
 	   <div class="container">
 		<form v-if="users">
+		<center>
 			<h2><b>Your page</b></h2>
+		</center>
 				<table>
 					<tr>
 						<td>Name:</td>
@@ -53,22 +57,29 @@ Vue.component("user-page", {
 	   
 	   <table>
           <tr>
-            <td><label>RentACarObject:</label></td>
+            <td><label>Object:</label></td>
             <td><input type="text" v-model="searchCriteria.rentACarObject"></td>
             
-            <td><label>RentalDateAndTime</label></td>
-            <td><input type="date" v-model="searchCriteria.rentalDateAndTime"></td>
+            <td><label>From</label></td>
+            <td><input type="date" v-model="searchCriteria.rentalDateAndTimeFrom"></td>
+             
+            <td><label>To</label></td
+            <td><input type="date" v-model="searchCriteria.rentalDateAndTimeTo"></td>
             
-            <td><label>Price:</label></td>
-            <td><input type="number" v-model="searchCriteria.price"></td>
+            <td><label>Price from:</label></td>
+            <td><input type="number" v-model="searchCriteria.priceFrom"></td>
+            
+            <td><label>Price to:</label></td>
+            <td><input type="number" v-model="searchCriteria.priceTo"></td>
             
             <td><button type="button" v-on:click="search()">Search</button></td>
+            
           </tr>
        </table>
         
       <table class="rentacar-table" border="1">
 	  <tr bgcolor="lightgrey">
-	    <th @click="sort('rentACarObject')">Name 
+	    <th @click="sort('rentACarObject')">Object 
 	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'name' && sortDirection === 'asc' }"></i>
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'name' && sortDirection === 'desc' }"></i>
 	    </th>
@@ -81,13 +92,15 @@ Vue.component("user-page", {
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'desc' }"></i>
 	    </th>
 	    <th>Order status</th>
+	     <th><Label>Comment:</label></th>
 	  </tr>
 	  
 	  <tr v-for="result in searchResults" >
 	    <td>{{ result.rentACarObject }}</td>
 	    <td>{{ result.rentalDateAndTime }}</td>
 	    <td>{{ result.price }}</td>
-	    <td>{{ result.status }}
+	    <td>{{ result.status }}</td>
+	    <td> <button type="button" v-on:click="createComment(result)">Leave a comment</button> </td>
 	  </tr>
 	  
 	</table>
@@ -113,8 +126,8 @@ Vue.component("user-page", {
 		}
 	},
 	mounted() {
-		this.passedUsername = this.$route.params.username;
-		axios.get(`rest/users/searchByUsername/` + this.passedUsername)
+		this.passedId = this.$route.params.id;
+		axios.get(`rest/users/searchByUsername/` + this.passedId)
 			.then(response => {
 				this.users = response.data
 				axios.get(`rest/orders/getOrderForUser/${this.users.id}`)
@@ -171,5 +184,14 @@ Vue.component("user-page", {
 				});
 
 		},
+		createComment: function(order){
+			 if (order.status === "returned") {
+		        localStorage.setItem("commentRentACarObjectId", order.rentACarObjectId);
+		        router.push("/createComment");
+		    } else {
+		        window.alert("Order status is not approved. Comment creation not allowed.");
+		    }
+   
+		}
 	}
 });

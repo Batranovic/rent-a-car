@@ -11,6 +11,7 @@ import model.User;
 import model.Vehicle;
 
 public class RegisterUserDTO {
+	private int id;
 	private String name;
 	private String surname;
 	private Gender gender;
@@ -23,9 +24,10 @@ public class RegisterUserDTO {
 		super();
 	}
 
-	public RegisterUserDTO(String name, String surname, Gender gender, String birthday, String username,
+	public RegisterUserDTO(int id,String name, String surname, Gender gender, String birthday, String username,
 			String password, String role) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
@@ -51,6 +53,7 @@ public class RegisterUserDTO {
 	
 	public static RegisterUserDTO convertToDTO(User user) {
 		RegisterUserDTO dto = new RegisterUserDTO();
+		dto.id = user.getId();
 		dto.name = user.getName();
 		dto.surname = user.getSurname();
 		dto.gender = user.getGender();
@@ -59,6 +62,14 @@ public class RegisterUserDTO {
 		dto.password = user.getPassword();
 		dto.role = user.getRole().toString();
 		return dto;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getRole() {

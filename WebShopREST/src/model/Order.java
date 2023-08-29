@@ -80,13 +80,6 @@ public class Order {
 		this.rentACarObject = rentACarObject;
 	}
 
-	public String getDateAndTime() {
-		return rentalDateAndTime;
-	}
-
-	public void setDateAndTime(String dateAndTime) {
-		this.rentalDateAndTime = dateAndTime;
-	}
 
 	public int getLeaseDuration() {
 		return leaseDuration;

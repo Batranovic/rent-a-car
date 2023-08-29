@@ -110,10 +110,13 @@ public class UserService {
   
 
     @GET
-    @Path("/searchByUsername/{username}")
+    @Path("/searchByUsername/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDTO searchByUsername(@PathParam("username") String username) {
-    	User user = UserDAO.getInstance().getByUsername(username);
+    public UserDTO searchByUsername(@PathParam("id") int id) {
+    	User user = UserDAO.getInstance().getById(id);
+    	if(user == null) {
+    		return null;
+    	}
     	UserDTO dto = UserDTO.toObject(user);
     	return dto;
     }

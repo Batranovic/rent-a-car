@@ -3,6 +3,7 @@ package dto;
 import model.Comment;
 
 public class CommentCreationDTO {
+	private int id;
 	private int userId;
 	private int rentACArObjectId;
 	private String text;
@@ -12,8 +13,9 @@ public class CommentCreationDTO {
 		super();
 	}
 	
-	public CommentCreationDTO(int userId, int rentACArObjectId, String text, int grade) {
+	public CommentCreationDTO(int id,int userId, int rentACArObjectId, String text, int grade) {
 		super();
+		this.id = id;
 		this.userId = userId;
 		this.rentACArObjectId = rentACArObjectId;
 		this.text = text;
@@ -30,6 +32,7 @@ public class CommentCreationDTO {
 	
 	public static CommentCreationDTO convertToDTO(Comment comment) {
 		CommentCreationDTO dto = new CommentCreationDTO();
+		dto.id = comment.getId();
 		dto.userId = comment.getUser().getId();
 		dto.rentACArObjectId = comment.getRentACarObject().getId();
 		dto.text = comment.getText();
@@ -37,6 +40,14 @@ public class CommentCreationDTO {
 		return dto;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public int getUserId() {
 		return userId;
 	}

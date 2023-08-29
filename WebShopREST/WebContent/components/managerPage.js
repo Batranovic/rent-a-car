@@ -2,7 +2,7 @@ Vue.component("managerPage", {
 	data: function() {
 		return {
 			users: null,
-			passedUsername: null,
+			passedId: null,
 			searchCriteria: {
 				rentalDateAndTime: '',
 				price: ''
@@ -10,13 +10,16 @@ Vue.component("managerPage", {
 			searchResults: [], // Array to store search results
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
 			sortDirection: 'asc',
+			comments: []
 		}
 	},
 	template:
 		`
 	   <div class="container">
 		<form v-if="users">
+			<center>
 			<h2><b>Manager page</b></h2>
+			</center>
 				<table>
 					<tr>
 						<td>Name:</td>
@@ -47,7 +50,7 @@ Vue.component("managerPage", {
 			</form>
 
 	   <br>
-	   <h2>View all rentals</h2>
+	   <h2>All rentals</h2>
 	   <br>
 	   
 	   <table>
@@ -73,14 +76,40 @@ Vue.component("managerPage", {
 	      <i class="arrow-icon arrow-up" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'asc' }"></i>
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'desc' }"></i>
 	    </th>
+	    <th>Status</th>
 	  </tr>
 	  
 	  <tr v-for="result in searchResults" >
 	    <td>{{ result.rentalDateAndTime }}</td>
-	    <td>{{ result.price }}</td
+	    <td>{{ result.price }}</td>
+	    <td>{{ result.status }}</td>
 	  </tr>
 	  
 	</table>
+	
+	<br>
+	<center>
+		<h2>All comments</h2>	
+	</center>
+	<br>
+	
+		<table class="rentacar-table" border="1">
+            <tr>
+            	<th>Comment</th>
+            	<th>Grade</th>
+            	<th>Status</th>
+            	<th>Accept</th>
+            	<th>Deny</th>
+            </tr>
+            <tr v-for="comment in comments">
+            	<td>{{ comment.text }}</td>
+            	<td>{{ comment.grade }}</td>
+            	<td>{{ comment.status }}</td>
+            	<td><button type="sumbit" :disabled="comment.status !== 'waiting'" v-on:click="accept(comment.id)">Accept</button></td>
+            	<td><button type="sumbit" :disabled="comment.status !== 'waiting'" v-on:click="deny(comment.id)">Deny</button></td>
+            </tr>
+          
+          </table>
         </div>
 	    `,
 	computed: {
@@ -103,12 +132,24 @@ Vue.component("managerPage", {
 		}
 	},
 	mounted() {
-		this.passedUsername = this.$route.params.username;
-		axios.get(`rest/users/searchByUsername/` + this.passedUsername)
+		this.passedId = this.$route.params.id;
+		axios.get(`rest/users/searchByUsername/` + this.passedId)
 			.then(response => {
 				this.users = response.data
-	
+				axios.get(`rest/orders/getOrdersForRentObject/${this.users.rentACarObjectId}`)
+					.then(response => {
+						this.searchResults = response.data;
+						axios.get(`rest/comments/getCommentsForRentObject/${this.users.rentACarObjectId}`)
+							.then(response => {
+								this.comments = response.data;
+
+							})
+							.catch(error => {
+								console.error("Error fetching comments", error);
+							});
+					});
 			});
+
 
 
 	},
@@ -158,5 +199,32 @@ Vue.component("managerPage", {
 				});
 
 		},
+		accept: function(id) {
+			axios.put(`rest/comments/acceptComment/` + id)
+				.then(response => {
+					axios.get(`rest/comments/getCommentsForRentObject/${this.users.rentACarObjectId}`)
+						.then(response => {
+							this.comments = response.data;
+
+						})
+						.catch(error => {
+							console.error("Error fetching comments", error);
+						});
+				});
+		},
+
+		dent: function(id) {
+			axios.put(`rest/comments/denyComment/` + id)
+				.then(response => {
+					axios.get(`rest/comments/getCommentsForRentObject/${this.users.rentACarObjectId}`)
+						.then(response => {
+							this.comments = response.data;
+
+						})
+						.catch(error => {
+							console.error("Error fetching comments", error);
+						});
+				});
+		}
 	}
 });

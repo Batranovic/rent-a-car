@@ -2,7 +2,7 @@ Vue.component("adminPage", {
 	data: function() {
 		return {
 			users: null,
-			passedUsername: null,
+			passedId: null,
 			
 			searchCriteria: {
 				name: '',
@@ -23,7 +23,9 @@ Vue.component("adminPage", {
 		`
 	   <div class="container">
 		<form v-if="users">
-			<h2><b>Admin page</b></h2>
+			<center>
+			<h2><b>Administrator page</b></h2>
+			</center>
 				<table>
 					<tr>
 						<td>Name:</td>
@@ -146,8 +148,8 @@ Vue.component("adminPage", {
 		}
 	},
 	mounted() {
-		this.passedUsername = this.$route.params.username;
-		axios.get(`rest/users/searchByUsername/` + this.passedUsername)
+		this.passedId = this.$route.params.id;
+		axios.get(`rest/users/searchByUsername/` + this.passedId)
 			.then(response => {
 				this.users = response.data
 				axios.get('rest/users/')

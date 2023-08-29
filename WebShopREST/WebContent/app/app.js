@@ -9,21 +9,23 @@ const CreateManagerForObject = {template: "<managerForObject></managerForObject>
 const DetailedObject = {template: "<detailedObject></detailedObject>"}
 const ManagerPage = {template: "<managerPage></managerPage>"}
 const AdminPage = {template: "<adminPage></adminPage>"}
+const CreateComment = {template: "<createComment></createComment>"}
 
 const router = new VueRouter({
     mode: 'hash',
     routes: [
         { path: '/logIn', component: LogIn},
         { path: '/signUp', component: SignUp},
-		{ path: '/userPage/:username', component: UserPage},         
-        { path: '/searchByUsername/:username', component: ProfileModification},
+		{ path: '/userPage/:id', component: UserPage},         
+        { path: '/searchByUsername/:id', component: ProfileModification},
         { path: '/', component: ViewRentACarObject},
         { path: '/createObject', component: CreateObject},
         { path: '/createVehicle', component: CreateVehicle},
         { path: '/managerForObject', component: CreateManagerForObject},
         { path: '/detailedObject/:id', name: 'detailed', component: DetailedObject},
-        { path: '/managerPage/:username', component: ManagerPage},
-        { path: '/adminPage/:username', component: AdminPage}
+        { path: '/managerPage/:id', component: ManagerPage},
+        { path: '/adminPage/:id', component: AdminPage},
+        { path: '/createComment', component: CreateComment}
     ]
 });
 

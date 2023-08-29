@@ -31,3 +31,13 @@
 .rentacar-table td:first-child {
   width: 20%; /* Adjust this value as needed */
 }
+
+.button-cell {
+  text-align: right;
+  padding-top: 10px;
+}
+
+.button-cell button {
+  float: right;
+  margin-left: 10px;
+}

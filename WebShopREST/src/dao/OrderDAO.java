@@ -6,15 +6,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import dto.SearchDTO;
 import dto.SearchOrderDTO;
 import enums.OrderStatus;
-import model.Basket;
-import model.Comment;
 import model.Order;
 import model.RentACarObject;
 import model.User;
@@ -66,16 +62,29 @@ public class OrderDAO {
 		return null;
 	}
 	
+	
+	
+	
 	private boolean searchCondition(Order order, SearchOrderDTO searchDTO) {
+		LocalDate from = LocalDate.parse(searchDTO.getRentalDateAndTimeFrom());
+		LocalDate to = LocalDate.parse(searchDTO.getRentalDateAndTimeTo());
+		
+		
+		
+		
 		if (!order.getRentACarObject().getName().contains(searchDTO.getRentACarObject())) {
 			return false;
 		}
-		if (!order.getRentalDateAndTime().contains(searchDTO.getRentalDateAndTime())) {
-			return false;
-		}
+		
 
-		if(searchDTO.getPrice() != -1) {
-			if (order.getPrice() != searchDTO.getPrice()) {
+		if(searchDTO.getPriceFrom() != -1) {
+			if (order.getPrice() != searchDTO.getPriceFrom()) {
+				return false;
+			}			
+		}
+		
+		if(searchDTO.getPriceTo() != -1) {
+			if (order.getPrice() != searchDTO.getPriceTo()) {
 				return false;
 			}			
 		}
@@ -84,12 +93,18 @@ public class OrderDAO {
 	}
 
 	public ArrayList<Order> searchOrder(SearchOrderDTO searchDTO) {
+		
+		
 		if (searchDTO.getRentACarObject() == null) {
 			searchDTO.setRentACarObject("");
 		}
 
-		if (searchDTO.getRentalDateAndTime() == null) {
-			searchDTO.setRentalDateAndTime("");
+		if (searchDTO.getRentalDateAndTimeFrom() == null) {
+			searchDTO.setRentalDateAndTimeFrom("");
+		}
+		
+		if (searchDTO.getRentalDateAndTimeTo() == null) {
+			searchDTO.setRentalDateAndTimeTo("");
 		}
 		
 
@@ -204,5 +219,19 @@ public class OrderDAO {
 		}
 		return userOrders;
 	}
+	
+	public ArrayList<Order> getAllOrdersForObject(int objectId){
+		ArrayList<Order> userOrders = new ArrayList<Order>();
+		for(Order order : orders) {
+			if(order.getRentACarObject().getId() == objectId) {
+				userOrders.add(order);
+			}
+		}
+		return userOrders;
+	}
+	
+	
+	
+	
 
 }

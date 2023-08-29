@@ -4,6 +4,7 @@ import model.Order;
 
 public class OrderDTO {
 	private String rentACarObject;
+	private int rentACarObjectId;
 	private String rentalDateAndTime;
 	private int price;
 	private String status;
@@ -11,9 +12,10 @@ public class OrderDTO {
 	public OrderDTO() {
 		super();
 	}
-	public OrderDTO(String rentACarObject, String rentalDateAndTime, int price, String status) {
+	public OrderDTO(String rentACarObject,int rentId, String rentalDateAndTime, int price, String status) {
 		super();
 		this.rentACarObject = rentACarObject;
+		this.rentACarObjectId = rentId;
 		this.rentalDateAndTime = rentalDateAndTime;
 		this.price = price;
 		this.status = status;
@@ -22,12 +24,19 @@ public class OrderDTO {
 	public static OrderDTO toObject(Order order) {
 		OrderDTO dto = new OrderDTO();
 		dto.setRentACarObject(order.getRentACarObject().getName());
+		dto.setRentACarObjectId(order.getRentACarObject().getId());
 		dto.setRentalDateAndTime(order.getRentalDateAndTime());
 		dto.setPrice(order.getPrice());		
 		dto.setStatus(order.getOrderStatus().toString());
 		return dto;
 	}
 	
+	public int getRentACarObjectId() {
+		return rentACarObjectId;
+	}
+	public void setRentACarObjectId(int rentACarObjectId) {
+		this.rentACarObjectId = rentACarObjectId;
+	}
 	public String getStatus() {
 		return status;
 	}

@@ -11,6 +11,7 @@ public class UserDTO {
 	private String gender;
 	private String birthday;
 	private String password;
+	private int rentACarObjectId;
 	
 	public UserDTO() {
 		super();
@@ -18,7 +19,7 @@ public class UserDTO {
 	
 	
 	public UserDTO(int id, String name, String surname, String username, int points, String role, String customerType,
-			String gender, String birthday, String password) {
+			String gender, String birthday, String password, int rent) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -30,6 +31,7 @@ public class UserDTO {
 		this.gender = gender;
 		this.birthday = birthday;
 		this.password = password;
+		this.rentACarObjectId = rent;
 	}
 
 
@@ -45,10 +47,21 @@ public class UserDTO {
 		dto.setBirthday(user.getBirthday());
 		dto.setGender(user.getGender().toString());
 		dto.setPassword(user.getPassword());
+		dto.setRentACarObjectId(user.getRentACarObject().getId());
 		return dto;
 	}
 	
 	
+	public int getRentACarObjectId() {
+		return rentACarObjectId;
+	}
+
+
+	public void setRentACarObjectId(int rentACarObjectId) {
+		this.rentACarObjectId = rentACarObjectId;
+	}
+
+
 	public int getId() {
 		return id;
 	}

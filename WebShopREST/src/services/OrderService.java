@@ -12,13 +12,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dao.CommentDAO;
 import dao.OrderDAO;
 import dao.ProjectDAO;
 import dao.RentACarObjectDAO;
+import dto.CommentDTO;
 import dto.OrderDTO;
 import dto.RentACarDTO;
 import dto.SearchDTO;
 import dto.SearchOrderDTO;
+import model.Comment;
 import model.Order;
 import model.RentACarObject;
 
@@ -53,6 +56,21 @@ public class OrderService {
 		return dtos;
 
 	}
+	
+	   @GET
+	    @Path("/getOrdersForRentObject/{id}")
+	    @Produces(MediaType.APPLICATION_JSON)
+	    public ArrayList<OrderDTO> getAllOrdersForRentObject(@PathParam("id") int id){
+	    	ArrayList<Order> orders = OrderDAO.getInstance().getAllOrdersForObject(id);
+	    	ArrayList<OrderDTO> dtos = new ArrayList<OrderDTO>();
+	    	for(Order order : orders) {
+	    		dtos.add(OrderDTO.toObject(order) );
+	    	}
+	    	
+	        return dtos;
+	    	
+	    }
+	    
 
     @POST
     @Path("/search")

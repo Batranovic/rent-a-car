@@ -95,7 +95,7 @@ Vue.component("detailedObject", {
         
         
         
-        axios.get(`rest/comments/getCommentsForRentObject/${id}`)
+        axios.get(`rest/comments/getAcceptedCommentsForRentObject/${id}`)
         .then(response => {
             this.comments = response.data;
             

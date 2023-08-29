@@ -57,12 +57,13 @@ Vue.component("login", {
             this.user.password = "";
           
           } else {
+			 localStorage.setItem("loggedUserId", result.id);
            if (result.role === "customer") {
-          router.push(`/userPage/${result.username}`);
+          router.push(`/userPage/${result.id}`);
         } else if (result.role === "manager") {
-          router.push(`/managerPage/${result.username}`);
+          router.push(`/managerPage/${result.id}`);
         } else if (result.role === "administrator") {
-          router.push(`/adminPage/${result.username}`);
+          router.push(`/adminPage/${result.id}`);
         }
           }
         })

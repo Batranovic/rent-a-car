@@ -52,7 +52,36 @@ public class CommentDAO {
 		}
 		return id + 1;
 	}
+	public Comment save(Comment comment) {
+		
+		comment.setId(nextId());
+		comments.add(comment);
+		writeToFileJSON();
+		return comment;
+	}
+	
+	public Comment acceptComment(int commentId) {
+		Comment comment = getById(commentId);
+		if(comment == null) {
+			return null;
+		}
+		
+		comment.setStatus(CommentStatus.accepted);
+		writeToFileJSON();
+		return comment;
+	}
 
+	public Comment denyComment(int commentId) {
+		Comment comment = getById(commentId);
+		if(comment == null) {
+			return null;
+		}
+		
+		comment.setStatus(CommentStatus.denied);
+		writeToFileJSON();
+		return comment;
+	}
+	
 	public Comment createComment(CommentCreationDTO dto) {
 		Comment comment = dto.ConvertToComment();
 		comment.setId(nextId());
@@ -66,6 +95,7 @@ public class CommentDAO {
 		}
 		comment.setUser(user);
 		comment.setRentACarObject(rentACarObject);
+		comment.setStatus(CommentStatus.waiting);
 
 		comments.add(comment);
 		writeToFileJSON();
@@ -96,6 +126,16 @@ public class CommentDAO {
 		}
 		return commentsForObject;
 	}
+	public ArrayList<Comment> getAcceptedCommentsForRentObject(int objectId) {
+		ArrayList<Comment> commentsForObject = new ArrayList<Comment>();
+		for (Comment comment : comments) {
+			if (comment.getRentACarObject().getId() == objectId && comment.getStatus().equals(CommentStatus.accepted)){
+				commentsForObject.add(comment);
+			}
+		}
+		return commentsForObject;
+	}
+	
 
 	
 
