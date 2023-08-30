@@ -91,11 +91,11 @@ Vue.component("updateVehicle", {
              <br>
               <tr>
             	<td><label>Description: </label></td>
-                <td><input type="optional" v-model="vehicle.description" v-bind:style="descriptionColor"></td>
+                <td><input type="text" v-model="vehicle.description" v-bind:style="descriptionColor"></td>
             </tr>
             <br>
             <div class="form-row">
-                <button v-on:click="update()">Update</button><br>
+                <button type="button" v-on:click="update()">Update</button><br>
                 <h5 v-bind:style="errorColor">{{errorMessage}}</h5>
              </div>
             </form>
@@ -104,19 +104,12 @@ Vue.component("updateVehicle", {
 	`,
 	
 	mounted(){
-		axios.get('rest/users/getFreeManagers')
-      		.then(response => {
-        	this.freeManagers = response.data;
-       
-      })
-      .catch(error => {
-        console.error("Error fetching data:", error);
-      });
+		this.vehicle = JSON.parse(localStorage.getItem("vehicleForUpdate"));
 		
 	}, 
 	
 	methods: {
-		create: function(){
+		update: function(){
 			event.preventDefault();
 			if(!this.vehicle.brand){
 				this.brandColor='border-color: red';
@@ -179,10 +172,10 @@ Vue.component("updateVehicle", {
 			
 			this.errorMessage = '';
 		
-			axios.post('rest/vehicles/', this.vehicle)
+			axios.put('rest/vehicles/update/' + this.vehicle.id, this.vehicle)
 			    .then(response => {
-					const a = response.data;
-			        router.push(`/`);
+					this.vehicle = response.data;
+					alert("Sucesfuly updated");
 			    });
 		}
 	}

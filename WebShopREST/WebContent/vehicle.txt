@@ -1,2 +1,2 @@
-1|Merdeses|S63 Coupe|truck|automatic|dizel|20|4|5|bla|https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg|available|1
-2|Smart|aaa|car|automatic|dizel|21|5|6|ccc|https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg|available|2
+1|Merdeses|S63 Coupe|100.0|truck|automatic|dizel|20|4|5|bla|https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg|available|1
+2|Smart|aaa|200.0|car|automatic|dizel|21|5|6|ccc|https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg|available|2

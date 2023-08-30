@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dto.UserDTO;
 import dto.VehicleCreationDTO;
 import enums.FuelType;
+import enums.Gender;
 import enums.OrderStatus;
 import enums.Role;
 import enums.VehicleKind;
@@ -55,6 +57,7 @@ public class VehicleDAO {
 		}
 		return id + 1;
 	}
+	
 
 	public ArrayList<Vehicle> getAll() {
 		return new ArrayList<>(vehicles);
@@ -81,10 +84,33 @@ public class VehicleDAO {
 		}
 
 		vehicle.setObject(loggedManager.getRentACarObject());
-
+		loggedManager.getRentACarObject().getVehicles().add(vehicle);
+		vehicle.setStatus(VehicleStatus.available);
 		vehicles.add(vehicle);
 		writeToFileJSON();
 		return vehicle;
+	}
+	
+	public Vehicle update(int id, VehicleCreationDTO vehicleCreationDTO) {
+		Vehicle foundVehicle = getById(id);
+
+		if (foundVehicle == null) {
+			return null;
+		}
+
+		foundVehicle.setBrand(vehicleCreationDTO.getBrand());
+		foundVehicle.setModel(vehicleCreationDTO.getModel());
+		foundVehicle.setPrice(vehicleCreationDTO.getPrice());
+		foundVehicle.setVehicleType(vehicleCreationDTO.getType());
+		foundVehicle.setFuel(vehicleCreationDTO.getFuelType());
+		foundVehicle.setConsumption(vehicleCreationDTO.getConsumption());
+		foundVehicle.setNumberOfDoors(vehicleCreationDTO.getDoorNumber());
+		foundVehicle.setNumberOfPeople(vehicleCreationDTO.getPeopleNumber());
+		foundVehicle.setDescription(vehicleCreationDTO.getDescription());
+		foundVehicle.setImage(vehicleCreationDTO.getPicture());
+		writeToFileJSON();
+		return foundVehicle;
+
 	}
 
 	public Vehicle update(int id, Vehicle vehicle) {
@@ -156,19 +182,20 @@ public class VehicleDAO {
 				int id = Integer.parseInt(parts[0]);
 				String brand = parts[1];
 				String model = parts[2];
-				VehicleType type = VehicleType.valueOf(parts[3]);
-				VehicleKind kind = VehicleKind.valueOf(parts[4]);
-				FuelType fuel = FuelType.valueOf(parts[5]);
-				double consumption = Integer.parseInt(parts[6]);
-				int doors = Integer.parseInt(parts[7]);
-				int people = Integer.parseInt(parts[8]);
-				String description = parts[9];
-				String image = parts[10];
-				VehicleStatus status = VehicleStatus.valueOf(parts[11]);
-				int rentACarObjectId = Integer.parseInt(parts[12]);
+				double price = Double.parseDouble(parts[3]);
+				VehicleType type = VehicleType.valueOf(parts[4]);
+				VehicleKind kind = VehicleKind.valueOf(parts[5]);
+				FuelType fuel = FuelType.valueOf(parts[6]);
+				double consumption = Double.parseDouble(parts[7]);
+				int doors = Integer.parseInt(parts[8]);
+				int people = Integer.parseInt(parts[9]);
+				String description = parts[10];
+				String image = parts[11];
+				VehicleStatus status = VehicleStatus.valueOf(parts[12]);
+				int rentACarObjectId = Integer.parseInt(parts[13]);
 				RentACarObject object = new RentACarObject(rentACarObjectId);
 				
-				Vehicle vehicle = new Vehicle(id, brand, model, type, kind, fuel, consumption, doors, people, description, image, status, object);
+				Vehicle vehicle = new Vehicle(id, brand, model, price, type, kind, fuel, consumption, doors, people, description, image, status, object);
 				vehicles.add(vehicle);
 				
 			}

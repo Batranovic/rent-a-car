@@ -6,6 +6,7 @@ import enums.VehicleType;
 import model.Vehicle;
 
 public class VehicleCreationDTO {
+	private int id;
 	private String brand;
 	private String model;
 	private double price;
@@ -22,10 +23,11 @@ public class VehicleCreationDTO {
 		super();
 	}
 
-	public VehicleCreationDTO(String brand, String model, double price, VehicleType type, VehicleKind category,
+	public VehicleCreationDTO(int id,String brand, String model, double price, VehicleType type, VehicleKind category,
 			FuelType fuelType, double consumption, int doorNumber, int peopleNumber, String picture,
 			String description) {
 		super();
+		this.id = id;
 		this.brand = brand;
 		this.model = model;
 		this.price = price;
@@ -43,6 +45,7 @@ public class VehicleCreationDTO {
 		Vehicle vehicle = new Vehicle();
 		vehicle.setBrand(brand);
 		vehicle.setModel(model);
+		vehicle.setPrice(price);
 		vehicle.setVehicleType(type);
 		vehicle.setVehicleKind(category);
 		vehicle.setFuel(fuelType);
@@ -56,8 +59,10 @@ public class VehicleCreationDTO {
 	
 	public static VehicleCreationDTO convertToDTO(Vehicle vehicle) {
 		VehicleCreationDTO dto = new VehicleCreationDTO();
+		dto.id = vehicle.getId();
 		dto.brand = vehicle.getBrand();
 		dto.model = vehicle.getModel();
+		dto.price = vehicle.getPrice();
 		dto.type = vehicle.getVehicleType();
 		dto.category = vehicle.getVehicleKind();
 		dto.fuelType = vehicle.getFuel();
@@ -67,6 +72,14 @@ public class VehicleCreationDTO {
 		dto.picture = vehicle.getImage();
 		dto.description = vehicle.getDescription();
 		return dto;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getBrand() {

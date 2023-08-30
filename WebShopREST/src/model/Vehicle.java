@@ -10,6 +10,7 @@ public class Vehicle {
 	private int id;
 	private String brand;
 	private String model;
+	private double price;
 	private VehicleType vehicleType;
 	private VehicleKind vehicleKind;
 	private FuelType fuel;
@@ -26,12 +27,13 @@ public class Vehicle {
 		super();
 	}
 	
-	public Vehicle(int id, String brand, String model, VehicleType vT, VehicleKind vK,
+	public Vehicle(int id, String brand, String model, double price, VehicleType vT, VehicleKind vK,
 					FuelType fuel, double c, int d, int p, String des, String image, VehicleStatus vS, RentACarObject object) {
 		super();
 		this.id = id;
 		this.brand = brand;
 		this.model = model;
+		this.price = price;
 		this.vehicleType = vT;
 		this.vehicleKind = vK;
 		this.fuel = fuel;
@@ -45,7 +47,7 @@ public class Vehicle {
 	}
 	
 	public String toStringForFile() {
-		return id + "|" + brand + "|" + model + "|" + vehicleType.toString() + "|" + vehicleKind + "|"
+		return id + "|" + brand + "|" + model + "|" + price + "|" + vehicleType.toString() + "|" + vehicleKind + "|"
 				+ fuel + "|" + consumption + "|" + numberOfDoors + "|" + numberOfPeople + "|" + description + 
 				"|" + image + "|" + status + "|" + object.getId();
 	}
@@ -72,6 +74,14 @@ public class Vehicle {
 
 	public void setModel(String model) {
 		this.model = model;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 
 	public VehicleType getVehicleType() {
