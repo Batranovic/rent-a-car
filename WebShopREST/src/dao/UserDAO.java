@@ -171,13 +171,7 @@ public class UserDAO {
 			user.setRentACarObject(rentACarObject);
 		}
 	}
-	public void bindBasket() {
-		for (User user : users) {
-			int basketId = user.getBasket().getId();
-			Basket basket = BasketDAO.getInstance().getById(basketId);
-			user.setBasket(basket);
-		}
-	}
+	
 	
 	public void bindCustomer() {
 		for(User user : users) {
@@ -205,15 +199,13 @@ public class UserDAO {
 				Gender gender = Gender.valueOf(parts[5]);
 				String birthday = parts[6];
 				Role role = Role.valueOf(parts[7]);
-				int basketId = Integer.parseInt(parts[8]);
-				int rentACarObjectId = Integer.parseInt(parts[9]);
-				int points = Integer.parseInt(parts[10]);
-				int customerId = Integer.parseInt(parts[11]);
-				Basket basket = new Basket(basketId);
+				int rentACarObjectId = Integer.parseInt(parts[8]);
+				int points = Integer.parseInt(parts[9]);
+				int customerId = Integer.parseInt(parts[10]);
 				RentACarObject rentACarObject = new RentACarObject(rentACarObjectId);
 				Customer customer = new Customer(customerId);
 
-				User user = new User(id, username, password, name, surname, gender, birthday, role, basket,
+				User user = new User(id, username, password, name, surname, gender, birthday, role,
 						rentACarObject, points, customer);
 				users.add(user);
 

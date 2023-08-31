@@ -7,11 +7,16 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import dto.SearchDTO;
+import dto.SearchFreeVehiclesDTO;
+import dto.SearchOrderDTO;
 import dto.UserDTO;
 import dto.VehicleCreationDTO;
 import enums.FuelType;
@@ -57,7 +62,16 @@ public class VehicleDAO {
 		}
 		return id + 1;
 	}
-	
+
+	public ArrayList<Vehicle> getAvailableVehicles() {
+		ArrayList<Vehicle> available = new ArrayList<Vehicle>();
+		for (Vehicle v : vehicles) {
+			if (v.getStatus().equals(VehicleStatus.available)) {
+				available.add(v);
+			}
+		}
+		return available;
+	}
 
 	public ArrayList<Vehicle> getAll() {
 		return new ArrayList<>(vehicles);
@@ -90,7 +104,7 @@ public class VehicleDAO {
 		writeToFileJSON();
 		return vehicle;
 	}
-	
+
 	public Vehicle update(int id, VehicleCreationDTO vehicleCreationDTO) {
 		Vehicle foundVehicle = getById(id);
 
@@ -135,8 +149,6 @@ public class VehicleDAO {
 		return foundVehicle;
 	}
 
-
-
 	private void writeToFileJSON() {
 		try {
 			FileWriter fileWriter = new FileWriter(file);
@@ -165,7 +177,7 @@ public class VehicleDAO {
 			}
 			vehicle.setObject(rentACarObject);
 			rentACarObject.getVehicles().add(vehicle);
-			
+
 		}
 	}
 
@@ -175,7 +187,7 @@ public class VehicleDAO {
 			String strCurrentLine;
 
 			while ((strCurrentLine = br.readLine()) != null) {
-				if(strCurrentLine.isEmpty()) {
+				if (strCurrentLine.isEmpty() || strCurrentLine.startsWith("#")) {
 					continue;
 				}
 				String parts[] = strCurrentLine.split("\\|");
@@ -194,14 +206,36 @@ public class VehicleDAO {
 				VehicleStatus status = VehicleStatus.valueOf(parts[12]);
 				int rentACarObjectId = Integer.parseInt(parts[13]);
 				RentACarObject object = new RentACarObject(rentACarObjectId);
-				
-				Vehicle vehicle = new Vehicle(id, brand, model, price, type, kind, fuel, consumption, doors, people, description, image, status, object);
+
+				Vehicle vehicle = new Vehicle(id, brand, model, price, type, kind, fuel, consumption, doors, people,
+						description, image, status, object);
 				vehicles.add(vehicle);
-				
+
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+
+	public ArrayList<Vehicle> search(SearchFreeVehiclesDTO searchDTO) {
+		LocalDate start, end;
+		try {
+			start = LocalDate.parse(searchDTO.getStart());
+			end = LocalDate.parse(searchDTO.getEnd());
+			
+		}catch(Exception e) {
+			return null;
+		}
+		
+		ArrayList<Vehicle> freeVehicles = new ArrayList<Vehicle>();
+		for (Vehicle vehicle : vehicles) {
+			if (vehicle.getStatus() == VehicleStatus.available
+					&& OrderDAO.getInstance().isVehicleFreeForDateRange(vehicle.getId(), start, end)) {
+				freeVehicles.add(vehicle);
+			}
+		}
+		return freeVehicles;
+	}
+
 }

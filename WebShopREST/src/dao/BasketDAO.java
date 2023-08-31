@@ -70,6 +70,53 @@ public class BasketDAO {
 
 		return foundBasket;
 	}
+	
+	public Basket getBasketForUser(int userId) {
+		for(Basket b : baskets) {
+			if(b.getUser().getId() == userId)
+				return b;
+		}
+		return null;
+	}
+	
+	private Basket createBasketForUser(int userId) {
+		Basket basket = new Basket();
+		User user = UserDAO.getInstance().getById(userId);
+		if(user == null) {
+			return null;
+		}
+		basket.setUser(user);
+		basket.setId(nextId());
+		basket.setPrice(0);
+		baskets.add(basket);
+		writeToFileJSON();
+		return basket;
+	}
+
+	public Basket getVehiclesForBasket(int userId, int vehicleId){
+		Basket basket= getBasketForUser(userId); 
+		if(basket == null) {
+			basket = createBasketForUser(userId);
+			if(basket == null) {
+				return null;
+			}
+		}
+		Vehicle vehicle = VehicleDAO.getInstance().getById(vehicleId);
+		basket.getVehicles().add(vehicle);
+		writeToFileJSON();
+		return basket;
+		
+	}
+	
+	public ArrayList<Vehicle> getAllVehicesForBasket(int userId){
+		ArrayList<Vehicle> vehicles = new ArrayList<Vehicle>();
+		for(Basket b : baskets) {
+			if(b.getUser().getId() == userId) {
+				return b.getVehicles();
+			}
+		}
+		return null;
+	}
 
 	public Basket getById(int id) {
 		for (Basket b : baskets) {
@@ -89,7 +136,6 @@ public class BasketDAO {
 				continue;
 			}
 			basket.setUser(user);
-			user.setBasket(basket);
 
 		}
 	}
@@ -99,28 +145,26 @@ public class BasketDAO {
 			FileWriter fileWriter = new FileWriter(file);
 			BufferedWriter output = new BufferedWriter(fileWriter);
 			for (Basket basket : baskets) {
-				output.write(basket.toStringForFile()  + "\n");
+				output.write(basket.toStringForFile() + "\n");
 			}
 			output.close();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 		writeToFileBasketVehicle();
 	}
-	
+
 	private void writeToFileBasketVehicle() {
 		try {
 			FileWriter fileWriter = new FileWriter(ProjectDAO.ctxPath + "basketVehicle.txt");
 			BufferedWriter output = new BufferedWriter(fileWriter);
 			for (Basket basket : baskets) {
-				for(Vehicle vehicle : basket.getVehicles()) {
-					output.write(basket.getId() + "|" + vehicle.getId());					
+				for (Vehicle vehicle : basket.getVehicles()) {
+					output.write(basket.getId() + "|" + vehicle.getId());
 				}
 			}
 			output.close();
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.getStackTrace();
 		}
 	}

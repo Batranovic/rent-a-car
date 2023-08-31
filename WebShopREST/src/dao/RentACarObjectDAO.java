@@ -175,7 +175,7 @@ public class RentACarObjectDAO {
 			String strCurrentLine;
 
 			while ((strCurrentLine = br.readLine()) != null) {
-				if(strCurrentLine.isEmpty()) {
+				if(strCurrentLine.isEmpty() || strCurrentLine.startsWith("#")) {
 					continue;
 				}
 		

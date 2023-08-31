@@ -15,7 +15,6 @@ public class User {
 	private Gender gender;
 	private String birthday;
 	private Role role;
-	private Basket basket;
 	private RentACarObject rentACarObject;
 	private int points;
 	private Customer customerType;
@@ -26,7 +25,7 @@ public class User {
 	
 
 	public User(int id, String username, String password, String name, String surname, Gender gender, String birthday,
-			Role role, Basket basket, RentACarObject rentACarObject, int points,
+			Role role, RentACarObject rentACarObject, int points,
 			Customer customerType) {
 		super();
 		this.id = id;
@@ -37,7 +36,6 @@ public class User {
 		this.gender = gender;
 		this.birthday = birthday;
 		this.role = role;
-		this.basket = basket;
 		this.rentACarObject = rentACarObject;
 		this.points = points;
 		this.customerType = customerType;
@@ -53,7 +51,7 @@ public class User {
 
 	public String toStringForFile() {
 		return id + "|" + username + "|" + password + "|" + name + "|" + surname + "|"
-				+ gender + "|" + birthday + "|" + role + "|" + ((basket == null) ? -1 : basket.getId()) + "|" + ((rentACarObject == null) ? -1 : rentACarObject.getId()) + "|" + points + "|" + ((customerType == null) ? -1 : customerType.getId());
+				+ gender + "|" + birthday + "|" + role + "|" + ((rentACarObject == null) ? -1 : rentACarObject.getId()) + "|" + points + "|" + ((customerType == null) ? -1 : customerType.getId());
 	}
 
 	public int getId() {
@@ -137,15 +135,7 @@ public class User {
 
 
 
-	public Basket getBasket() {
-		return basket;
-	}
-
-
-	public void setBasket(Basket basket) {
-		this.basket = basket;
-	}
-
+	
 
 	public RentACarObject getRentACarObject() {
 		return rentACarObject;

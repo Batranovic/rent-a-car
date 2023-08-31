@@ -10,6 +10,7 @@ public class Basket {
 	
 	
 	public Basket() {
+		vehicles = new ArrayList<Vehicle>();
 	}
 	
 	public Basket(int id, ArrayList<Vehicle> v, User u, int p) {

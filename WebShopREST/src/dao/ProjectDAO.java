@@ -27,7 +27,6 @@ public class ProjectDAO {
 		VehicleDAO.getInstance();
 		
 		UserDAO.getInstance().bindRentACarObject();
-		UserDAO.getInstance().bindBasket();
 		UserDAO.getInstance().bindCustomer();
 		RentACarObjectDAO.getInstance().bindLocation();	
 		VehicleDAO.getInstance().bindRentACarObject();

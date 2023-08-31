@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import dto.SearchOrderDTO;
 import enums.OrderStatus;
+import enums.VehicleStatus;
 import model.Order;
 import model.RentACarObject;
 import model.User;
@@ -51,6 +52,7 @@ public class OrderDAO {
 
 	public Order create(Order order) {
 		order.setId(nextId());
+		order.setOrderStatus(OrderStatus.processing);
 		orders.add(order);
 		writeToFileJSON();
 		return order;
@@ -127,6 +129,22 @@ public class OrderDAO {
 			}
 		}
 		return searchedOrders;
+	}
+	
+	public boolean isVehicleFreeForDateRange(int vehicleId, LocalDate start2, LocalDate end2) {
+		for(Order order : orders) {
+			LocalDate rentalDate = LocalDate.parse(order.getRentalDateAndTime());
+			LocalDate rentalReturn = rentalDate.plusDays(order.getLeaseDuration());		//kad se mimoilaze poc2 > kraj1 || poc1 > kraj2, kad se preplicu poc2 < kraj1 && kraj2 > poc1
+			if(rentalReturn.isAfter(start2) && rentalDate.isBefore(end2)) {
+				if(order.getVehicles() != null) {
+					for(Vehicle vehicle : order.getVehicles()) {
+						if(vehicle.getId() == vehicleId)
+							return false;
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	private boolean searchManagerCondition(Order order, SearchOrderDTO searchDTO) {
@@ -252,7 +270,7 @@ public class OrderDAO {
 			String strCurrentLine;
 
 			while ((strCurrentLine = br.readLine()) != null) {
-				if(strCurrentLine.isEmpty()) {
+				if(strCurrentLine.isEmpty() || strCurrentLine.startsWith("#")) {
 					continue;
 				}
 				String parts[] = strCurrentLine.split("\\|");

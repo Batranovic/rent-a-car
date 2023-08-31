@@ -242,7 +242,7 @@ Vue.component("managerPage", {
 				});
 		},
 		myObject: function(){
-		router.push("/detailedObject/"+ this.users.rentACarObjectId);
+		router.push("/managersObjects");
 	},
 	}
 });

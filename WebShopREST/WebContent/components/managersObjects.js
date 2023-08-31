@@ -47,10 +47,10 @@ Vue.component("managersObjects", {
 	            	<td> {{ vehicle.model }}</td>
 	            	<td> {{ vehicle.fuelType }}</td>
             		<td><button type="button" v-on:click="update(vehicle)">Update</button></td>
-	                <td><button type="button" v-on:click="delete(vehicle.id)">Delete</button></td>
+	                <td><button type="button" v-on:click="deleteVehicle(vehicle.id)">Delete</button></td>
 	            </tr> 
             </table>
-            
+           
         </div>
 	    `,
 	methods: {
@@ -61,7 +61,7 @@ Vue.component("managersObjects", {
 			localStorage.setItem("vehicleForUpdate", JSON.stringify(vehicle));
 			router.push(`/updateVehicle`);
 		},
-		delete: function(id) {
+		deleteVehicle: function(id) {
 			//axios.delete('putanja').jakjsd
 		},
 	},
@@ -74,7 +74,7 @@ Vue.component("managersObjects", {
 						this.object = response.data;
 						this.vehicles = this.object.vehicles;
 						console.log('Retrieved object:', this.object);
-
+							
 
 					})
 					.catch(error => {
@@ -86,6 +86,8 @@ Vue.component("managersObjects", {
 			.catch(error => {
 				console.error("Error fetching detailed information:", error);
 			});
+			
+			
 
 	}
 

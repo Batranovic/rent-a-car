@@ -1,2 +1,3 @@
-1|Merdeses|S63 Coupe|100.0|truck|automatic|dizel|20|4|5|bla|https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg|available|1
-2|Smart|aaa|200.0|car|automatic|dizel|21|5|6|ccc|https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg|available|2
+1|Merdeses|S63 Coupe|100.0|truck|automatic|dizel|20|4|5|new|https://img.freepik.com/premium-psd/sport-car-transparent-background-3d-rendering-illustration_494250-40917.jpg|available|1
+2|Smart|aaa|200.0|car|automatic|dizel|21|5|6|old|https://www.autocar.co.uk/sites/autocar.co.uk/files/images/car-reviews/first-drives/legacy/99-best-luxury-cars-2023-bmw-i7-lead.jpg|rented|2
+3|Citroen|c4|300.0|car|manual|petrol|16|4|4|great|https://cdni.autocarindia.com/utils/imageresizer.ashx?n=https://cms.haymarketindia.net/model/uploads/modelimages/BMW-2-Series-Gran-Coupe-271220221147.jpg|available|1

@@ -10,9 +10,15 @@ Vue.component("user-page", {
 				priceFrom: null,
 				priceTo: null
 			},
+			searchRentalDate:{
+				start: '',
+				end: ''
+			},
 			searchResults: [], // Array to store search results
+			searchResult: [],
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
 			sortDirection: 'asc',
+			vehicles : null
 		}
 	},
 	template:
@@ -104,6 +110,48 @@ Vue.component("user-page", {
 	  </tr>
 	  
 	</table>
+	<br>
+	<h2>Rent a vehicle</h2>
+		<table>
+			 <td><label>From</label></td>
+	         <td><input type="date" v-model="searchRentalDate.start"></td>
+	            
+	         <td><label>To</label></td
+             <td><input type="date" v-model="searchRentalDate.end"></td>
+              <button type="sumbit"  v-on:click="searchVehicle()">Search</button>
+		</table>
+		
+		<table class="rentacar-table" border="1">
+			<tr>
+				<th>Image</th>
+				<th>Brand</th>
+				<th>Model</th>
+				<th>Price</th>
+				<th>Type</th>
+				<th>Kind</th>
+				<th>Fuel</th>
+				<th>Consumption</th>
+				<th>Doors</th>
+				<th>People</th>
+				<th>Description</th>
+				<th>AddToCart</th>
+			</tr>
+			<tr v-for="vehicle in searchResult" :key="vehicle.id">
+	            	<td><img :src="vehicle.picture" alt="Car Image" width="100"></td>
+	            	<td> {{ vehicle.brand }}</td>
+	            	<td> {{ vehicle.model }}</td>
+	            	<td> {{ vehicle.price }}</td>
+	            	<td> {{ vehicle.type }}</td>
+	            	<td> {{ vehicle.category }}</td>
+	            	<td> {{ vehicle.fuelType }}</td>
+	            	<td> {{ vehicle.consumption }}</td>
+	            	<td> {{ vehicle.doorNumber }}</td>
+	            	<td> {{ vehicle.peopleNumber }}</td>
+	            	<td> {{ vehicle.description }}</td>
+	            	<td> <button type="sumbit"  v-on:click="addToCart(vehicle.id)">AddToCart</button></td>
+	            </tr>
+		</table>
+		 <button  class="car-objects-button" v-on:click="basket()">Basket</button><br>
         </div>
 	    `,
 	computed: {
@@ -133,6 +181,10 @@ Vue.component("user-page", {
 				axios.get(`rest/orders/getOrderForUser/${this.users.id}`)
 					.then(response => {
 						this.searchResults = response.data;
+							axios.get(`rest/vehicles/`)
+								.then(response => {
+									this.searchResult = response.data;
+								})
 					});
 			});
 
@@ -195,6 +247,21 @@ Vue.component("user-page", {
 		        window.alert("Order status is not approved. Comment creation not allowed.");
 		    }
    
+		},
+		searchVehicle : function(){
+			axios.post(`rest/vehicles/searchVehicle`, this.searchRentalDate)
+					.then(response => {
+						this.searchResult = response.data;
+					});
+		},
+		basket: function(){
+			router.push("/basket");
+		},
+		addToCart: function(id){
+			axios.post(`rest/basket/addToBasket`)
+				.then(response => {
+					});
+				
 		}
 	}
 });

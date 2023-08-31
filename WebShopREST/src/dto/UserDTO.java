@@ -47,7 +47,9 @@ public class UserDTO {
 		dto.setBirthday(user.getBirthday());
 		dto.setGender(user.getGender().toString());
 		dto.setPassword(user.getPassword());
-		dto.setRentACarObjectId(user.getRentACarObject().getId());
+		if(user.getRentACarObject() != null) {
+			dto.setRentACarObjectId(user.getRentACarObject().getId());			
+		}
 		return dto;
 	}
 	

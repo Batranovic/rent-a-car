@@ -1,4 +1,5 @@
-1|1|2022-02-02|200|1000|1|returned
-2|2|2022-02-02|200|2000|2|approved
-3|1|2023-05-06|200|3000|1|approved
-4|2|2021-03-03|300|4000|1|returned
+#id|rentACarObject|rentalDate|leaseDuration|price|userId|status
+1|1|2022-02-02|20|1000|1|returned
+2|2|2022-02-02|10|2000|2|approved
+3|1|2023-05-06|1|3000|1|approved
+4|2|2021-03-03|100|4000|1|returned

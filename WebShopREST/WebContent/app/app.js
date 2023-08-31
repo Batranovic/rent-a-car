@@ -12,6 +12,7 @@ const AdminPage = {template: "<adminPage></adminPage>"}
 const CreateComment = {template: "<createComment></createComment>"}
 const UpdateVehicle = {template: "<updateVehicle></updateVehicle>"}
 const ManagersObjects = {template: "<managersObjects></managersObjects>"}
+const Basket = {template: "<basket></basket>"}
 
 const router = new VueRouter({
     mode: 'hash',
@@ -29,7 +30,8 @@ const router = new VueRouter({
         { path: '/adminPage/:id', component: AdminPage},
         { path: '/createComment', component: CreateComment},
         { path: '/updateVehicle', component: UpdateVehicle },
-        { path: '/managersObjects', component: ManagersObjects}
+        { path: '/managersObjects', component: ManagersObjects},
+        { path: '/basket', component: Basket}
     ]
 });
 
