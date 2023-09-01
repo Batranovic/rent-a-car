@@ -114,7 +114,6 @@ Vue.component("adminPage", {
 	    </th>
 	   <th>Role</th>
 	   <th>Type</th>
-	   <th>Block</th>
 	  </tr>
 	  
 	  <tr v-for="result in searchResults" :key="result.id">
@@ -124,7 +123,6 @@ Vue.component("adminPage", {
 	    <td>{{ result. points }}</td>
 	    <td>{{ result.role }}</td>
 	    <td>{{ result.customerType }}</td>
-	    <td> <button  v-on:click="blockUser(result.id)">Block</button></td>
 	  </tr>
 	 
 	</table>
@@ -225,18 +223,7 @@ Vue.component("adminPage", {
 		newObject: function(){
 			router.push("/createObject");
 		},
-		blockUser: function(id){
-			axios.put(`rest/users/blockUser/`+id)
-				.then(response => {
-					this.searchResults = response.data;
-					this.searchResultsBackUp = response.data;
-				axios.get('rest/users/')
-					.then(response => {
-						this.searchResults = response.data;
-						this.searchResultsBackUp = response.data;
-					});
-				})
-		},
+		
 		suspiUser: function(){
 			router.push("/getAllSuspiciousUsers");
 		}

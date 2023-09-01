@@ -102,7 +102,7 @@ public class UserDAO {
 	public ArrayList<User> getAllSuspiciousUsers() {
 		ArrayList<User> susUsers = new ArrayList<User>();
 		for(User user : users) {
-			if(OrderDAO.getInstance().getCancelOrdersNumForUser(user.getId()) > 5) {
+			if(OrderDAO.getInstance().getCancelOrdersNumForUser(user.getId()) >= 5) {
 				susUsers.add(user);
 			}
 		}

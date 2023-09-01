@@ -1,7 +1,6 @@
 Vue.component("susUsers", {
 	data: function() {
 		return {
-			user: { name: null, surname: null, gender: null, birthday: null, username: null },
 			users: []
 		}
 	},
@@ -19,6 +18,7 @@ Vue.component("susUsers", {
 	            	<th>Username</th>
 	            	<th>Gender</th>
 	            	<th>Birthday</th>
+	            	<th>Block</th>
 	            </tr>
 	            <tr v-for="user in users" :key="user.id">
 	            	<td> {{ user.name }}</td>
@@ -26,6 +26,7 @@ Vue.component("susUsers", {
 	            	<td> {{ user.username }}</td>
 	            	<td> {{ user.gender }}</td>
 	            	<td> {{ user.birthday }}</td>
+	            	<td> <button  v-on:click="blockUser(user.id)">Block</button></td>
 	            </tr>
 			        
             </table>
@@ -33,7 +34,18 @@ Vue.component("susUsers", {
 		</div>
     	`,
 	mounted() {
-		axios.get('rest/users/getAllSuspiciousUsers', this.user)
+		axios.get('rest/users/getAllSuspiciousUsers', this.users)
+			.then(response =>{
+				this.users = response.data;
+			})
 
 	},
+	methods: {
+		blockUser: function(id){
+			axios.put(`rest/users/blockUser/`+id)
+				.then(response => {
+					this.users = response.data;
+				});
+		},
+	}
 });
