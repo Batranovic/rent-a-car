@@ -39,7 +39,6 @@ public class OrderDTO {
 		return dto;
 	}
 
-
 	public String getUserId() {
 		return userId;
 	}

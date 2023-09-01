@@ -131,6 +131,7 @@ Vue.component("managerPage", {
           </table>
           
           <button  class="car-objects-button" v-on:click="myObject()">My object</button><br>
+          <button  class="new-object-button" v-on:click="newObject()">New object</button><br>
         </div>
 	    `,
 	computed: {
@@ -297,5 +298,8 @@ Vue.component("managerPage", {
 		myObject: function(){
 		router.push("/managersObjects");
 	},
+		newObject: function(){
+			router.push("/createObject");
+		}
 	}
 });

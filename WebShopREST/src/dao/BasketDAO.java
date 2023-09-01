@@ -129,8 +129,9 @@ public class BasketDAO {
 		order.setRentalDateAndTime(createOrderFromBasket.getStart());
 		
 		User user = basket.getUser();
-		user.setPoints(user.getPoints() + (basket.getPrice()/1000)*133);
+		user.setPoints((int) (user.getPoints() + (basket.getPrice() / 1000.0) * 133));
 		UserDAO.getInstance().updateUserType(user);
+		UserDAO.getInstance().update(user.getId(), user);
 		
 		if(user.getCustomerType().getType().equals(CustomerType.silver)) {
 		    int roundedPrice = (int) Math.round(basket.getPrice() * 0.03);
@@ -149,9 +150,7 @@ public class BasketDAO {
 		
 		basket.setVehicles(new ArrayList<Vehicle>());
 		basket.setPrice(0);
-		
-		
-		
+	
 		writeToFileJSON();
 		return order;
 	}
