@@ -101,7 +101,6 @@ public class OrderService {
         return dtos;
     }
     
-
     @PUT
     @Path("/acceptOrder/{id}")
     @Produces(MediaType.APPLICATION_JSON)

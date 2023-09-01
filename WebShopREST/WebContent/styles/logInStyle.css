@@ -75,7 +75,7 @@
 .new-object-button{
   position: absolute; /* Add position absolute to the button */
   top: 20px; /* Position the button at the top */
-  right: 1150px; /* Position the button at the left */
+  right: 1020px; /* Position the button at the left */
   background-color: #8FC590;
   padding: 8px 16px; /* Adjust the padding to make the button thinner */
   border-radius: 3px;
