@@ -38,17 +38,8 @@ public class OrderDTO {
 		dto.setUserId(order.getUser().getName());
 		return dto;
 	}
-<<<<<<< HEAD
 
-=======
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
->>>>>>> cb4d72ec8ad196598c152470a9479a4afa917dc9
+
 	public String getUserId() {
 		return userId;
 	}

@@ -21,7 +21,7 @@ Vue.component("managerForObject", {
             <form class="form-table">
             <tr>
             	<td><label>Name: </label></td>
-            	<td><input type="text" v-model="manager.name" v-bind:style="nameColor"></td>
+            	<td><input type="text" v-model="manager.name" v-bind:style="nameColor" pattern="[A-Za-z]+" title="Please enter only letters" required></td>
             </tr>
             <br>
              <tr>

@@ -28,7 +28,7 @@ Vue.component("updateVehicle", {
             <form class="form-table">
             <tr>
             	<td><label>Brand *: </label></td>
-            	<td><input type="text" v-model="vehicle.brand" v-bind:style="brandColor"></td>
+            	<td><input type="text" v-model="vehicle.brand" v-bind:style="brandColor" pattern="[A-Za-z]+" title="Please enter only letters" required></td>
             </tr>
             <br>
              <tr>
@@ -176,6 +176,7 @@ Vue.component("updateVehicle", {
 			    .then(response => {
 					this.vehicle = response.data;
 					alert("Sucesfuly updated");
+					router.push(`/viewRentACarObject`);
 			    });
 		}
 	}
