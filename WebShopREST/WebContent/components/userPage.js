@@ -258,7 +258,8 @@ Vue.component("user-page", {
 			router.push("/basket");
 		},
 		addToCart: function(id){
-			axios.post(`rest/basket/addToBasket`)
+			const addToBasketObj = {userId : localStorage.getItem("loggedUserId"), vehicleId : id}
+			axios.post(`rest/basket/addToBasket`, addToBasketObj)
 				.then(response => {
 					});
 				

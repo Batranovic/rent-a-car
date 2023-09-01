@@ -20,11 +20,11 @@ Vue.component("basket", {
 				<th>Rent</th>
 				<th>Remove</th>
 			</tr>
-			<tr >
-	            	<td><img :src="vehicles.picture" alt="Car Image" width="100"></td>
-	            	<td> {{ vehicles.brand }}</td>
-	            	<td> {{ vehicles.model }}</td>
-	            	<td> {{ vehicles.price }}</td>
+			<tr v-for="vehicle in vehicles">
+	            	<td><img :src="vehicle.image" alt="Car Image" width="100"></td>
+	            	<td> {{ vehicle.brand }}</td>
+	            	<td> {{ vehicle.model }}</td>
+	            	<td> {{ vehicle.price }}</td>
 	            	<td><button type="sumbit"  v-on:click="rentVehicle()">Rent</button></td>
         			<td><button type="sumbit"  v-on:click="removeVehicle()">Remove</button></td>
 	            
@@ -39,10 +39,7 @@ Vue.component("basket", {
 		axios.get(`rest/basket/getBasketForUser/` + localStorage.getItem("loggedUserId"))
 			.then(response => {
 				this.basket = response.data;
-				axios.get(`rest/basket/getAllVehicles/` + localStorage.getItem("loggedUserId"))
-					.then(response =>{
-						this.vehicles = this.basket.vehicles;
-					})
+				this.vehicles = this.basket.vehicles;
 			})
 			
         
