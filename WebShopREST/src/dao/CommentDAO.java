@@ -67,6 +67,9 @@ public class CommentDAO {
 		}
 		
 		comment.setStatus(CommentStatus.accepted);
+		RentACarObject rent = comment.getRentACarObject();
+		rent.setGrade(rent.getGrade() + comment.getGrade());
+		RentACarObjectDAO.getInstance().update(comment.getRentACarObject().getId(), rent);
 		writeToFileJSON();
 		return comment;
 	}

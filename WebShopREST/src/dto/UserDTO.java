@@ -12,6 +12,7 @@ public class UserDTO {
 	private String birthday;
 	private String password;
 	private int rentACarObjectId;
+	private boolean isBlocked;
 	
 	public UserDTO() {
 		super();
@@ -19,7 +20,7 @@ public class UserDTO {
 	
 	
 	public UserDTO(int id, String name, String surname, String username, int points, String role, String customerType,
-			String gender, String birthday, String password, int rent) {
+			String gender, String birthday, String password, int rent, boolean isBlocked) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -32,6 +33,7 @@ public class UserDTO {
 		this.birthday = birthday;
 		this.password = password;
 		this.rentACarObjectId = rent;
+		this.isBlocked = isBlocked;
 	}
 
 
@@ -50,10 +52,21 @@ public class UserDTO {
 		if(user.getRentACarObject() != null) {
 			dto.setRentACarObjectId(user.getRentACarObject().getId());			
 		}
+		dto.setBlocked(user.isBlocked());
 		return dto;
 	}
 	
 	
+	public boolean isBlocked() {
+		return isBlocked;
+	}
+
+
+	public void setBlocked(boolean isBlocked) {
+		this.isBlocked = isBlocked;
+	}
+
+
 	public int getRentACarObjectId() {
 		return rentACarObjectId;
 	}

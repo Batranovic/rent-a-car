@@ -93,6 +93,7 @@ public class UserDAO {
 
 	public User create(User user) {
 		user.setId(nextId());
+		user.setBlocked(false);
 		users.add(user);
 		writeToFileJSON();
 		return user;
@@ -121,6 +122,7 @@ public class UserDAO {
 		foundUser.setPassword(userDTO.getPassword());
 		foundUser.setGender(Gender.valueOf(userDTO.getGender()));
 		foundUser.setBirthday(userDTO.getBirthday());
+		foundUser.setBlocked(userDTO.isBlocked());
 		writeToFileJSON();
 		return foundUser;
 	}
@@ -138,6 +140,7 @@ public class UserDAO {
 		foundUser.setPassword(user.getPassword());
 		foundUser.setGender(user.getGender());
 		foundUser.setBirthday(user.getBirthday());
+		foundUser.setBlocked(user.isBlocked());
 		writeToFileJSON();
 		return foundUser;
 	}
@@ -229,11 +232,12 @@ public class UserDAO {
 				int rentACarObjectId = Integer.parseInt(parts[8]);
 				int points = Integer.parseInt(parts[9]);
 				int customerId = Integer.parseInt(parts[10]);
+				boolean isBlocked = Boolean.parseBoolean(parts[11]);
 				RentACarObject rentACarObject = new RentACarObject(rentACarObjectId);
 				Customer customer = new Customer(customerId);
 
 				User user = new User(id, username, password, name, surname, gender, birthday, role,
-						rentACarObject, points, customer);
+						rentACarObject, points, customer, isBlocked);
 				users.add(user);
 
 			}
@@ -261,6 +265,7 @@ public class UserDAO {
 		Customer customer = CustomerDAO.getInstance().getCustomerByCustomerType(CustomerType.bronze);
 		user.setCustomerType(customer);
 		user.setId(nextId());
+		user.setBlocked(false);
 		users.add(user);
 		writeToFileJSON();
 		return user;
@@ -271,6 +276,7 @@ public class UserDAO {
 		user.setId(nextId());
 		Customer customer = CustomerDAO.getInstance().getCustomerByCustomerType(CustomerType.bronze);
 		user.setCustomerType(customer);
+		user.setBlocked(false);
 		users.add(user);
 		writeToFileJSON();
 		return user;
@@ -278,11 +284,22 @@ public class UserDAO {
 
 	public User login(LoginDTO dto) {
 		for (User user : users) {
-			if (user.getUsername().equals(dto.getUsername()) && user.getPassword().equals(dto.getPassword())) {
+			if (user.getUsername().equals(dto.getUsername()) && user.getPassword().equals(dto.getPassword()) && user.isBlocked() == false) {
 				return user;
 			}
 		}
 		return null;
+	}
+	
+	public void blockUser(int userId) {
+		User user = getById(userId);
+		if(user == null) {
+			return ;
+		}
+		
+		user.setBlocked(true);
+		update(userId, user);
+		writeToFileJSON();
 	}
 
 	public ArrayList<User> getAllFreeManagers() {

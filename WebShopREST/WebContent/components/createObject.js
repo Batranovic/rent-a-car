@@ -61,7 +61,7 @@ Vue.component("createObject", {
             <br>
              <tr>
             	<td><label>Logo: </label></td>
-            	<td><input type="file" v-model="object.logo" v-bind:style="logoColor"></td>
+            	<td><input type="text" v-model="object.logo" v-bind:style="logoColor"></td>
             </tr>
             </br>
              <br>

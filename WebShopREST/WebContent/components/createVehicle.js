@@ -85,7 +85,7 @@ Vue.component("createVehicle", {
             <br>
              <tr>
             	<td><label>Picture *: </label></td>
-            	<td><input type="file" v-model="vehicle.picture" v-bind:style="pictureColor"></td>
+            	<td><input type="text" v-model="vehicle.picture" v-bind:style="pictureColor"></td>
             </tr>
             </br>
              <br>

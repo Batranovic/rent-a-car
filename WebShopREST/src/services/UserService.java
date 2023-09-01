@@ -167,5 +167,15 @@ public class UserService {
 
 		return dtos;
 	}
+	
+	@PUT
+	@Path("/blockUser/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void blockUser(@PathParam("id") int id) {
+		UserDAO.getInstance().blockUser(id);
+	}
+	
+	
 
 }

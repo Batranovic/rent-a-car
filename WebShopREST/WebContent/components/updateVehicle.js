@@ -175,7 +175,7 @@ Vue.component("updateVehicle", {
 			axios.put('rest/vehicles/update/' + this.vehicle.id, this.vehicle)
 			    .then(response => {
 					this.vehicle = response.data;
-					alert("Sucesfuly updated");
+					router.push("/managersObjects");
 			    });
 		}
 	}

@@ -75,7 +75,25 @@ public class RentACarObjectDAO {
 		writeToFileJSON();
 		return rentACar;
 	}
+	public RentACarObject update(int id, RentACarObject rent) {
+		RentACarObject foundObject = getById(id);
 
+		if (foundObject == null) {
+			return null;
+		}
+
+		foundObject.setName(rent.getName());
+		foundObject.setFrom(rent.getFrom());
+		foundObject.setGrade(rent.getGrade());
+		foundObject.setLocation(rent.getLocation());
+		foundObject.setLogo(rent.getLogo());
+		foundObject.setOpen(rent.isOpen());
+		foundObject.setTo(rent.getTo());
+		foundObject.setVehicles(rent.getVehicles());
+		
+		writeToFileJSON();
+		return foundObject;
+	}
 	public RentACarObject getById(int id) {
 		for (RentACarObject rac : rentACarObjects) {
 			if (rac.getId() == id) {

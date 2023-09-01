@@ -18,6 +18,7 @@ public class User {
 	private RentACarObject rentACarObject;
 	private int points;
 	private Customer customerType;
+	private boolean isBlocked;
 	
 	public User() {
 		super();
@@ -26,7 +27,7 @@ public class User {
 
 	public User(int id, String username, String password, String name, String surname, Gender gender, String birthday,
 			Role role, RentACarObject rentACarObject, int points,
-			Customer customerType) {
+			Customer customerType, boolean isBlocked) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -39,9 +40,17 @@ public class User {
 		this.rentACarObject = rentACarObject;
 		this.points = points;
 		this.customerType = customerType;
+		this.isBlocked = isBlocked;
 	}
 	
-	
+	public boolean isBlocked() {
+		return isBlocked;
+	}
+
+
+	public void setBlocked(boolean isBlocked) {
+		this.isBlocked = isBlocked;
+	}
 
 
 	public User(int userId) {
