@@ -120,7 +120,7 @@ Vue.component("managerForObject", {
 			        axios.post('rest/rentACarObjects/', createdObject)
 				    .then(response => {
 						const a = response.data;
-				        router.push(`/viewRentACarObject`);
+				        router.push(`/`);
 				        localStorage.removeItem("createdRentACarObject");
 				    });	
 			    });
