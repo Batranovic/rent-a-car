@@ -128,7 +128,7 @@ Vue.component("adminPage", {
 	  </tr>
 	 
 	</table>
-	
+	 <button  class="car-object-button" v-on:click="suspiUser()">Suspicious user</button>
 	 <button  class="new-object-button" v-on:click="newObject()">New object</button>
         </div>
 	    `,
@@ -236,6 +236,9 @@ Vue.component("adminPage", {
 						this.searchResultsBackUp = response.data;
 					});
 				})
+		},
+		suspiUser: function(){
+			router.push("/getAllSuspiciousUsers");
 		}
 	}
 });
