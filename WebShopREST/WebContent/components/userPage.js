@@ -98,6 +98,7 @@ Vue.component("user-page", {
 	      <i class="arrow-icon arrow-down" :class="{ 'visible': sortBy === 'grade' && sortDirection === 'desc' }"></i>
 	    </th>
 	    <th>Order status</th>
+	    <th>Quit order</th>
 	     <th><Label>Comment:</label></th>
 	  </tr>
 	  
@@ -106,6 +107,7 @@ Vue.component("user-page", {
 	    <td>{{ result.rentalDateAndTime }}</td>
 	    <td>{{ result.price }}</td>
 	    <td>{{ result.status }}</td>
+	    <td> <button type="button"  :disabled="result.status !== 'processing'" v-on:click="quitOrder(result.id)">Quit</button> </td>
 	    <td> <button type="button" v-on:click="createComment(result)">Leave a comment</button> </td>
 	  </tr>
 	  
@@ -249,6 +251,8 @@ Vue.component("user-page", {
    
 		},
 		searchVehicle : function(){
+			localStorage.setItem("rentalDate", JSON.stringify(this.searchRentalDate));
+			
 			axios.post(`rest/vehicles/searchVehicle`, this.searchRentalDate)
 					.then(response => {
 						this.searchResult = response.data;
@@ -263,6 +267,15 @@ Vue.component("user-page", {
 				.then(response => {
 					});
 				
+		},
+		quitOrder: function(id){
+			axios.put(`rest/orders/quitOrder/`+ id)
+				.then(response => {
+					this.searchResults = response.data;
+					axios.get(`rest/orders/getOrderForUser/${this.users.id}`)
+					.then(response => {
+						this.searchResults = response.data; })
+				});
 		}
 	}
 });

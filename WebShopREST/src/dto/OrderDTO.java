@@ -3,6 +3,7 @@ package dto;
 import model.Order;
 
 public class OrderDTO {
+	private int id;
 	private String rentACarObject;
 	private int rentACarObjectId;
 	private String rentalDateAndTime;
@@ -13,8 +14,9 @@ public class OrderDTO {
 	public OrderDTO() {
 		super();
 	}
-	public OrderDTO(String rentACarObject,int rentId, String rentalDateAndTime, int price, String status, String userId) {
+	public OrderDTO(int id, String rentACarObject,int rentId, String rentalDateAndTime, int price, String status, String userId) {
 		super();
+		this.id = id;
 		this.rentACarObject = rentACarObject;
 		this.rentACarObjectId = rentId;
 		this.rentalDateAndTime = rentalDateAndTime;
@@ -25,6 +27,7 @@ public class OrderDTO {
 	
 	public static OrderDTO toObject(Order order) {
 		OrderDTO dto = new OrderDTO();
+		dto.setId(order.getId());
 		dto.setRentACarObject(order.getRentACarObject().getName());
 		dto.setRentACarObjectId(order.getRentACarObject().getId());
 		dto.setRentalDateAndTime(order.getRentalDateAndTime());
@@ -34,6 +37,12 @@ public class OrderDTO {
 		return dto;
 	}
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getUserId() {
 		return userId;
 	}

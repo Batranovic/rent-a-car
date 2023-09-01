@@ -66,7 +66,17 @@ public class OrderDAO {
 		return null;
 	}
 	
-	
+	public void quitOrder(int orderId) {
+		Order order = getById(orderId);
+		if(order == null) {
+			return;
+		}
+		User user = order.getUser();
+		int lostPoints = (order.getPrice()/1000)*133*4; 
+		user.setPoints(user.getPoints() - lostPoints);
+		order.setOrderStatus(OrderStatus.cancelled);
+		writeToFileJSON();
+	}
 	
 	
 	private boolean searchCondition(Order order, SearchOrderDTO searchDTO) {

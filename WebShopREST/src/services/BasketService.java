@@ -7,6 +7,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -17,8 +18,11 @@ import dao.BasketDAO;
 import dao.ProjectDAO;
 import dto.AddToBasketDTO;
 import dto.BasketDTO;
+import dto.CreateOrderFromBasketDTO;
+import dto.RemoveFromBasketDTO;
 import dto.SimpleVehicleDTO;
 import model.Basket;
+import model.Order;
 import model.Vehicle;
 
 @Path("/basket")
@@ -67,9 +71,30 @@ public class BasketService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public BasketDTO addtoBasket(AddToBasketDTO addToBasketDTO) {
-		Basket basket = BasketDAO.getInstance().getVehiclesForBasket(addToBasketDTO.getUserId(), addToBasketDTO.getVehicleId());
+		Basket basket = BasketDAO.getInstance().addToBasket(addToBasketDTO.getUserId(), addToBasketDTO.getVehicleId());
 		BasketDTO dto = BasketDTO.convertToDTO(basket);
 		return dto;
 		
 	}
+	
+	@POST
+	@Path("/removeFromBasket")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public BasketDTO removeFromBasket(RemoveFromBasketDTO removeFromBasketDTO) {
+		Basket basket = BasketDAO.getInstance().removeVehicleFromBasket(removeFromBasketDTO);
+		BasketDTO dto = BasketDTO.convertToDTO(basket);
+		return dto;
+		
+	}
+	
+	@PUT
+	@Path("/buyBasket/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void buyBusket(@PathParam("id") int id, CreateOrderFromBasketDTO createOrderFromBasket) {
+		 BasketDAO.getInstance().buyBasket(id, createOrderFromBasket);
+		
+	}
+	
 }

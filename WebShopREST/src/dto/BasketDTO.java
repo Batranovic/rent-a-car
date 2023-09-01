@@ -13,13 +13,14 @@ public class BasketDTO {
 	public BasketDTO() {
 		super();
 	}
+	
 	public BasketDTO(int id, ArrayList<SimpleVehicleDTO> vehicles, int price) {
 		super();
 		this.id = id;
 		this.vehicles = vehicles;
 		this.price = price;
 	}
-	
+
 	public static BasketDTO convertToDTO(Basket basket) {
 		BasketDTO dto = new BasketDTO();
 		dto.setId(basket.getId());
@@ -28,9 +29,12 @@ public class BasketDTO {
 		for(Vehicle vehicle : basket.getVehicles()) {
 			dto.vehicles.add(SimpleVehicleDTO.convertToDTO(vehicle));
 		}
+		
 		return dto;
 		
 	}
+
+
 	public int getId() {
 		return id;
 	}
