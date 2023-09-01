@@ -108,7 +108,7 @@ Vue.component("user-page", {
 	    <td>{{ result.price }}</td>
 	    <td>{{ result.status }}</td>
 	    <td> <button type="button"  :disabled="result.status !== 'processing'" v-on:click="quitOrder(result.id)">Quit</button> </td>
-	    <td> <button type="button" v-on:click="createComment(result)">Leave a comment</button> </td>
+	    <td> <button type="button" :disabled="result.status !== 'returned'" v-on:click="createComment(result)">Leave a comment</button> </td>
 	  </tr>
 	  
 	</table>
@@ -245,8 +245,6 @@ Vue.component("user-page", {
 			 if (order.status === "returned") {
 		        localStorage.setItem("commentRentACarObjectId", order.rentACarObjectId);
 		        router.push("/createComment");
-		    } else {
-		        window.alert("Order status is not approved. Comment creation not allowed.");
 		    }
    
 		},
