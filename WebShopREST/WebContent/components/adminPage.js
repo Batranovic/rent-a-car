@@ -124,8 +124,10 @@ Vue.component("adminPage", {
 	    <td>{{ result.role }}</td>
 	    <td>{{ result.customerType }}</td>
 	  </tr>
-	  
+	 
 	</table>
+	
+	 <button  class="new-object-button" v-on:click="newObject()">New object</button>
         </div>
 	    `,
 	computed: {
@@ -218,5 +220,8 @@ Vue.component("adminPage", {
 				});
 
 		},
+		newObject: function(){
+			router.push("/createObject");
+		}
 	}
 });

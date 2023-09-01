@@ -269,6 +269,8 @@ public class UserDAO {
 	public User createManager(ManagerCreationForObjectDTO userDTO) {
 		User user = userDTO.ConvertToUser();
 		user.setId(nextId());
+		Customer customer = CustomerDAO.getInstance().getCustomerByCustomerType(CustomerType.bronze);
+		user.setCustomerType(customer);
 		users.add(user);
 		writeToFileJSON();
 		return user;
