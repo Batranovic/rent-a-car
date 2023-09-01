@@ -52,7 +52,6 @@ public class UserDTO {
 		if(user.getRentACarObject() != null) {
 			dto.setRentACarObjectId(user.getRentACarObject().getId());			
 		}
-		dto.setBlocked(user.isBlocked());
 		return dto;
 	}
 	

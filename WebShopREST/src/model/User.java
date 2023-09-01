@@ -43,6 +43,9 @@ public class User {
 		this.isBlocked = isBlocked;
 	}
 	
+	
+
+
 	public boolean isBlocked() {
 		return isBlocked;
 	}
@@ -60,7 +63,7 @@ public class User {
 
 	public String toStringForFile() {
 		return id + "|" + username + "|" + password + "|" + name + "|" + surname + "|"
-				+ gender + "|" + birthday + "|" + role + "|" + ((rentACarObject == null) ? -1 : rentACarObject.getId()) + "|" + points + "|" + ((customerType == null) ? -1 : customerType.getId());
+				+ gender + "|" + birthday + "|" + role + "|" + ((rentACarObject == null) ? -1 : rentACarObject.getId()) + "|" + points + "|" + ((customerType == null) ? -1 : customerType.getId())+"|" + isBlocked;
 	}
 
 	public int getId() {
