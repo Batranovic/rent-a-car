@@ -68,6 +68,7 @@ public class OrderDAO {
 		return null;
 	}
 	
+
 	public int getCancelOrdersNumForUser(int userId) {
 		int canceledNum = 0;
 		for(Order order : orders) {
@@ -131,6 +132,19 @@ public class OrderDAO {
 		return order;
 	}
 	
+
+	public void quitOrder(int orderId) {
+		Order order = getById(orderId);
+		if(order == null) {
+			return;
+		}
+		User user = order.getUser();
+		int lostPoints = (order.getPrice()/1000)*133*4; 
+		user.setPoints(user.getPoints() - lostPoints);
+		order.setOrderStatus(OrderStatus.cancelled);
+		writeToFileJSON();
+	}
+
 	
 	public Order denyOrder(int orderId) {
 		Order order = getById(orderId);

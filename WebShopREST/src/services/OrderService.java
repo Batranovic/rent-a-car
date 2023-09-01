@@ -101,6 +101,7 @@ public class OrderService {
         return dtos;
     }
     
+<<<<<<< HEAD
     @PUT
     @Path("/acceptOrder/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -155,5 +156,11 @@ public class OrderService {
     	}
     	
         return OrderDTO.toObject(order);
+    }
+    @PUT 
+    @Path("/quitOrder/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public void quitOrder(@PathParam("id") int id) {
+    	OrderDAO.getInstance().quitOrder(id);
     }
 }

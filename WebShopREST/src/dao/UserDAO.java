@@ -141,6 +141,23 @@ public class UserDAO {
 		writeToFileJSON();
 		return foundUser;
 	}
+	
+	public void updateUserType(User user) {
+		if(user == null) {
+			return;
+		}
+		if(user.getPoints() < 3000) {
+			Customer customer =	user.getCustomerType();
+			customer.setType(CustomerType.bronze);
+		}else if(user.getPoints() >=3000) {
+			Customer customer =	user.getCustomerType();
+			customer.setType(CustomerType.silver);
+		}else if(user.getPoints() >=4000) {
+			Customer customer =	user.getCustomerType();
+			customer.setType(CustomerType.golden);
+		}else 
+			return;
+	}
 
 	private boolean isUsernameUnique(User user) {
 		return users.stream().noneMatch(u -> u.getUsername().equals(user.getUsername()));
