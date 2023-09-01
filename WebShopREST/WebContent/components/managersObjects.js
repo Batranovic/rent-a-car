@@ -62,7 +62,13 @@ Vue.component("managersObjects", {
 			router.push(`/updateVehicle`);
 		},
 		deleteVehicle: function(id) {
-			//axios.delete('putanja').jakjsd
+			axios.delete(`rest/vehicles/${id}`)
+				.then(response => {
+					this.vehicles = this.vehicles.filter(v => v.id !== id);
+				})
+				.catch(error => {
+					console.error("Error fetching detailed information:", error);
+				});
 		},
 	},
 	mounted() {
@@ -74,7 +80,7 @@ Vue.component("managersObjects", {
 						this.object = response.data;
 						this.vehicles = this.object.vehicles;
 						console.log('Retrieved object:', this.object);
-							
+
 
 					})
 					.catch(error => {
@@ -86,8 +92,8 @@ Vue.component("managersObjects", {
 			.catch(error => {
 				console.error("Error fetching detailed information:", error);
 			});
-			
-			
+
+
 
 	}
 

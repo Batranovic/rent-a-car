@@ -84,6 +84,8 @@ public class RentACarObjectDAO {
 		}
 		return null;
 	}
+	
+	
 
 	private boolean checkIfVehicleTypeExistsInObject(RentACarObject rentACarObject, String type) {
 		for (Vehicle vehicle : rentACarObject.getVehicles()) {

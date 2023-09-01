@@ -12,7 +12,8 @@ Vue.component("managerPage", {
 			searchResults: [], // Array to store search results
 			sortBy: '', // Column to sort by (e.g., 'name', 'location', 'grade')
 			sortDirection: 'asc',
-			comments: []
+			comments: [],
+			rentACarId:0
 		}
 	},
 	template:
@@ -52,7 +53,7 @@ Vue.component("managerPage", {
 			</form>
 
 	   <br>
-	   <h2>All rentals</h2>
+	   <h2>All orders</h2>
 	   <br>
 	   
 	   <table>
@@ -86,6 +87,10 @@ Vue.component("managerPage", {
 	    </th>
 	    <th>Status</th>
 	    <th>Custommer</th>
+	    <th>Accept</th>
+        <th>Deny</th>
+        <th>Collect</th>
+        <th>Return</th>
 	  </tr>
 	  
 	  <tr v-for="result in searchResults" >
@@ -93,6 +98,10 @@ Vue.component("managerPage", {
 	    <td>{{ result.price }}</td>
 	    <td>{{ result.status }}</td>
 	    <td>{{ result.userId }}</td>
+	    <td><button type="sumbit" :disabled="result.status !== 'processing'" v-on:click="acceptOrder(result.id)">Accept</button></td>
+        <td><button type="sumbit" :disabled="result.status !== 'processing'" v-on:click="denyOrder(result.id)">Deny</button></td>
+        <td><button type="sumbit" :disabled="result.status !== 'approved'" v-on:click="collectOrder(result.id)">Collect</button></td>
+        <td><button type="sumbit" :disabled="result.status !== 'collected'" v-on:click="returnOrder(result.id)">Return</button></td>
 	  </tr>
 	  
 	</table>
@@ -148,6 +157,7 @@ Vue.component("managerPage", {
 		axios.get(`rest/users/searchByUsername/` + this.passedId)
 			.then(response => {
 				this.users = response.data
+				this.rentACarId = this.users.rentACarObjectId;
 				axios.get(`rest/orders/getOrdersForRentObject/${this.users.rentACarObjectId}`)
 					.then(response => {
 						this.searchResults = response.data;
@@ -161,9 +171,6 @@ Vue.component("managerPage", {
 							});
 					});
 			});
-
-
-
 	},
 	methods: {
 		sort: function(column) {
@@ -239,6 +246,52 @@ Vue.component("managerPage", {
 						.catch(error => {
 							console.error("Error fetching comments", error);
 						});
+				});
+		},
+		acceptOrder: function(id) {
+			axios.put(`rest/orders/acceptOrder/` + id)
+				.then(response => {
+					axios.get(`rest/orders/getOrdersForRentObject/${this.rentACarId}`)
+					.then(response => {
+						this.searchResults = response.data;
+						
+					});
+				});
+		},
+
+		denyOrder: function(id) {
+			axios.put(`rest/orders/denyOrder/` + id)
+				.then(response => {
+					axios.get(`rest/orders/getOrdersForRentObject/${this.rentACarId}`)
+					.then(response => {
+						this.searchResults = response.data;
+						
+					});
+				});
+		},
+		collectOrder: function(id) {
+			axios.put(`rest/orders/collectOrder/` + id)
+				.then(response => {
+					if(response.data === ''){
+						alert('Cannot collect!');
+						return;
+					}
+					axios.get(`rest/orders/getOrdersForRentObject/${this.rentACarId}`)
+					.then(response => {
+						this.searchResults = response.data;
+						
+					});
+				});
+		},
+
+		returnOrder: function(id) {
+			axios.put(`rest/orders/returnOrder/` + id)
+				.then(response => {
+					axios.get(`rest/orders/getOrdersForRentObject/${this.rentACarId}`)
+					.then(response => {
+						this.searchResults = response.data;
+						
+					});
 				});
 		},
 		myObject: function(){

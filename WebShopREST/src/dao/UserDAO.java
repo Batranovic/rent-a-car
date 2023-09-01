@@ -97,6 +97,16 @@ public class UserDAO {
 		writeToFileJSON();
 		return user;
 	}
+	
+	public ArrayList<User> getAllSuspiciousUsers() {
+		ArrayList<User> susUsers = new ArrayList<User>();
+		for(User user : users) {
+			if(OrderDAO.getInstance().getCancelOrdersNumForUser(user.getId()) > 5) {
+				susUsers.add(user);
+			}
+		}
+		return susUsers;
+	}
 
 	public User update(int id, UserDTO userDTO) {
 		User foundUser = getById(id);
@@ -228,7 +238,6 @@ public class UserDAO {
 
 	public User createCustomer(RegisterUserDTO userDTO) {
 		User user = userDTO.convertToUser();
-		// dodatna logika
 		if (!isUsernameUnique(user.getUsername())) {
 			return null;
 		}
@@ -266,8 +275,6 @@ public class UserDAO {
 		}
 		return freeManagers;
 	}
-
-	
 
 	private boolean searchCondition(User user, SearchUserDTO searchDTO) {
 		if (!user.getName().contains(searchDTO.getName())) {

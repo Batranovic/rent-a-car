@@ -154,5 +154,18 @@ public class UserService {
 		UserDTO dto = UserDTO.toObject(user);
 		return dto;
 	}
+	
+	@GET
+	@Path("/getAllSuspiciousUsers")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<UserDTO> getAllSuspiciousUsers() {
+		ArrayList<User> users = UserDAO.getInstance().getAllSuspiciousUsers();
+		ArrayList<UserDTO> dtos = new ArrayList<UserDTO>();
+		for (User user : users) {
+			dtos.add(UserDTO.toObject(user));
+		}
+
+		return dtos;
+	}
 
 }

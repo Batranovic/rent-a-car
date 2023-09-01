@@ -13,6 +13,7 @@ const CreateComment = {template: "<createComment></createComment>"}
 const UpdateVehicle = {template: "<updateVehicle></updateVehicle>"}
 const ManagersObjects = {template: "<managersObjects></managersObjects>"}
 const Basket = {template: "<basket></basket>"}
+const SuspiciousUsers = {template: "<susUsers></susUsers>"}
 
 const router = new VueRouter({
     mode: 'hash',
@@ -31,7 +32,8 @@ const router = new VueRouter({
         { path: '/createComment', component: CreateComment},
         { path: '/updateVehicle', component: UpdateVehicle },
         { path: '/managersObjects', component: ManagersObjects},
-        { path: '/basket', component: Basket}
+        { path: '/basket', component: Basket},
+        { path: '/getAllSuspiciousUsers', component: SuspiciousUsers}
     ]
 });
 

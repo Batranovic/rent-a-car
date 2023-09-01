@@ -12,8 +12,10 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import dto.SearchOrderDTO;
+import enums.CommentStatus;
 import enums.OrderStatus;
 import enums.VehicleStatus;
+import model.Comment;
 import model.Order;
 import model.RentACarObject;
 import model.User;
@@ -66,8 +68,80 @@ public class OrderDAO {
 		return null;
 	}
 	
+	public int getCancelOrdersNumForUser(int userId) {
+		int canceledNum = 0;
+		for(Order order : orders) {
+			if(order.getUser().getId() == userId && order.getOrderStatus() == OrderStatus.cancelled) {
+				canceledNum++;
+			}
+		}
+		return canceledNum;
+	}
+	
+	public Order acceptOrder(int orderId) {
+		Order order = getById(orderId);
+		if(order == null) {
+			return null;
+		}
+		
+		order.setOrderStatus(OrderStatus.approved);
+		writeToFileJSON();
+		return order;
+	}
+	
+	public Order collectOrder(int orderId) {
+		Order order = getById(orderId);
+		if(order == null) {
+			return null;
+		}
+		LocalDate rentalDate = LocalDate.parse(order.getRentalDateAndTime());
+		if(LocalDate.now().isBefore(rentalDate)) {
+			return null;
+		}
+		
+		order.setOrderStatus(OrderStatus.collected);
+		if(order.getVehicles() == null) {
+			writeToFileJSON();
+			return order;
+		}
+		for(Vehicle vehicle : order.getVehicles()) {
+			vehicle.setStatus(VehicleStatus.rented);
+			VehicleDAO.getInstance().update(vehicle.getId(), vehicle);
+		}
+		writeToFileJSON();
+		return order;
+	}
+	
+	public Order returnOrder(int orderId) {
+		Order order = getById(orderId);
+		if(order == null) {
+			return null;
+		}
+		
+		order.setOrderStatus(OrderStatus.returned);
+		if(order.getVehicles() == null) {
+			writeToFileJSON();
+			return order;
+		}
+		for(Vehicle vehicle : order.getVehicles()) {
+			vehicle.setStatus(VehicleStatus.available);
+			VehicleDAO.getInstance().update(vehicle.getId(), vehicle);
+		}
+		writeToFileJSON();
+		return order;
+	}
 	
 	
+	public Order denyOrder(int orderId) {
+		Order order = getById(orderId);
+		if(order == null) {
+			return null;
+		}
+		
+		order.setOrderStatus(OrderStatus.rejected);
+		writeToFileJSON();
+		return order;
+	}
 	
 	private boolean searchCondition(Order order, SearchOrderDTO searchDTO) {
 	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

@@ -6,6 +6,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -16,15 +17,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import dao.ProjectDAO;
-import dao.RentACarObjectDAO;
-import dao.UserDAO;
 import dao.VehicleDAO;
-import dto.RentACarDTO;
-import dto.SearchDTO;
 import dto.SearchFreeVehiclesDTO;
-import dto.UserDTO;
 import dto.VehicleCreationDTO;
-import model.RentACarObject;
 import model.User;
 import model.Vehicle;
 
@@ -110,5 +105,13 @@ public class VehicleService {
 			dtos.add(VehicleCreationDTO.convertToDTO(v));
 		}
 		return dtos;
+	}
+	
+	@DELETE
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public VehicleCreationDTO deleteVehicle(@PathParam("id") int id) {
+		Vehicle vehicle = VehicleDAO.getInstance().delete(id);
+		return VehicleCreationDTO.convertToDTO(vehicle);
 	}
 }

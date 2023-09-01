@@ -66,7 +66,7 @@ public class VehicleDAO {
 	public ArrayList<Vehicle> getAvailableVehicles() {
 		ArrayList<Vehicle> available = new ArrayList<Vehicle>();
 		for (Vehicle v : vehicles) {
-			if (v.getStatus().equals(VehicleStatus.available)) {
+			if (v.getStatus().equals(VehicleStatus.available) && !v.isDeleted()) {
 				available.add(v);
 			}
 		}
@@ -74,7 +74,13 @@ public class VehicleDAO {
 	}
 
 	public ArrayList<Vehicle> getAll() {
-		return new ArrayList<>(vehicles);
+		ArrayList<Vehicle> available = new ArrayList<Vehicle>();
+		for (Vehicle v : vehicles) {
+			if (!v.isDeleted()) {
+				available.add(v);
+			}
+		}
+		return available;
 	}
 
 	public Vehicle getById(int id) {
@@ -126,6 +132,20 @@ public class VehicleDAO {
 		return foundVehicle;
 
 	}
+	
+	public Vehicle delete(int id) {
+		Vehicle foundVehicle = getById(id);
+		if (foundVehicle == null) {
+			return null;
+		}
+		foundVehicle.setDeleted(true);
+		foundVehicle.getObject().getVehicles().remove(foundVehicle);
+		
+		
+		writeToFileJSON();
+		return foundVehicle;
+
+	}
 
 	public Vehicle update(int id, Vehicle vehicle) {
 		Vehicle foundVehicle = getById(id);
@@ -169,6 +189,9 @@ public class VehicleDAO {
 
 	public void bindRentACarObject() {
 		for (Vehicle vehicle : vehicles) {
+			if(vehicle.isDeleted()) {
+				continue;
+			}
 			int objectId = vehicle.getObject().getId();
 			RentACarObject rentACarObject = RentACarObjectDAO.getInstance().getById(objectId);
 			if (rentACarObject == null) {
@@ -205,10 +228,11 @@ public class VehicleDAO {
 				String image = parts[11];
 				VehicleStatus status = VehicleStatus.valueOf(parts[12]);
 				int rentACarObjectId = Integer.parseInt(parts[13]);
+				boolean deleted = Boolean.parseBoolean(parts[14]);
 				RentACarObject object = new RentACarObject(rentACarObjectId);
 
 				Vehicle vehicle = new Vehicle(id, brand, model, price, type, kind, fuel, consumption, doors, people,
-						description, image, status, object);
+						description, image, status, object, deleted);
 				vehicles.add(vehicle);
 
 			}
@@ -230,7 +254,7 @@ public class VehicleDAO {
 		
 		ArrayList<Vehicle> freeVehicles = new ArrayList<Vehicle>();
 		for (Vehicle vehicle : vehicles) {
-			if (vehicle.getStatus() == VehicleStatus.available
+			if (vehicle.getStatus() == VehicleStatus.available && !vehicle.isDeleted()
 					&& OrderDAO.getInstance().isVehicleFreeForDateRange(vehicle.getId(), start, end)) {
 				freeVehicles.add(vehicle);
 			}

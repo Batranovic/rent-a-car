@@ -1,10 +1,8 @@
 package model;
-import java.util.EnumSet;
-
-import enums.VehicleType;
 import enums.FuelType;
 import enums.VehicleKind;
 import enums.VehicleStatus;
+import enums.VehicleType;
 
 public class Vehicle {
 	private int id;
@@ -21,6 +19,7 @@ public class Vehicle {
 	private String image;
 	private VehicleStatus status;
 	private RentACarObject object;
+	private boolean deleted;
 	
 	
 	public Vehicle() {
@@ -28,7 +27,7 @@ public class Vehicle {
 	}
 	
 	public Vehicle(int id, String brand, String model, double price, VehicleType vT, VehicleKind vK,
-					FuelType fuel, double c, int d, int p, String des, String image, VehicleStatus vS, RentACarObject object) {
+					FuelType fuel, double c, int d, int p, String des, String image, VehicleStatus vS, RentACarObject object, boolean deleted) {
 		super();
 		this.id = id;
 		this.brand = brand;
@@ -44,12 +43,13 @@ public class Vehicle {
 		this.image = image;
 		this.status = vS;
 		this.object = object;
+		this.deleted = deleted;
 	}
 	
 	public String toStringForFile() {
 		return id + "|" + brand + "|" + model + "|" + price + "|" + vehicleType.toString() + "|" + vehicleKind + "|"
 				+ fuel + "|" + consumption + "|" + numberOfDoors + "|" + numberOfPeople + "|" + description + 
-				"|" + image + "|" + status + "|" + object.getId();
+				"|" + image + "|" + status + "|" + object.getId() + "|" + deleted;
 	}
 
 	public int getId() {
@@ -163,5 +163,14 @@ public class Vehicle {
 	public void setObject(RentACarObject object) {
 		this.object = object;
 	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
+	
 	
 }

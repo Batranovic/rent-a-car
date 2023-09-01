@@ -1,8 +1,6 @@
 package model;
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class RentACarObject {
 	private int id;
 	private String name;
